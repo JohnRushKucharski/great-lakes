@@ -924,6 +924,11 @@ def test_format_summary_reports_counts_and_failed_rows():
 REAL_DATA_DIR = Path(__file__).parent.parent / "data" / "clean"
 
 
+@pytest.mark.skipif(
+    not REAL_DATA_DIR.exists(),
+    reason="data/clean is gitignored (regenerable); run clean_lake_levels_all_scenarios.py "
+    "locally to populate it and exercise this end-to-end test.",
+)
 def test_run_batch_end_to_end_against_real_avg_csvs(tmp_path):
     """Runs a small fixture workbook through run_batch with the real hydropattern
     `run` (no mocking) against the real Great Lakes avg-level CSVs, verifying the
