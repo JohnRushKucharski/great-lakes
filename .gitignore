@@ -1,0 +1,32 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Data policy: raw/ inputs, code, and small template workbooks are committed.
+# Regenerable analysis outputs (derived from raw/ via scripts) are NOT committed --
+# keep them locally as insurance, regenerate via the batch/clean scripts if lost.
+data/clean/
+data/filled/
+data/extrapolated/
+data/analysis/
+
+# longtailpoint: track input workbooks + dashboard.html/manifest.js viewer files
+# (small, needed to browse results without re-running anything). Bulky generated
+# batch outputs stay untracked/regenerable.
+longtailpoint/*_output/
+longtailpoint/results_*.xlsx
+longtailpoint/~$*
+
+# scratch space for ad hoc manual smoke tests, not part of the automated suite
+manual_tests/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/

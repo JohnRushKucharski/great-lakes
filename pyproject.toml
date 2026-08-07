@@ -1,0 +1,42 @@
+[project]
+name = "great-lakes"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "JohnRushKucharski", email = "johnkucharski@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "climate-canvas",
+    "hydropattern",
+]
+
+[build-system]
+requires = ["uv_build>=0.9.26,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.sources]
+climate-canvas = { git = "https://github.com/JohnRushKucharski/climate-canvas.git" }
+hydropattern = { git = "https://github.com/JohnRushKucharski/hydropattern.git", rev = "v0.1.1" }
+
+[dependency-groups]
+dev = [
+    "mypy>=2.3.0",
+    "pandas-stubs>=3.0.5.260730",
+    "ruff>=0.16.1",
+    "types-openpyxl>=3.1.5.20260807",
+]
+test = [
+    "pytest>=9.1.1",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.mypy]
+explicit_package_bases = true
