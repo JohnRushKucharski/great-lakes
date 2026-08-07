@@ -33,4 +33,4 @@ jobs:
         run: uv run pytest
 
       - name: Run mypy
-        run: uv run mypy src/
+        run: uv run mypy -p great_lakes
