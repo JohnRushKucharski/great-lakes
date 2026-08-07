@@ -52,7 +52,7 @@ LAKE_AVG_FILENAMES = {
 NON_ARI_COLUMNS = frozenset({"ID", "lat", "lon"})
 
 # Meters per foot, and the flat IGLD85->NAVD88 offset (in feet) used throughout the
-# Great Lakes example data (see examples/great_lakes/longtailpoint/longtail_waterlevel
+# Great Lakes example data (see longtailpoint/longtail_waterlevel
 # .xlsx, Sheet2's "NAVD88 to IGLD85" table: NAVD88 587ft -> IGLD85 586.56ft, NAVD88
 # 582ft -> IGLD85 581.56ft -- both a flat -0.44ft offset, i.e. IGLD85_ft = NAVD88_ft -
 # 0.44, so NAVD88_ft = IGLD85_ft + 0.44. This is the "USACE team estimate" noted in
@@ -242,7 +242,7 @@ def one_sided_color_style(
     levels/widths mark `threshold` plus 5 evenly-spaced points between it and the
     extreme (bold at threshold, matching the normal RdBu contour convention) -- these
     also make sensible colorbar ticks. Ported from
-    examples/great_lakes/data/analysis/avg/plot_avg_levels.py's original
+    data/analysis/avg/plot_avg_levels.py's original
     (tail-specific) implementation, generalized here to infer direction purely from
     where the data falls relative to threshold rather than a caller-supplied tail
     label, so it applies uniformly to any response-surface plot.

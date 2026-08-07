@@ -1192,7 +1192,7 @@ def main(argv: list[str] | None = None) -> int:
     summary. Returns a process exit code (0 if every row succeeded, 1 otherwise).
 
     Usage:
-        uv run python examples/great_lakes/batch_run_twl.py <resources.xlsx> <data_dir>
+        uv run python -m great_lakes.batch_run_twl <resources.xlsx> <data_dir>
     """
     import argparse
 
