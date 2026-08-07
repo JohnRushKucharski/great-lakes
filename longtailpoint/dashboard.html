@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Long Tail Point Dashboard</title>
+<script src="manifest.js"></script>
+<style>
+  body { font-family: sans-serif; margin: 1.5rem; }
+  .filters { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; }
+  .filters label { display: flex; flex-direction: column; font-size: 0.85rem; }
+  .panels { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .panel-column { flex: 1; min-width: 0; }
+  .panel { flex: 1; min-width: 0; }
+  .panel img { max-width: 100%; }
+  table { border-collapse: collapse; font-size: 0.8rem; }
+  td, th { border: 1px solid #ccc; padding: 2px 6px; text-align: right; }
+  #compare-toggle-wrap { margin-bottom: 1rem; }
+  .file-path-caption { font-size: 0.75rem; color: #666; margin-top: 0.35rem; word-break: break-all; }
+</style>
+</head>
+<body>
+<h1>Long Tail Point Dashboard</h1>
+
+<div class="filters">
+  <label>Water Level Type
+    <select id="analysis-select"></select>
+  </label>
+  <label>Analysis
+    <select id="metric-select">
+      <option value="primary">Return Interval</option>
+      <option value="equivalent_elevation" class="twl-only">Equivalent Elevation</option>
+      <option value="elevation_delta" class="twl-only">Elevation Delta</option>
+    </select>
+  </label>
+  <label>Form
+    <select id="form-select">
+      <option value="plot">Plot</option>
+      <option value="grid">Grid</option>
+    </select>
+  </label>
+</div>
+
+<div id="compare-toggle-wrap">
+  <label><input type="checkbox" id="compare-toggle"> Compare to a second selection</label>
+</div>
+
+<div class="panels">
+  <div class="panel-column">
+    <div class="filters">
+      <label id="save-point-wrap">Save point
+        <select id="save-point-select"></select>
+      </label>
+      <label>Elevation (NAVD88)
+        <select id="magnitude-select"></select>
+      </label>
+      <label id="runup-wrap">Runup (ft)
+        <select id="runup-select"></select>
+      </label>
+      <label id="basis-wrap">Equivalent-elevation basis
+        <select id="basis-select"></select>
+      </label>
+    </div>
+    <div class="panel" id="panel-a"></div>
+  </div>
+  <div class="panel-column" id="panel-b-column" style="display:none">
+    <div class="filters">
+      <label id="save-point-wrap-b">Save point
+        <select id="save-point-select-b"></select>
+      </label>
+      <label>Elevation (NAVD88)
+        <select id="magnitude-select-b"></select>
+      </label>
+      <label id="runup-wrap-b">Runup (ft)
+        <select id="runup-select-b"></select>
+      </label>
+      <label id="basis-wrap-b">Equivalent-elevation basis
+        <select id="basis-select-b"></select>
+      </label>
+    </div>
+    <div class="panel" id="panel-b"></div>
+  </div>
+</div>
+
+<script>
+const ENTRIES = window.MANIFEST.entries;
+
+const KIND_BY_FORM_METRIC = {
+  "plot,primary": "plot",
+  "plot,equivalent_elevation": "equivalent_elevation_plot",
+  "plot,elevation_delta": "elevation_delta_plot",
+  "grid,primary": "grid",
+  "grid,equivalent_elevation": "equivalent_elevation_grid",
+  "grid,elevation_delta": "elevation_delta_grid",
+};
+
+function uniqueSorted(values) {
+  return Array.from(new Set(values)).sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
+}
+
+function populateSelect(select, values, formatFn) {
+  select.innerHTML = "";
+  values.forEach((v) => {
+    const opt = document.createElement("option");
+    opt.value = String(v);
+    opt.textContent = formatFn ? formatFn(v) : String(v);
+    select.appendChild(opt);
+  });
+}
+
+function currentFilters(suffix) {
+  return {
+    analysis_type: document.getElementById("analysis-select").value,
+    save_point_id: document.getElementById(`save-point-select${suffix}`).value,
+    elevation_ft: document.getElementById(`magnitude-select${suffix}`).value,
+    component_name: document.getElementById(`runup-select${suffix}`).value,
+    equivalent_elevation_basis: document.getElementById(`basis-select${suffix}`).value,
+  };
+}
+
+function entriesForAnalysisType(analysisType) {
+  return ENTRIES.filter((e) => e.analysis_type === analysisType);
+}
+
+// The 4 identifying filters, in dropdown order -- see merge_and_validate for why they
+// always disambiguate to exactly one entry. selectId is a template with a `%s` suffix
+// slot so the same field list drives both the "A" (suffix "") and "B" (suffix "-b")
+// picker sets used in compare mode.
+const FACET_FIELDS = [
+  { field: "save_point_id", selectIdBase: "save-point-select" },
+  { field: "elevation_ft", selectIdBase: "magnitude-select" },
+  { field: "component_name", selectIdBase: "runup-select" },
+  { field: "equivalent_elevation_basis", selectIdBase: "basis-select" },
+];
+
+function currentFieldValues(suffix) {
+  const values = {};
+  FACET_FIELDS.forEach(({ field, selectIdBase }) => {
+    const el = document.getElementById(`${selectIdBase}${suffix}`);
+    // A select with no <option>s yet (e.g. before the first population pass, or right
+    // after switching analysis type -- see refreshFacetSelects) has no real selection
+    // to constrain by -- treat it as "no constraint" (null), not as a literal
+    // empty-string value nothing will ever match.
+    values[field] = el.options.length > 0 ? el.value : null;
+  });
+  return values;
+}
+
+function matchesFilters(entry, values, excludeField) {
+  return FACET_FIELDS.every(({ field }) => {
+    if (field === excludeField) return true;
+    if (values[field] === null) return true;
+    return String(entry[field]) === values[field];
+  });
+}
+
+// Faceted-search style narrowing: each select's options are recomputed from entries
+// matching every *other* currently-selected filter (not its own), so a user can never
+// pick a combination with no matching row. Recomputed on every filter change. suffix
+// is "" for the "A" picker set or "-b" for the "B" (compare) picker set -- each set
+// narrows independently of the other.
+function refreshFacetSelects(analysisType, suffix) {
+  const scoped = entriesForAnalysisType(analysisType);
+  const values = currentFieldValues(suffix);
+  FACET_FIELDS.forEach(({ field, selectIdBase }) => {
+    const selectEl = document.getElementById(`${selectIdBase}${suffix}`);
+    const previous = selectEl.value;
+    const allowed = uniqueSorted(
+      scoped.filter((e) => matchesFilters(e, values, field)).map((e) => e[field])
+    );
+    populateSelect(selectEl, allowed);
+    if (allowed.map(String).includes(previous)) {
+      selectEl.value = previous;
+    }
+  });
+}
+
+// Clears a picker set's <option>s so a subsequent refreshFacetSelects computes fresh,
+// unconstrained options -- used when switching analysis type, since a leftover
+// selected value from the other analysis type (e.g. an avg row's save_point_id of
+// "None") would otherwise wrongly constrain every other facet to zero matches.
+function resetFacetSelects(suffix) {
+  FACET_FIELDS.forEach(({ selectIdBase }) => {
+    document.getElementById(`${selectIdBase}${suffix}`).innerHTML = "";
+  });
+}
+
+function findEntry(filters) {
+  return ENTRIES.find(
+    (e) =>
+      e.analysis_type === filters.analysis_type &&
+      String(e.save_point_id) === filters.save_point_id &&
+      String(e.elevation_ft) === filters.elevation_ft &&
+      e.component_name === filters.component_name &&
+      String(e.equivalent_elevation_basis) === filters.equivalent_elevation_basis
+  );
+}
+
+function renderPanel(panelEl, entry, form, metric) {
+  panelEl.innerHTML = "";
+  if (!entry) {
+    panelEl.textContent = "No matching row.";
+    return;
+  }
+  const kind = KIND_BY_FORM_METRIC[`${form},${metric}`];
+  const file = entry.files[kind];
+  if (!file) {
+    panelEl.appendChild(document.createTextNode("Not available for this row."));
+    return;
+  }
+  if (file.type === "missing") {
+    panelEl.appendChild(document.createTextNode(file.message));
+    return;
+  }
+  if (file.type === "image") {
+    const img = document.createElement("img");
+    img.src = file.path;
+    panelEl.appendChild(img);
+  } else {
+    const table = document.createElement("table");
+    const headRow = document.createElement("tr");
+    headRow.appendChild(document.createElement("th"));
+    file.data.col_labels.forEach((c) => {
+      const th = document.createElement("th");
+      th.textContent = c;
+      headRow.appendChild(th);
+    });
+    table.appendChild(headRow);
+    file.data.row_labels.forEach((r, i) => {
+      const tr = document.createElement("tr");
+      const th = document.createElement("th");
+      th.textContent = r;
+      tr.appendChild(th);
+      file.data.values[i].forEach((v) => {
+        const td = document.createElement("td");
+        td.textContent = v === null ? "" : v.toFixed(2);
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
+    });
+    panelEl.appendChild(table);
+  }
+  const caption = document.createElement("div");
+  caption.className = "file-path-caption";
+  caption.textContent = file.path;
+  panelEl.appendChild(caption);
+}
+
+function render() {
+  const analysisType = document.getElementById("analysis-select").value;
+  const form = document.getElementById("form-select").value;
+  const metric = document.getElementById("metric-select").value;
+  const effectiveMetric = analysisType === "avg" ? "primary" : metric;
+
+  const filtersA = currentFilters("");
+  const entryA = findEntry(filtersA);
+  renderPanel(document.getElementById("panel-a"), entryA, form, effectiveMetric);
+
+  const compare = document.getElementById("compare-toggle").checked;
+  document.getElementById("panel-b-column").style.display = compare ? "" : "none";
+  if (compare) {
+    const filtersB = currentFilters("-b");
+    const entryB = findEntry(filtersB);
+    renderPanel(document.getElementById("panel-b"), entryB, form, effectiveMetric);
+  }
+}
+
+function updateVisibilityForAnalysisType() {
+  const analysisType = document.getElementById("analysis-select").value;
+  const isAvg = analysisType === "avg";
+  ["save-point-wrap", "runup-wrap", "basis-wrap", "save-point-wrap-b", "runup-wrap-b", "basis-wrap-b"].forEach((id) => {
+    document.getElementById(id).style.display = isAvg ? "none" : "";
+  });
+  document.querySelectorAll(".twl-only").forEach((opt) => {
+    opt.disabled = isAvg;
+  });
+  const metricSelect = document.getElementById("metric-select");
+  if (isAvg) {
+    metricSelect.value = "primary";
+  }
+  // Clear both picker sets first: a value selected under the *other* analysis type
+  // (e.g. an avg row's save_point_id of "None") must not leak in as a stale
+  // constraint when recomputing options for the newly-selected analysis type.
+  resetFacetSelects("");
+  resetFacetSelects("-b");
+  refreshFacetSelects(analysisType, "");
+  refreshFacetSelects(analysisType, "-b");
+}
+
+function onAnalysisTypeChange() {
+  updateVisibilityForAnalysisType();
+  render();
+}
+
+function onFacetSelectChange(suffix) {
+  const analysisType = document.getElementById("analysis-select").value;
+  refreshFacetSelects(analysisType, suffix);
+  render();
+}
+
+function onCompareToggleChange() {
+  const analysisType = document.getElementById("analysis-select").value;
+  const compare = document.getElementById("compare-toggle").checked;
+  if (compare) {
+    // The "B" picker set is only populated lazily (on first reveal), so it starts
+    // from the current "B" selections (usually none yet) rather than stale state.
+    refreshFacetSelects(analysisType, "-b");
+  }
+  render();
+}
+
+function init() {
+  populateSelect(document.getElementById("analysis-select"), uniqueSorted(ENTRIES.map((e) => e.analysis_type)));
+  updateVisibilityForAnalysisType();
+  document.getElementById("analysis-select").addEventListener("change", onAnalysisTypeChange);
+  FACET_FIELDS.forEach(({ selectIdBase }) => {
+    document.getElementById(`${selectIdBase}`).addEventListener("change", () => onFacetSelectChange(""));
+    document.getElementById(`${selectIdBase}-b`).addEventListener("change", () => onFacetSelectChange("-b"));
+  });
+  ["form-select", "metric-select"].forEach((id) =>
+    document.getElementById(id).addEventListener("change", render)
+  );
+  document.getElementById("compare-toggle").addEventListener("change", onCompareToggleChange);
+  render();
+}
+
+init();
+</script>
+</body>
+</html>
