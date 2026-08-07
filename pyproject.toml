@@ -44,5 +44,10 @@ line-length = 100
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
 
+[tool.ruff.lint.per-file-ignores]
+# build_dashboard.py embeds long HTML/JS template lines (dashboard.html source) that
+# aren't meaningfully wrappable Python code.
+"src/great_lakes/build_dashboard.py" = ["E501"]
+
 [tool.mypy]
 explicit_package_bases = true
