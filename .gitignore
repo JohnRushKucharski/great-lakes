@@ -26,7 +26,13 @@ longtailpoint/~$*
 # scratch space for ad hoc manual smoke tests, not part of the automated suite
 manual_tests/
 
+# Excel lock/temp files (left behind by opening a workbook, e.g. during manual checks)
+~$*
+
 # OS / editor
 .DS_Store
 Thumbs.db
 .vscode/
+
+# AI tooling
+skills/
