@@ -1,4 +1,6 @@
 """Tests for the Great Lakes common_twl.py shared helpers."""
+import numpy as np
+import pandas as pd
 import pytest
 from matplotlib.colors import Normalize
 
@@ -337,3 +339,79 @@ def test_naming_scheme_readme_text_elevation_runup_savepoint_mentions_pattern():
 def test_naming_scheme_readme_text_unknown_style_raises():
     with pytest.raises(ValueError, match="bogus_style"):
         common_twl.naming_scheme_readme_text("bogus_style")
+
+
+# ---- METERS_TO_FEET --------------------------------------------------------------------
+
+def test_meters_to_feet_matches_plain_si_conversion():
+    # Plain SI meter->feet scale, distinct from m_igld85_to_ft_NAVD88's datum-specific
+    # 1/3.281 factor (see that function's docstring) -- these analysis scripts convert
+    # response-surface data values, not IGLD85/NAVD88 elevations.
+    assert common_twl.METERS_TO_FEET == pytest.approx(1 / 0.3048)
+
+
+# ---- center_save_point_id ---------------------------------------------------------------
+
+def _sheets_with_save_points(rows: list[tuple[int, float, float]]) -> dict[str, pd.DataFrame]:
+    """Build a minimal {sheet_name: DataFrame} with ID/lat/lon columns, one sheet."""
+    df = pd.DataFrame(rows, columns=["ID", "lat", "lon"])
+    return {"baseline-_0_0": df}
+
+
+def test_center_save_point_id_returns_nearest_to_centroid():
+    # Centroid of (44.0, -87.0), (46.0, -85.0), (45.0, -86.0) is (45.0, -86.0) --
+    # save point 3 sits exactly there.
+    sheets = _sheets_with_save_points([
+        (1, 44.0, -87.0),
+        (2, 46.0, -85.0),
+        (3, 45.0, -86.0),
+    ])
+    assert common_twl.center_save_point_id(sheets) == 3
+
+
+def test_center_save_point_id_uses_first_sheet_only():
+    # Every known sheet shares identical lat/lon columns (see docstring) -- using the
+    # first is sufficient and matches the original 3x-duplicated implementations.
+    first = _sheets_with_save_points([(10, 0.0, 0.0), (20, 1.0, 1.0)])["baseline-_0_0"]
+    other = pd.DataFrame([(99, 5.0, 5.0)], columns=["ID", "lat", "lon"])
+    sheets = {"baseline-_0_0": first, "filled-_5_7": other}
+    assert common_twl.center_save_point_id(sheets) == 10
+
+
+# ---- build_scenario_ari_grid ------------------------------------------------------------
+
+def _ari_sheets() -> dict[str, pd.DataFrame]:
+    # 2 sheets, 2 save points each, one ARI column "1".
+    baseline = pd.DataFrame({"ID": [1, 2], "lat": [44.0, 45.0], "lon": [-87.0, -86.0],
+                              1: [100.0, 110.0]})
+    other = pd.DataFrame({"ID": [1, 2], "lat": [44.0, 45.0], "lon": [-87.0, -86.0],
+                           1: [101.0, 111.0]})
+    return {"baseline-_0_0": baseline, "nearterm-_5_1.5": other}
+
+
+def test_build_scenario_ari_grid_shapes_by_coords_and_converts_to_feet():
+    coords = {"_0_0": (0.0, 0.0), "_5_1.5": (5.0, 1.5)}
+    xs, ys, zs = common_twl.build_scenario_ari_grid(coords, _ari_sheets(), save_point_id=1, ari=1)
+    assert list(xs) == [0.0, 5.0]
+    assert list(ys) == [0.0, 1.5]
+    assert zs.shape == (2, 2)
+    assert zs[0, 0] == pytest.approx(100.0 * common_twl.METERS_TO_FEET)
+    assert zs[1, 1] == pytest.approx(101.0 * common_twl.METERS_TO_FEET)
+
+
+def test_build_scenario_ari_grid_leaves_nan_for_coords_with_no_sheet():
+    # coords includes a 3rd scenario with no matching sheet -- must stay NaN, not KeyError.
+    coords = {"_0_0": (0.0, 0.0), "_5_1.5": (5.0, 1.5), "_10_5": (10.0, 5.0)}
+    xs, ys, zs = common_twl.build_scenario_ari_grid(coords, _ari_sheets(), save_point_id=1, ari=1)
+    assert np.isnan(zs[ys.tolist().index(5.0), xs.tolist().index(10.0)])
+
+
+def test_build_scenario_ari_grid_ignores_sheets_not_in_coords():
+    # A sheet whose suffix isn't in coords (e.g. known-only coords, full-sheet dict)
+    # must not raise and must not appear in the grid.
+    coords = {"_0_0": (0.0, 0.0)}
+    xs, ys, zs = common_twl.build_scenario_ari_grid(coords, _ari_sheets(), save_point_id=1, ari=1)
+    assert xs.shape == (1,)
+    assert ys.shape == (1,)
+    assert zs.shape == (1, 1)
+    assert zs[0, 0] == pytest.approx(100.0 * common_twl.METERS_TO_FEET)

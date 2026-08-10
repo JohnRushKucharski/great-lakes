@@ -138,6 +138,19 @@ known ones.
 _Avoid_: Base scenario, reference scenario (reference scenario collides with the
 `reference_timeseries` vocabulary used elsewhere in hydropattern core).
 
+**Run readme**:
+The `README.txt` a batch run (`batch_run_avg.py` or `batch_run_twl.py`) writes at the
+root of the config's `output_directory` after every invocation of `run_batch`, whether
+or not any row succeeded. Documents: the resources/config workbook and data directory
+used as inputs, the run's timestamp, a per-row succeeded/failed summary (with failure
+messages), the output filename-naming scheme in effect, the list of files this run
+wrote (from each succeeded row's output paths), and any pre-existing files found under
+`output_directory` that don't match a name this run recognizes (flagged as not created
+by this run, distinct from files skipped because `overwrite=False`, which are already
+covered by the per-row failure message).
+_Avoid_: Naming readme, manifest (manifest collides with `build_dashboard.py`'s
+`manifest.js`, which is a different, dashboard-specific artifact).
+
 **Average lake level (AVG(l,s))**:
 The mean of the full synthetic scenario record (all ~12,360 monthly rows spanning
 1970-2999) in `data/clean/<avg-lake>_avg.csv` for lake `l`'s scenario `s` column — a

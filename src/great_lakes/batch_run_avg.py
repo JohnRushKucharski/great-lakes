@@ -11,12 +11,25 @@ structure" vocabulary used throughout this file.
 
 from dataclasses import dataclass
 from datetime import date
-from math import isnan
 from pathlib import Path
 from typing import Any, Callable
 
 import pandas as pd
 from hydropattern.cli import run as _hydropattern_cli_run  # type: ignore[import-untyped]
+
+from great_lakes import batch_runner
+from great_lakes.batch_runner import (  # noqa: F401 -- re-exported for backward compat
+    BatchSummary,
+    RowResult,
+    RowValidationError,
+    SheetValidationError,
+    _default_progress,
+    _is_blank,
+    _parse_color_map_ticks,
+    _require_str,
+    _to_bool,
+    format_summary,
+)
 
 # Valid comparison symbols, mirrored from hydropattern.parsers._VALID_SYMBOLS. Kept as
 # a local copy (rather than importing the private name) since this is example tooling,
@@ -37,18 +50,6 @@ LAKE_CSV_NAMES = {
 # effects are irrelevant here since hydropattern's own day-of-water-year conversion
 # already normalizes them away (see timeseries.py:to_day_of_water_year).
 _REFERENCE_YEAR = 2001
-
-
-class RowValidationError(ValueError):
-    """Raised when a resources-sheet row fails validation.
-
-    Carries all validation problems found for the row (not just the first), so
-    callers can report a complete picture per row.
-    """
-
-    def __init__(self, errors: list[str]):
-        self.errors = errors
-        super().__init__("; ".join(errors))
 
 
 @dataclass(frozen=True)
@@ -95,42 +96,6 @@ def month_to_doy(month: int) -> int:
 def resolve_lake_csv_path(lake: str, data_dir: Path) -> Path:
     """Resolve a lake code to its avg lake-level CSV path under data_dir."""
     return data_dir / LAKE_CSV_NAMES[lake]
-
-
-def _is_blank(value: Any) -> bool:
-    """True for None, NaN, empty string, or whitespace-only string (a blank cell)."""
-    if value is None:
-        return True
-    if isinstance(value, float) and isnan(value):
-        return True
-    return isinstance(value, str) and value.strip() == ""
-
-
-def _to_bool(value: Any, default: bool) -> bool:
-    """Coerce a spreadsheet cell to bool; blank -> default.
-
-    Excel string cells like "false" must be parsed by value, not by Python
-    truthiness -- bool("false") is True, which would silently invert any
-    string-boolean config cell (e.g. overwrite="false" -> True).
-    """
-    if _is_blank(value):
-        return default
-    if isinstance(value, str):
-        normalized = value.strip().lower()
-        if normalized in ("true", "1", "yes"):
-            return True
-        if normalized in ("false", "0", "no"):
-            return False
-        raise ValueError(f"Cannot parse {value!r} as a boolean.")
-    return bool(value)
-
-
-def _require_str(row: dict[str, Any], field: str, errors: list[str]) -> str:
-    value = row.get(field)
-    if _is_blank(value):
-        errors.append(f"{field!r} is required but missing or blank.")
-        return ""
-    return str(value).strip()
 
 
 def _validate_lake(lake: str, errors: list[str]) -> None:
@@ -410,19 +375,6 @@ def parse_resource_row(row: dict[str, Any]) -> ResourceSpec:
     )
 
 
-class SheetValidationError(ValueError):
-    """Raised when a template sheet (config or resources) fails header/structural
-    validation -- i.e. problems with the sheet's shape itself, not with one row's
-    data (see RowValidationError for that).
-
-    Carries all validation problems found (not just the first).
-    """
-
-    def __init__(self, errors: list[str]):
-        self.errors = errors
-        super().__init__("; ".join(errors))
-
-
 # ---- resources sheet -----------------------------------------------------------------
 
 _RESOURCE_REQUIRED_COLUMNS = frozenset({"resource_name", "component_name", "lake"})
@@ -483,17 +435,7 @@ _CONFIG_KNOWN_KEYS = _CONFIG_BOOL_KEYS | _CONFIG_INT_KEYS | _CONFIG_STR_KEYS | {
 _VALID_METRIC_MODES = frozenset({"portion", "percentage", "return_period"})
 
 
-def _parse_color_map_ticks(raw: Any, errors: list[str]) -> tuple[float, ...] | None:
-    if _is_blank(raw):
-        return None
-    try:
-        return tuple(float(v.strip()) for v in str(raw).split(","))
-    except ValueError:
-        errors.append(
-            f"Config sheet option 'plot_color_map_ticks' {raw!r} must be a "
-            "comma-separated list of numbers."
-        )
-        return None
+
 
 
 def read_config_sheet(path: Path, sheet_name: str = "config") -> BatchConfig:
@@ -623,56 +565,74 @@ def _expected_output_filenames(resource: ResourceSpec, config: BatchConfig) -> l
     return filenames
 
 
-@dataclass(frozen=True)
-class RowResult:
-    """Outcome of processing one resources-sheet row."""
+class _AvgRowProcessor:
+    """batch_runner.RowProcessor adapter wrapping this module's existing per-row
+    functions -- the only avg-specific piece of run_batch's Strategy pattern. See
+    batch_runner.py's module docstring for why this exists."""
 
-    row_index: int  # 1-based position in the resources sheet's data rows
-    resource_name: str | None
-    component_name: str | None
-    status: str  # "succeeded" | "failed"
-    message: str | None = None
+    def __init__(self, run_toml: Callable[[Path], None]):
+        self._run_toml = run_toml
 
+    def read_rows(self, resources_path: Path) -> list[dict[str, Any]]:
+        return read_resources_sheet(resources_path)
 
-@dataclass(frozen=True)
-class BatchSummary:
-    """End-of-run report for a full run_batch call."""
+    def parse(self, raw_row: dict[str, Any]) -> ResourceSpec:
+        return parse_resource_row(raw_row)
 
-    results: list[RowResult]
+    def target(self, resource: ResourceSpec, config: BatchConfig) -> tuple[Path, str]:
+        return (resolve_output_folder(resource, config), resource.qualified_name)
 
-    @property
-    def succeeded(self) -> list[RowResult]:
-        return [r for r in self.results if r.status == "succeeded"]
-
-    @property
-    def failed(self) -> list[RowResult]:
-        return [r for r in self.results if r.status == "failed"]
-
-
-def format_summary(summary: BatchSummary) -> str:
-    """Human-readable end-of-run report: counts + one line per failed row."""
-    lines = [
-        f"{len(summary.succeeded)} succeeded, {len(summary.failed)} failed "
-        f"out of {len(summary.results)} row(s)."
-    ]
-    for result in summary.failed:
-        lines.append(
-            f"  Row {result.row_index} ({result.resource_name!r}, "
-            f"{result.component_name!r}): {result.message}"
+    def duplicate_message(self, output_folder: Path, resource: ResourceSpec) -> str:
+        return (
+            f"Duplicate output folder+component within this batch run: "
+            f"{output_folder / f'{resource.qualified_name}.toml'}"
         )
-    return "\n".join(lines)
+
+    def check_overwrite(self, resource: ResourceSpec, config: BatchConfig) -> str | None:
+        output_folder = resolve_output_folder(resource, config)
+        if config.overwrite or not output_folder.exists():
+            return None
+        existing = [
+            name for name in _expected_output_filenames(resource, config)
+            if (output_folder / name).exists()
+        ]
+        if not existing:
+            return None
+        return (
+            f"Output already exists and overwrite=False: {output_folder} "
+            f"(found {', '.join(existing)})."
+        )
+
+    def build(
+        self, resource: ResourceSpec, data_dir: Path, config: BatchConfig
+    ) -> tuple[Path, ...]:
+        output_folder = resolve_output_folder(resource, config)
+        timeseries_path = resolve_lake_csv_path(resource.lake, data_dir)
+        output_folder.mkdir(parents=True, exist_ok=True)
+        toml_text = build_toml_text(resource, timeseries_path, output_folder, config)
+        toml_path = output_folder / f"{resource.qualified_name}.toml"
+        toml_path.write_text(toml_text, encoding="utf-8")
+        self._run_toml(toml_path)
+        return tuple(
+            output_folder / name for name in _expected_output_filenames(resource, config)
+        )
 
 
-def _default_progress(row_index: int, total_rows: int, resource_name: str | None,
-                      component_name: str | None, status: str) -> None:
-    """Prints one line per row as it starts and finishes.
+# ---- naming-scheme / run-readme ----------------------------------------------------
 
-    Each row invokes a full hydropattern analysis (parsing, evaluation, optional
-    plotting), which can take noticeable time -- without this, a batch run goes
-    silent until the very end with no indication it's still working.
-    """
-    label = f"{resource_name or '?'}/{component_name or '?'}"
-    print(f"[{row_index}/{total_rows}] {label}: {status}", flush=True)
+WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _naming_scheme_text() -> str:
+    """Generic naming-scheme blurb for this script's one, fixed output naming
+    convention (resource_name_component_name -- no per-run configurable
+    filename_style, unlike batch_run_twl.py's longtailpoint-specific styles)."""
+    header = "Output filename naming scheme for this directory\n" + "=" * 50 + "\n\n"
+    return header + (
+        "Output filename pattern: <resource_name>_<component_name>...\n\n"
+        "  resource_name/component_name - from this row's resources-sheet columns "
+        "(see CONTEXT.md's \"Resource\"/\"Resources sheet\" entries).\n"
+    )
 
 
 def run_batch(
@@ -693,68 +653,22 @@ def run_batch(
     callers redirect/silence the real-time per-row status output); it's called once
     with status="running" when a row starts, and again with the final status
     ("succeeded"/"failed") when it finishes.
+
+    Always writes a run readme (see CONTEXT.md's "Run readme" entry) to
+    config.output_directory, even if every row fails or the sheet has zero rows --
+    it documents this run's inputs, failures, and timestamp regardless of outcome.
+
+    Thin wrapper over batch_runner.run_batch's shared loop; see _AvgRowProcessor for
+    the avg-specific per-row behavior.
     """
-    raw_rows = read_resources_sheet(resources_path)
-    total_rows = len(raw_rows)
-    results: list[RowResult] = []
-    seen_targets: set[tuple[Path, str]] = set()
-
-    def _finish(row_index: int, resource_name: str | None, component_name: str | None,
-               status: str, message: str | None = None) -> None:
-        results.append(RowResult(row_index, resource_name, component_name, status, message))
-        progress(row_index, total_rows, resource_name, component_name, status)
-
-    for row_index, raw_row in enumerate(raw_rows, start=1):
-        resource_name = raw_row.get("resource_name")
-        component_name = raw_row.get("component_name")
-        progress(row_index, total_rows, resource_name, component_name, "running")
-        try:
-            resource = parse_resource_row(raw_row)
-        except RowValidationError as exc:
-            _finish(row_index, resource_name, component_name, "failed", str(exc))
-            continue
-
-        output_folder = resolve_output_folder(resource, config)
-        target = (output_folder, resource.qualified_name)
-        if target in seen_targets:
-            _finish(
-                row_index, resource.resource_name, resource.component_name, "failed",
-                f"Duplicate output folder+component within this batch run: "
-                f"{output_folder / f'{resource.qualified_name}.toml'}",
-            )
-            continue
-        seen_targets.add(target)
-
-        if not config.overwrite and output_folder.exists():
-            existing = [
-                name for name in _expected_output_filenames(resource, config)
-                if (output_folder / name).exists()
-            ]
-            if existing:
-                _finish(
-                    row_index, resource.resource_name, resource.component_name, "failed",
-                    f"Output already exists and overwrite=False: {output_folder} "
-                    f"(found {', '.join(existing)}).",
-                )
-                continue
-
-        try:
-            timeseries_path = resolve_lake_csv_path(resource.lake, data_dir)
-            output_folder.mkdir(parents=True, exist_ok=True)
-            toml_text = build_toml_text(resource, timeseries_path, output_folder, config)
-            toml_path = output_folder / f"{resource.qualified_name}.toml"
-            toml_path.write_text(toml_text, encoding="utf-8")
-            run_toml(toml_path)
-        except Exception as exc:  # pylint: disable=broad-exception-caught
-            # continue-on-failure: any error in this row (bad data, a missing file, a
-            # hydropattern validation error, ...) is reported and the batch moves on.
-            _finish(row_index, resource.resource_name, resource.component_name,
-                   "failed", str(exc))
-            continue
-
-        _finish(row_index, resource.resource_name, resource.component_name, "succeeded")
-
-    return BatchSummary(results=results)
+    summary = batch_runner.run_batch(
+        resources_path, data_dir, config, _AvgRowProcessor(run_toml), progress
+    )
+    batch_runner.write_run_readme(
+        resources_path, data_dir, Path(config.output_directory), summary,
+        naming_scheme_text=_naming_scheme_text(), workspace_root=WORKSPACE_ROOT,
+    )
+    return summary
 
 
 # ---- CLI entry point --------------------------------------------------------------

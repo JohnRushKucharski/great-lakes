@@ -11,6 +11,7 @@ from functools import lru_cache
 from math import ceil
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 from climate_canvas.data_utilities import contour_levels  # type: ignore[import-untyped]
 from matplotlib.colors import Normalize
@@ -50,6 +51,14 @@ LAKE_AVG_FILENAMES = {
 
 # Sheet columns that are not ARI (Average Return Interval) values.
 NON_ARI_COLUMNS = frozenset({"ID", "lat", "lon"})
+
+# Plain SI meters->feet scale, used by the great_lakes.analysis response-surface
+# scripts to convert raw twl/avg-level *data values* (not elevations already tied to
+# a specific vertical datum) to feet. Deliberately distinct from
+# m_igld85_to_ft_NAVD88's 1/3.281 factor below, which matches how longtailpoint's own
+# resources sheets were populated -- these two conversions serve different data and
+# must not be confused/merged.
+METERS_TO_FEET = 1.0 / 0.3048
 
 # Meters per foot, and the flat IGLD85->NAVD88 offset (in feet) used throughout the
 # Great Lakes example data (see longtailpoint/longtail_waterlevel
@@ -386,6 +395,61 @@ def parse_scenario_sheet_name(sheet_name: str) -> str | None:
     if not label or not suffix:
         return None
     return suffix
+
+
+def center_save_point_id(sheets: dict[str, pd.DataFrame]) -> int:
+    """Return the ID of the save point nearest a twl workbook's lat/lon centroid.
+
+    Uses the first sheet's lat/lon columns -- identical across every known sheet in
+    a `<lake>_twl.xlsx` workbook, so any one of them would do. Shared by
+    great_lakes.analysis's twl scripts (plot_center_save_points.py,
+    plot_filled_and_extrapolated.py, compare_filled_vs_climate_canvas.py), which
+    each pick this same centroid save point per lake before plotting/comparing its
+    water-level-vs-ARI curve.
+    """
+    baseline = next(iter(sheets.values()))
+    centroid_lat, centroid_lon = baseline["lat"].mean(), baseline["lon"].mean()
+    lat_diff, lon_diff = baseline["lat"] - centroid_lat, baseline["lon"] - centroid_lon
+    dist = (lat_diff**2 + lon_diff**2) ** 0.5
+    return int(baseline.loc[dist.idxmin(), "ID"])  # type: ignore[arg-type]
+
+
+def build_scenario_ari_grid(
+    coords: dict[str, tuple[float, float]],
+    sheets: dict[str, pd.DataFrame],
+    save_point_id: int,
+    ari: float,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Build the (precip x, temp y, TWL-in-feet z) response-surface grid for one save
+    point/ARI column, over exactly the scenario coordinate space given by `coords`.
+
+    `coords` controls which scenarios the grid spans -- pass the 5-known-scenario
+    coordinates (known_scenario_coords) for a known-only grid (blank elsewhere), or
+    the full 17-scenario coordinates (parse_scenario_name over
+    fillin_twl.ALL_SCENARIO_SUFFIXES) for a full grid (blank only where `sheets` is
+    missing a scenario, e.g. data/filled/'s 5 out-of-hull gaps). Any sheet in
+    `sheets` whose parsed suffix isn't a key of `coords` is ignored -- this lets
+    callers pass the same full `sheets` dict regardless of which coordinate space
+    they want plotted.
+
+    z is shaped (len(temps), len(precips)), NaN for any coordinate with no matching
+    sheet or no row for `save_point_id`.
+    """
+    precips = sorted({p for p, _ in coords.values()})
+    temps = sorted({t for _, t in coords.values()})
+
+    z = np.full((len(temps), len(precips)), np.nan)
+    for sheet_name, df in sheets.items():
+        suffix = parse_scenario_sheet_name(sheet_name)
+        if suffix not in coords:
+            continue
+        precip, temp = coords[suffix]
+        row = df.loc[df["ID"] == save_point_id, ari]
+        if row.empty:
+            continue
+        z[temps.index(temp), precips.index(precip)] = row.iloc[0] * METERS_TO_FEET
+
+    return np.array(precips, dtype=float), np.array(temps, dtype=float), z
 
 
 @lru_cache(maxsize=None)

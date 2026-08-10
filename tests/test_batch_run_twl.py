@@ -1519,6 +1519,9 @@ def test_run_batch_writes_naming_readme_for_longtailpoint_filename_style(tmp_pat
 
 
 def test_run_batch_no_naming_readme_for_qualified_name_filename_style(tmp_path):
+    """qualified_name (the default) has no dedicated longtailpoint naming write-up, but
+    the run readme itself is still always written (see CONTEXT.md's "Run readme"
+    entry) -- it falls back to a generic resource_name/component_name description."""
     resources_path = make_workbook(
         tmp_path,
         resources_header=["resource_name", "lake", "magnitude_operator", "magnitude_value",
@@ -1534,7 +1537,56 @@ def test_run_batch_no_naming_readme_for_qualified_name_filename_style(tmp_path):
         build_outputs=lambda r, d, c: (Path("g.csv"), Path("p.png")),
         progress=lambda *a: None,
     )
-    assert not (out_dir / "README.txt").exists()
+    readme_path = out_dir / "README.txt"
+    assert readme_path.exists()
+    text = readme_path.read_text()
+    assert "<resource_name>_<component_name>" in text
+
+
+def test_run_batch_writes_run_readme_even_when_all_rows_fail(tmp_path):
+    resources_path = make_workbook(
+        tmp_path,
+        resources_header=["resource_name", "lake", "magnitude_operator", "magnitude_value",
+                          "save_point_id"],
+        resources_rows=[("", "superior", ">", 110.0, 1)],  # missing resource_name
+    )
+    out_dir = tmp_path / "out"
+    config = twl_batch_run.BatchConfig(output_directory=str(out_dir))
+
+    summary = twl_batch_run.run_batch(
+        resources_path, tmp_path, config,
+        build_outputs=lambda r, d, c: (Path("g.csv"), Path("p.png")),
+        progress=lambda *a: None,
+    )
+
+    assert len(summary.failed) == 1
+    text = (out_dir / "README.txt").read_text()
+    assert "1 failed" in text
+
+
+def test_run_batch_run_readme_flags_stale_pre_existing_files(tmp_path):
+    resources_path = make_workbook(
+        tmp_path,
+        resources_header=["resource_name", "lake", "magnitude_operator", "magnitude_value",
+                          "save_point_id"],
+        resources_rows=[
+            ("duluth_harbor", "superior", ">", 110.0, 1),
+        ],
+    )
+    out_dir = tmp_path / "out"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    stale_file = out_dir / "leftover_from_old_run.csv"
+    stale_file.write_text("stale")
+    config = twl_batch_run.BatchConfig(output_directory=str(out_dir))
+
+    twl_batch_run.run_batch(
+        resources_path, tmp_path, config,
+        build_outputs=lambda r, d, c: (Path("g.csv"), Path("p.png")),
+        progress=lambda *a: None,
+    )
+
+    text = (out_dir / "README.txt").read_text()
+    assert "leftover_from_old_run.csv" in text
 
 
 def test_format_summary_includes_failure_details(tmp_path):

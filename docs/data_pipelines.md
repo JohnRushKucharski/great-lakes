@@ -1,4 +1,173 @@
-# Great Lakes data pipeline audit
+# Great Lakes data pipelines: reproducibility guide
+
+This is the canonical map for reproducing any Great Lakes output from raw data. If
+you're trying to answer "what do I run, with what inputs, in what order, to get X" —
+start here. (For full per-option detail on any one tool, see `README.md`; this doc's
+job is the end-to-end path and how the stages connect.)
+
+## Pipeline diagram
+
+```text
++------------------------------+
+| data/raw/*.xlsx, *.xlsm      |
+| (committed source workbooks) |
++------------------------------+
+                |
+                | STEP 1: clean_lake_levels_all_scenarios.py
+                |         clean_still_water_summary.py
+                v
++----------------------------------+
+| data/clean/*_avg.csv, *_twl.xlsx |
+| (gitignored, regenerable)        |
++----------------------------------+
+                  |
+                  | STEP 2: fillin_twl.py
+                  |         (Delaunay fill, then optional row-shift extrapolation)
+                  v
++-------------------------------------------------+
+| data/filled/*_twl.xlsx           (12 scenarios) |
+| data/extrapolated/*_twl.xlsx     (17 scenarios) |
++-------------------------------------------------+
+                         |
+                         | STEP 3: fill in a copy of templates/template_*.xlsx by hand
+                         |         -> resources+config .xlsx (one row per component)
+                         v
++------------------------+
+| resources+config .xlsx |
++------------------------+
+             |
+             | STEP 4: batch_run_avg.py  /  batch_run_twl.py
+             v
++------------------------------------------------+
+| output_directory/                              |
+|   <resource>_<component>.toml     (avg only)   |
+|   grid CSVs, plot PNGs                         |
+|   summary/output .xlsx            (avg only)   |
+|   README.txt                      (run readme) |
++------------------------------------------------+
+                         |
+                         | STEP 6: build_dashboard.py
+                         |         (reads one or more already-run resources+config workbooks
+                         |         and their output_directory contents)
+                         v
++------------------------------------------------------+
+| dashboard.html + manifest.js   (e.g. longtailpoint/) |
++------------------------------------------------------+
+```
+
+**STEP 5 (optional, not shown above — a side branch, not part of the main trunk):**
+`analyze_known_scenarios.py` reads `data/extrapolated/*_twl.xlsx` directly (step 2's
+output) and writes `data/analysis/known_scenario_directionality.csv` + a summary
+`.xlsx`. It doesn't feed into steps 3/4/6 and doesn't require them to have run.
+
+All module names above are invoked as `uv run python -m great_lakes.<name>`. Numbers
+match the step-by-step walkthrough below.
+
+Numbers match the step-by-step walkthrough below. The "5." branch (known-scenario
+analysis) is optional and independent of steps 3/4/6 — it only needs step 2's
+extrapolated output.
+
+Every arrow above is a script (or CLI module) you invoke directly — nothing runs
+automatically as a side effect of another stage. Skipping a stage (e.g. re-using
+already-cleaned `data/clean/` files) is fine; each stage only needs its documented
+inputs to exist, regardless of how they were produced.
+
+## Step-by-step: raw data to outputs
+
+### 0. Install
+
+```powershell
+uv sync --group test --group dev
+```
+
+### 1. Clean the raw workbooks (only if `data/raw/*` changed)
+
+```powershell
+uv run python -m great_lakes.clean_lake_levels_all_scenarios
+uv run python -m great_lakes.clean_still_water_summary
+```
+Inputs: `data\raw\lake_levels_all_scenarios_9jul2026.xlsx`,
+`data\raw\still_water_summary__22may2026.xlsm` (committed).
+Outputs: `data\clean\{superior,michiganhuron,stclair,erie,ontario}_avg.csv`,
+`data\clean\{superior,michigan,huron,ontario}_twl.xlsx` (gitignored, regenerable —
+commit only if you intend them as new ground truth).
+
+### 2. Fill in the missing TWL scenarios
+
+```powershell
+uv run python -m great_lakes.fillin_twl data\clean
+```
+Inputs: `data\clean\*_twl.xlsx` + `data\clean\*_avg.csv` (step 1's outputs).
+Output (default, `--extrapolate`): `data\extrapolated\*_twl.xlsx` (17 scenarios).
+With `--no-extrapolate`: `data\filled\*_twl.xlsx` (12 scenarios) instead.
+See `README.md`'s "Batch tool 3: fillin_twl.py" section for the interpolation/
+extrapolation math and all flags.
+
+### 3. Fill in a resources+config workbook
+
+```powershell
+Copy-Item templates\template_avg.xlsx my_run.xlsx   # or template_twl.xlsx
+```
+This is the one **manual, human-authored input** in the whole pipeline — one row per
+hydropattern component/analysis you want, plus a `config` sheet of shared options
+(`output_directory`, `overwrite`, plot settings, etc.). See `README.md`'s "resources
+sheet" / "config sheet" tables for every column. Regenerate the template with
+`uv run python -m great_lakes.build_avg_template` / `build_twl_template` if the
+script's recognized columns ever change.
+
+### 4. Run the batch analysis
+
+```powershell
+uv run python -m great_lakes.batch_run_avg my_run.xlsx data\clean
+uv run python -m great_lakes.batch_run_twl my_twl_run.xlsx data\clean
+```
+(`batch_run_twl.py` typically points at `data\extrapolated` or `data\filled` instead of
+`data\clean`, depending on which scenario coverage the analysis needs.)
+
+Inputs: the workbook from step 3, plus the matching clean/filled/extrapolated data
+directory from step 1/2.
+Outputs, written to the workbook's `output_directory`: per-row `.toml` + grid CSV +
+plot PNG (+ summary/output `.xlsx` for avg), and a `README.txt` **run readme** — see
+CONTEXT.md's "Run readme" entry — documenting exactly what ran, with what inputs, what
+succeeded/failed, every file the run wrote, and any pre-existing files in that
+directory tree the run doesn't recognize as its own (a stale-output flag). Read the run
+readme first when checking whether an output tree reflects a specific run.
+
+### 5. (Optional) known-scenario directionality analysis
+
+```powershell
+uv run python -m great_lakes.analyze_known_scenarios
+```
+Input: `data\extrapolated\*_twl.xlsx` (step 2's output). Output:
+`data\analysis\known_scenario_directionality.csv` + summary `.xlsx`.
+
+### 6. Build the results dashboard
+
+```powershell
+uv run python -m great_lakes.build_dashboard --twl-workbooks my_twl_run.xlsx --avg-workbooks my_run.xlsx --output-dir longtailpoint
+```
+Inputs: one or more **already-run** (step 4 complete) resources+config workbooks — the
+tool reads each workbook's own `output_directory` for the grids/plots it produced.
+Outputs: `dashboard.html` + `manifest.js` in `--output-dir`.
+
+## Reproducing a specific output
+
+Given any output file, walk the diagram backwards: a grid CSV/plot PNG's
+`output_directory` has a run readme naming the resources+config workbook and data
+directory that produced it (step 3/4's inputs); that workbook was filled in from a
+template built by step 3's template-builder from whichever `batch_run_*.py` version
+was current; that data directory came from step 1/2 acting on the committed
+`data/raw/` workbooks. Nothing in this chain depends on machine-specific state —
+every stage's output is fully determined by its documented inputs.
+
+---
+
+## Appendix: historical audit log (dated)
+
+The remainder of this document is the original point-in-time pipeline audit (dated
+2026-07-31) plus the dated entries recording changes made since. It's preserved as a
+historical record, not re-written for currency — see the sections above for the
+current, living reproduction path.
 
 Audit date: 2026-07-31
 
@@ -417,3 +586,113 @@ Applied after the initial audit above, per explicit operator instruction:
 
 Issue 2 (stale `longtailpoint\batch_twl.xlsx`) and PNG/image-regression testing remain open items for a future pass.
 
+## 13. Post-audit refactor: shared batch_runner.py
+
+A later thermo-nuclear code-quality review found that `batch_run_avg.py` and
+`batch_run_twl.py` had re-diverged into duplicating roughly a dozen identical helpers
+(`_is_blank`, `_to_bool`, `_require_str`, `RowValidationError`, `SheetValidationError`,
+`RowResult`, `BatchSummary`, `format_summary`, `_default_progress`,
+`_parse_color_map_ticks`, and the `run_batch` loop shape) -- the exact kind of
+duplication that let the `_to_bool` bug documented in section 12 exist twice and get
+fixed twice, independently. That duplication has since been extracted into
+`src\great_lakes\batch_runner.py`: a generic `run_batch(...)` loop plus a
+`RowProcessor` protocol (Strategy pattern), with each script now supplying only a
+thin job-specific adapter (`_AvgRowProcessor` / `_TwlRowProcessor`). This was a
+behavior-preserving refactor (verified via the full existing test suite plus new
+`tests\test_batch_runner.py` coverage of the shared loop) -- no CLI entry point,
+`.toml`/output file naming, or run behavior changed.
+
+## 14. Run readme feature
+
+Both `batch_run_avg.py` and `batch_run_twl.py` now call the shared
+`batch_runner.write_run_readme(...)` at the end of every `run_batch()` call, writing
+`README.txt` to `output_directory` unconditionally -- even if every row fails or the
+resources sheet has zero rows. See CONTEXT.md's "Run readme" glossary entry for the
+canonical definition. Contents: a timestamp, the inputs used (resources workbook path,
+data directory), the succeeded/failed summary (reusing `format_summary`), a
+naming-scheme explanation for the run's output-filename convention, every file this run
+wrote (from each row's `RowResult.output_paths`), and a recursive scan of
+`output_directory` for pre-existing files this run doesn't recognize as its own --
+flagged as likely-stale leftovers from a previous run, to help operators keep an output
+tree honest. `batch_run_twl.py`'s old `_write_naming_readmes()` (which only wrote a
+readme for certain `filename_style` values and only when at least one row succeeded)
+was replaced by this unconditional, richer readme; `batch_run_avg.py` gained a run
+readme for the first time (it previously wrote none). This is a deliberate, tested
+behavior expansion, not a silent change -- see `tests\test_batch_runner.py` and the
+`run_batch` tests in `tests\test_batch_run_avg.py` / `tests\test_batch_run_twl.py`.
+## 15. Relocated pipeline scripts into src/great_lakes/
+
+Sections 1, 4, and 12 above (dated audit record) describe `data\raw\clean_lake_levels_all_scenarios.py`,
+`data\raw\clean_still_water_summary.py`, `templates\build_avg_template.py`, and
+`templates\build_twl_template.py` living outside `src\great_lakes\`. A later review
+found this let them escape CI's `mypy -p great_lakes` scope (ruff still covered them,
+since `ruff check .` scans the whole repo) and forced their tests to load them via
+`importlib.util.spec_from_file_location` instead of a normal import. All four are now
+in `src\great_lakes\` (same module names, run as `uv run python -m
+great_lakes.<module_name>`), fully mypy-checked, and imported normally in
+`tests\test_clean_raw_scripts.py` / `tests\test_template_builders.py`. Only the data
+files themselves (`data\raw\*.xlsx`/`*.xlsm`, `templates\*.xlsx`) stay in their
+original directories -- those are data/artifacts, not code. Behavior-preserving move:
+each script's `main()` was updated to resolve `data\raw\` / `data\clean\` /
+`templates\` via a `WORKSPACE_ROOT = Path(__file__).resolve().parents[2]` constant
+(mirroring the pattern already used in `batch_run_twl.py`) instead of a path relative
+to the script's own (now different) directory; no output filenames, sheet names, or
+transform logic changed.
+
+While mapping the reproduction path for section 16, the same class of bug was found
+already latent in `analyze_known_scenarios.py` (migrated into `src\great_lakes\`
+earlier, per its own git history): its default `DATA_DIR`/`OUTPUT_DIR` were still
+`Path(__file__).parent / "data" / ...`, resolving to `src\great_lakes\data\...` instead
+of the workspace `data\...`. Fixed the same way (`WORKSPACE_ROOT`-anchored), with a
+regression test (`test_default_data_dir_and_output_dir_resolve_to_workspace_data`) in
+`tests\test_analyze_known_scenarios.py`.
+
+## 16. Integrated the legacy `data/analysis/` scripts into `src/great_lakes/analysis/`
+
+`data/analysis/avg/plot_avg_levels.py` and `data/analysis/twl/{plot_center_save_points.py,
+plot_filled_and_extrapolated.py, compare_filled_vs_climate_canvas.py, ari_constants.py}`
+were leftover write-up/plotting scripts from before this repo was split out of
+`hydropattern` -- broken by that move (`sys.path` hacks pointing at paths that no
+longer exist) and never re-integrated. They're now real modules:
+
+| old (`data/analysis/...`, deleted) | new |
+|---|---|
+| `avg/plot_avg_levels.py` | `great_lakes.analysis.avg.plot_levels` |
+| `twl/plot_center_save_points.py` | `great_lakes.analysis.twl.plot_known_scenarios` |
+| `twl/plot_filled_and_extrapolated.py` | `great_lakes.analysis.twl.plot_filled_and_extrapolated` |
+| `twl/compare_filled_vs_climate_canvas.py` | `great_lakes.analysis.twl.compare_filled_vs_climate_canvas` |
+| `twl/ari_constants.py` | `great_lakes.ari_constants` |
+| `avg/declustered/METHOD.md` | `docs/avg_level_ari_poisson_method.md` |
+| `twl/FILLED_VS_CLIMATE_CANVAS.md` | `docs/filled_vs_climate_canvas_comparison.md` |
+
+Each is now a real `typer` CLI module (`uv run python -m
+great_lakes.analysis.<avg|twl>.<name> <data_dir> [output_dir]`), imports
+`great_lakes.common_twl` / `great_lakes.ari_constants` / `great_lakes.fillin_twl`
+normally instead of via `sys.path.insert`, writes a `README.txt` via the shared
+`great_lakes.run_readme.write_readme()` (same reproducibility record as section 14,
+generalized out of `batch_runner.write_run_readme` into `run_readme.py` so it isn't
+tied to a resources workbook), and exposes a pure `resolve_default_output_dir(data_dir)`
+so its default output location is independently testable. The 3x-copy-pasted
+`center_save_point_id()` / near-identical `build_grid()`/`build_known_grid()` helpers
+across the old scripts were deduplicated into `common_twl.center_save_point_id()` /
+`common_twl.build_scenario_ari_grid()`.
+
+Output locations moved out of the old `data/analysis/` tree (deleted) to sibling `img/`
+folders under the data directory each script reads, so they sit next to the data they
+were computed from and stay gitignored/regenerable like `data/clean`, `data/filled`,
+`data/extrapolated` themselves:
+
+- `data/clean/img/avg/mean/<lake>.png` (+ `mean/interpolated/<lake>.png`)
+- `data/clean/img/avg/ari/{clustered,declustered}/{high,low}/<lake>_<ari>.png` (+ an
+  `interpolated/` sibling subfolder each) -- "clustered" replaces the old bare
+  `high/`/`low/` naming to make explicit it's the non-declustered population
+- `data/clean/img/twl/known/<lake>_<ari>.png` (+ `known/interpolated/...`)
+- `data/filled/img/<lake>_<ari>.png` and `data/extrapolated/img/<lake>_<ari>.png` (+
+  `img/interpolated/...` each)
+- `data/filled/img/comparison/filled_vs_climate_canvas_comparison.csv`
+
+All five were re-run end to end against the real `data/clean`/`data/filled`/
+`data/extrapolated` workbooks to regenerate every output at its new location (the
+comparison script reproduced the original write-up's numbers exactly: n=112,
+max\|diff\|=0.0164 ft, mean\|diff\|=0.0080 ft -- see
+`docs/filled_vs_climate_canvas_comparison.md`).

@@ -1,32 +1,16 @@
 """Tests for the Great Lakes raw-data cleaning scripts.
 
-data/raw/clean_lake_levels_all_scenarios.py and clean_still_water_summary.py are
-standalone scripts (data/raw/ has no __init__.py), so they're loaded here via
-importlib by file path, same as the template-builder scripts.
+clean_lake_levels_all_scenarios.py and clean_still_water_summary.py live in
+src/great_lakes/ (moved there so mypy/ruff cover them like the rest of the package);
+imported normally like any other great_lakes module.
 """
 import datetime
-import importlib.util
-import sys
-from pathlib import Path
 
 import pandas as pd
 import pytest
 
-RAW_DIR = Path(__file__).parent.parent / "data" / "raw"
-
-
-def _load(module_name: str, filename: str):
-    spec = importlib.util.spec_from_file_location(module_name, RAW_DIR / filename)
-    assert spec is not None and spec.loader is not None
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[module_name] = module
-    spec.loader.exec_module(module)
-    return module
-
-
-clean_avg = _load("clean_lake_levels_all_scenarios", "clean_lake_levels_all_scenarios.py")
-clean_twl = _load("clean_still_water_summary", "clean_still_water_summary.py")
-
+from great_lakes import clean_lake_levels_all_scenarios as clean_avg
+from great_lakes import clean_still_water_summary as clean_twl
 
 # ---- clean_lake_levels_all_scenarios.py: LAKES / DATE_COLUMN -----------------------
 

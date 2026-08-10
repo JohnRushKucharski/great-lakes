@@ -1,11 +1,9 @@
 """Split still_water_summary workbook into one file per Great Lake.
 
-Reads `still_water_summary__22may2026.xlsm` from this directory
-(data/raw/) and writes one workbook per lake
-(superior_twl.xlsx, michigan_twl.xlsx, huron_twl.xlsx, ontario_twl.xlsx)
-into the sibling data/clean/ directory. Each output workbook
-has 5 sheets (one per scenario), with a single header row: ID, lat, lon,
-followed by the numeric annual recurrence interval (ARI) values
+Reads `still_water_summary__22may2026.xlsm` from data/raw/ and writes one workbook per
+lake (superior_twl.xlsx, michigan_twl.xlsx, huron_twl.xlsx, ontario_twl.xlsx) into
+data/clean/. Each output workbook has 5 sheets (one per scenario), with a single header
+row: ID, lat, lon, followed by the numeric annual recurrence interval (ARI) values
 (0.1 .. 1000).
 
 Uses pandas (vectorized, no manual per-row loops) with the "calamine"
@@ -13,13 +11,14 @@ engine for reading (Rust-based, much faster than openpyxl for large
 sheets) and "xlsxwriter" for writing. Requires the "dev" dependency
 group: `uv sync --group dev`.
 
-Run with: uv run python clean_still_water_summary.py
+Run with: uv run python -m great_lakes.clean_still_water_summary
 """
 
 from pathlib import Path
 
 import pandas as pd
 
+WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
 SOURCE_FILE = "still_water_summary__22may2026.xlsm"
 
 # lake tag (as it appears in source sheet names) -> output filename
@@ -66,8 +65,8 @@ def clean_scenario_frame(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> None:
-    raw_dir = Path(__file__).parent
-    clean_dir = raw_dir.parent / "clean"
+    raw_dir = WORKSPACE_ROOT / "data" / "raw"
+    clean_dir = WORKSPACE_ROOT / "data" / "clean"
     clean_dir.mkdir(parents=True, exist_ok=True)
     src_path = raw_dir / SOURCE_FILE
 

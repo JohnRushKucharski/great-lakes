@@ -16,7 +16,7 @@ are produced per resource (no raw results, no summary xlsx, no .toml).
 
 import warnings
 from dataclasses import dataclass
-from math import exp, isnan
+from math import exp
 from pathlib import Path
 from typing import Any, Callable, Sequence
 
@@ -30,7 +30,19 @@ from hydropattern.scenario_grid import (  # type: ignore[import-untyped]
     require_scenario_grid,
 )
 
-from great_lakes import common_twl
+from great_lakes import batch_runner, common_twl
+from great_lakes.batch_runner import (  # noqa: F401 -- re-exported for backward compat
+    BatchSummary,
+    RowResult,
+    RowValidationError,
+    SheetValidationError,
+    _default_progress,
+    _is_blank,
+    _parse_color_map_ticks,
+    _require_str,
+    _to_bool,
+    format_summary,
+)
 
 LAKE_TWL_FILENAMES = common_twl.LAKE_TWL_FILENAMES
 resolve_lake_twl_path = common_twl.resolve_lake_twl_path
@@ -38,42 +50,6 @@ parse_scenario_sheet_name = common_twl.parse_scenario_sheet_name
 _NON_ARI_COLUMNS = common_twl.NON_ARI_COLUMNS
 _load_lake_sheets = common_twl.load_lake_sheets
 _m_igld85_to_ft_NAVD88 = common_twl.m_igld85_to_ft_NAVD88
-
-
-def _is_blank(value: Any) -> bool:
-    """True for None, NaN, empty string, or whitespace-only string (a blank cell)."""
-    if value is None:
-        return True
-    if isinstance(value, float) and isnan(value):
-        return True
-    return isinstance(value, str) and value.strip() == ""
-
-
-def _to_bool(value: Any, default: bool) -> bool:
-    """Coerce a spreadsheet cell to bool; blank -> default.
-
-    Excel string cells like "false" must be parsed by value, not by Python
-    truthiness -- bool("false") is True, which would silently invert any
-    string-boolean config cell (e.g. overwrite="false" -> True).
-    """
-    if _is_blank(value):
-        return default
-    if isinstance(value, str):
-        normalized = value.strip().lower()
-        if normalized in ("true", "1", "yes"):
-            return True
-        if normalized in ("false", "0", "no"):
-            return False
-        raise ValueError(f"Cannot parse {value!r} as a boolean.")
-    return bool(value)
-
-
-def _require_str(row: dict[str, Any], field: str, errors: list[str]) -> str:
-    value = row.get(field)
-    if _is_blank(value):
-        errors.append(f"{field!r} is required but missing or blank.")
-        return ""
-    return str(value).strip()
 
 
 def interpolate_ari(levels: Sequence[float], aris: Sequence[float], threshold: float) -> float:
@@ -246,18 +222,6 @@ def select_save_point(
 # ---- resources sheet: row parsing ------------------------------------------------------
 
 _DEFAULT_COMPONENT_NAME = "twl"
-
-
-class RowValidationError(ValueError):
-    """Raised when a resources-sheet row fails validation.
-
-    Carries all validation problems found for the row (not just the first), so callers
-    can report a complete picture per row.
-    """
-
-    def __init__(self, errors: list[str]):
-        self.errors = errors
-        super().__init__("; ".join(errors))
 
 
 @dataclass(frozen=True)
@@ -571,19 +535,6 @@ def resolve_all_output_paths(resource: ResourceSpec, config: BatchConfig) -> lis
     return paths
 
 
-class SheetValidationError(ValueError):
-    """Raised when a template sheet (config or resources) fails header/structural
-    validation -- i.e. problems with the sheet's shape itself, not with one row's data
-    (see RowValidationError for that).
-
-    Carries all validation problems found (not just the first).
-    """
-
-    def __init__(self, errors: list[str]):
-        self.errors = errors
-        super().__init__("; ".join(errors))
-
-
 _RESOURCE_REQUIRED_COLUMNS = frozenset(
     {"resource_name", "lake", "magnitude_operator", "magnitude_value"}
 )
@@ -637,19 +588,6 @@ _CONFIG_STR_KEYS = frozenset(
 )
 _CONFIG_TICKS_KEY = "plot_color_map_ticks"
 _CONFIG_KNOWN_KEYS = _CONFIG_BOOL_KEYS | _CONFIG_STR_KEYS | {_CONFIG_TICKS_KEY}
-
-
-def _parse_color_map_ticks(raw: Any, errors: list[str]) -> tuple[float, ...] | None:
-    if _is_blank(raw):
-        return None
-    try:
-        return tuple(float(v.strip()) for v in str(raw).split(","))
-    except ValueError:
-        errors.append(
-            f"Config sheet option 'plot_color_map_ticks' {raw!r} must be a "
-            "comma-separated list of numbers."
-        )
-        return None
 
 
 def read_config_sheet(path: Path, sheet_name: str = "config") -> BatchConfig:
@@ -992,55 +930,60 @@ def build_resource_outputs(
 
 # ---- run_batch orchestration -----------------------------------------------------------
 
-@dataclass(frozen=True)
-class RowResult:
-    """Outcome of processing one resources-sheet row."""
+class _TwlRowProcessor:
+    """batch_runner.RowProcessor adapter wrapping this module's existing per-row
+    functions -- the only twl-specific piece of run_batch's Strategy pattern. See
+    batch_runner.py's module docstring for why this exists."""
 
-    row_index: int  # 1-based position in the resources sheet's data rows
-    resource_name: str | None
-    component_name: str | None
-    status: str  # "succeeded" | "failed"
-    message: str | None = None
-    # Every output file path written for this row (empty for failed rows). Populated
-    # via resolve_all_output_paths; see write_results_workbook's "output location"
-    # column.
-    output_paths: tuple[Path, ...] = ()
+    def __init__(
+        self, build_outputs: Callable[[ResourceSpec, Path, BatchConfig], tuple[Path, Path]]
+    ):
+        self._build_outputs = build_outputs
 
+    def read_rows(self, resources_path: Path) -> list[dict[str, Any]]:
+        return read_resources_sheet(resources_path)
 
-@dataclass(frozen=True)
-class BatchSummary:
-    """End-of-run report for a full run_batch call."""
+    def parse(self, raw_row: dict[str, Any]) -> ResourceSpec:
+        return parse_resource_row(raw_row)
 
-    results: list[RowResult]
+    def target(self, resource: ResourceSpec, config: BatchConfig) -> tuple[Path, str]:
+        return (resolve_output_folder(resource, config), resource.qualified_name)
 
-    @property
-    def succeeded(self) -> list[RowResult]:
-        return [r for r in self.results if r.status == "succeeded"]
-
-    @property
-    def failed(self) -> list[RowResult]:
-        return [r for r in self.results if r.status == "failed"]
-
-
-def format_summary(summary: BatchSummary) -> str:
-    """Human-readable end-of-run report: counts + one line per failed row."""
-    lines = [
-        f"{len(summary.succeeded)} succeeded, {len(summary.failed)} failed "
-        f"out of {len(summary.results)} row(s)."
-    ]
-    for result in summary.failed:
-        lines.append(
-            f"  Row {result.row_index} ({result.resource_name!r}, "
-            f"{result.component_name!r}): {result.message}"
+    def duplicate_message(self, output_folder: Path, resource: ResourceSpec) -> str:
+        return (
+            f"Duplicate output target within this batch run: "
+            f"{output_folder / f'{resource.qualified_name}_grid.csv'}"
         )
-    return "\n".join(lines)
+
+    def check_overwrite(self, resource: ResourceSpec, config: BatchConfig) -> str | None:
+        # Unlike avg's processor, twl's pre-existing-output check happens inside
+        # build_outputs itself (raises FileExistsError, caught generically by
+        # batch_runner.run_batch's try/except around build()) -- nothing to check here.
+        return None
+
+    def build(
+        self, resource: ResourceSpec, data_dir: Path, config: BatchConfig
+    ) -> tuple[Path, ...]:
+        self._build_outputs(resource, data_dir, config)
+        return tuple(resolve_all_output_paths(resource, config))
 
 
-def _default_progress(row_index: int, total_rows: int, resource_name: str | None,
-                      component_name: str | None, status: str) -> None:
-    """Prints one line per row as it starts and finishes."""
-    label = f"{resource_name or '?'}/{component_name or '?'}"
-    print(f"[{row_index}/{total_rows}] {label}: {status}", flush=True)
+def _naming_scheme_text(config: BatchConfig) -> str:
+    """Naming-scheme blurb for config.filename_style: the longtailpoint-specific
+    dedicated write-up (see common_twl.naming_scheme_readme_text) when one exists,
+    else a generic description of the "qualified_name" default."""
+    try:
+        return common_twl.naming_scheme_readme_text(config.filename_style)
+    except ValueError:
+        header = "Output filename naming scheme for this directory\n" + "=" * 50 + "\n\n"
+        return header + (
+            "Output filename pattern: "
+            "<resource_name>_<component_name>[_<save_point_id>]...\n\n"
+            "  resource_name/component_name - from this row's resources-sheet "
+            "columns.\n"
+            "  save_point_id - appended only when the row selected its save point "
+            "by ID rather than lat/lon (see CONTEXT.md's \"Save point\" entry).\n"
+        )
 
 
 def run_batch(
@@ -1060,75 +1003,21 @@ def run_batch(
     build_outputs is injectable so tests can mock the actual grid/plot generation
     without touching the filesystem or matplotlib. progress is injectable for the same
     reason (and to let callers redirect/silence the real-time per-row status output).
+
+    Always writes a run readme (see CONTEXT.md's "Run readme" entry) to
+    config.output_directory, even if every row fails or the sheet has zero rows.
+
+    Thin wrapper over batch_runner.run_batch's shared loop; see _TwlRowProcessor for
+    the twl-specific per-row behavior.
     """
-    raw_rows = read_resources_sheet(resources_path)
-    total_rows = len(raw_rows)
-    results: list[RowResult] = []
-    seen_targets: set[tuple[Path, str]] = set()
-
-    def _finish(row_index: int, resource_name: str | None, component_name: str | None,
-               status: str, message: str | None = None,
-               output_paths: tuple[Path, ...] = ()) -> None:
-        results.append(
-            RowResult(row_index, resource_name, component_name, status, message, output_paths)
-        )
-        progress(row_index, total_rows, resource_name, component_name, status)
-
-    for row_index, raw_row in enumerate(raw_rows, start=1):
-        resource_name = raw_row.get("resource_name")
-        component_name = raw_row.get("component_name")
-        progress(row_index, total_rows, resource_name, component_name, "running")
-        try:
-            resource = parse_resource_row(raw_row)
-        except RowValidationError as exc:
-            _finish(row_index, resource_name, component_name, "failed", str(exc))
-            continue
-
-        output_folder = resolve_output_folder(resource, config)
-        target = (output_folder, resource.qualified_name)
-        if target in seen_targets:
-            _finish(
-                row_index, resource.resource_name, resource.component_name, "failed",
-                f"Duplicate output target within this batch run: "
-                f"{output_folder / f'{resource.qualified_name}_grid.csv'}",
-            )
-            continue
-        seen_targets.add(target)
-
-        try:
-            build_outputs(resource, data_dir, config)
-        except Exception as exc:  # pylint: disable=broad-exception-caught
-            # continue-on-failure: any error in this row (bad data, a missing file, a
-            # plotting error, ...) is reported and the batch moves on.
-            _finish(row_index, resource.resource_name, resource.component_name,
-                   "failed", str(exc))
-            continue
-
-        output_paths = tuple(resolve_all_output_paths(resource, config))
-        _finish(row_index, resource.resource_name, resource.component_name, "succeeded",
-               output_paths=output_paths)
-
-    _write_naming_readmes(results, config)
-    return BatchSummary(results=results)
-
-
-def _write_naming_readmes(results: list[RowResult], config: BatchConfig) -> None:
-    """Write one README.txt per output_directory (config.output_directory itself,
-    regardless of subdirectory_structure -- the naming scheme is the same everywhere
-    under it) explaining config.filename_style's naming convention, when that style has
-    a dedicated convention worth documenting (see common_twl.naming_scheme_readme_text).
-    No-op for "qualified_name" (the generic, self-explanatory default) or if the batch
-    produced no successful rows.
-    """
-    if not any(r.status == "succeeded" for r in results):
-        return
-    try:
-        text = common_twl.naming_scheme_readme_text(config.filename_style)
-    except ValueError:
-        return
-    readme_path = Path(config.output_directory) / "README.txt"
-    readme_path.parent.mkdir(parents=True, exist_ok=True)
-    readme_path.write_text(text)
+    summary = batch_runner.run_batch(
+        resources_path, data_dir, config, _TwlRowProcessor(build_outputs), progress
+    )
+    batch_runner.write_run_readme(
+        resources_path, data_dir, Path(config.output_directory), summary,
+        naming_scheme_text=_naming_scheme_text(config), workspace_root=WORKSPACE_ROOT,
+    )
+    return summary
 
 
 # ---- results workbook (adds an "output location" column) --------------------------

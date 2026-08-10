@@ -702,6 +702,51 @@ def test_run_batch_succeeds_and_writes_toml(tmp_path):
     assert expected_toml.exists()
 
 
+def test_run_batch_writes_run_readme_with_naming_scheme_and_files(tmp_path):
+    resources_path = make_resources_workbook(
+        tmp_path, [("duluth_harbor", "high_water", "superior", ">", 183.0)],
+    )
+    config = batch_config(tmp_path)
+
+    avg_batch_run.run_batch(resources_path, Path("data/clean"), config, run_toml=lambda p: None)
+
+    readme_path = Path(tmp_path / "out" / "README.txt")
+    assert readme_path.exists()
+    text = readme_path.read_text()
+    assert "<resource_name>_<component_name>" in text
+    assert "duluth_harbor_high_water.toml" in text
+    assert "1 succeeded" in text
+
+
+def test_run_batch_writes_run_readme_even_when_all_rows_fail(tmp_path):
+    resources_path = make_resources_workbook(
+        tmp_path, [("duluth_harbor", "", "superior", ">", 183.0)],  # missing component_name
+    )
+    config = batch_config(tmp_path)
+
+    avg_batch_run.run_batch(resources_path, Path("data/clean"), config, run_toml=lambda p: None)
+
+    readme_path = Path(tmp_path / "out" / "README.txt")
+    assert readme_path.exists()
+    assert "1 failed" in readme_path.read_text()
+
+
+def test_run_batch_run_readme_flags_stale_pre_existing_files(tmp_path):
+    resources_path = make_resources_workbook(
+        tmp_path, [("duluth_harbor", "high_water", "superior", ">", 183.0)],
+    )
+    config = batch_config(tmp_path)
+    out_dir = Path(tmp_path / "out")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    stale_file = out_dir / "leftover_from_old_run.csv"
+    stale_file.write_text("stale")
+
+    avg_batch_run.run_batch(resources_path, Path("data/clean"), config, run_toml=lambda p: None)
+
+    text = (out_dir / "README.txt").read_text()
+    assert "leftover_from_old_run.csv" in text
+
+
 def test_run_batch_invalid_row_reported_as_failed_and_does_not_run(tmp_path):
     resources_path = make_resources_workbook(
         tmp_path, [("duluth_harbor", "", "superior", ">", 183.0)],  # missing component_name

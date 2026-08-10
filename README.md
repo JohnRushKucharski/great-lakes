@@ -22,19 +22,20 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 ├── src/great_lakes/
 │   ├── batch_run_avg.py             <- batch tool 1: parse -> build .toml -> run hydropattern
 │   ├── batch_run_twl.py             <- batch tool 2: parse -> interpolate ARI curve -> plot
+│   ├── batch_runner.py              <- shared run_batch loop + RowProcessor strategy + run readme
 │   ├── common_twl.py                <- shared helpers: read <lake>_twl.xlsx / <avg-lake>_avg.csv
 │   ├── fillin_twl.py                 <- batch tool 3: interpolate + extrapolate missing twl scenarios
 │   ├── analyze_known_scenarios.py    <- known-vs-known TWL precip/temp directionality analysis
-│   └── build_dashboard.py            <- builds a self-contained results dashboard
+│   ├── build_dashboard.py            <- builds a self-contained results dashboard
+│   ├── clean_lake_levels_all_scenarios.py  <- data/raw/ -> data/clean/ AVG cleaning script
+│   ├── clean_still_water_summary.py        <- data/raw/ -> data/clean/ TWL cleaning script
+│   ├── build_avg_template.py        <- regenerates templates/template_avg.xlsx
+│   └── build_twl_template.py        <- regenerates templates/template_twl.xlsx
 ├── templates/
 │   ├── template_avg.xlsx           <- blank resources+config workbook template (batch_run_avg.py)
-│   ├── build_avg_template.py       <- regenerates template_avg.xlsx (run after schema changes)
-│   ├── template_twl.xlsx           <- blank resources+config workbook template (batch_run_twl.py)
-│   └── build_twl_template.py       <- regenerates template_twl.xlsx (run after schema changes)
+│   └── template_twl.xlsx           <- blank resources+config workbook template (batch_run_twl.py)
 ├── data/
-│   ├── raw/                    <- source Excel workbooks + one-off cleaning scripts (committed)
-│   │   ├── clean_lake_levels_all_scenarios.py
-│   │   └── clean_still_water_summary.py
+│   ├── raw/                    <- source Excel workbooks (committed, not code)
 │   ├── clean/                  <- cleaned per-lake data (gitignored, regenerable from raw/)
 │   │   ├── superior_avg.csv        <- batch_run_avg.py / fillin_twl.py (timeseries -> AVG)
 │   │   ├── michiganhuron_avg.csv
@@ -62,7 +63,9 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 `data/clean/`, `data/filled/`, `data/extrapolated/`, and `data/analysis/` are all
 gitignored — they're regenerable from `data/raw/` via the scripts documented below, so
 they're kept locally as insurance but not committed. `data/raw/`'s source workbooks
-and cleaning scripts, by contrast, *are* committed (they're the ground-truth inputs).
+*are* committed (they're the ground-truth inputs); the scripts that clean them live in
+`src/great_lakes/` alongside the rest of the code (so they're covered by the same
+mypy/ruff checks as everything else), not in `data/raw/` itself.
 
 ## Installation
 
@@ -74,13 +77,14 @@ uv sync --group test --group dev
 `openpyxl`, `scipy` (Delaunay triangulation, via `climate-canvas`), `python-calamine`
 (fast `.xlsx` reading), and `xlsxwriter` (workbook writing) are all direct dependencies.
 
-You only need to re-run the cleaning scripts in `data/raw/` if the raw source
-workbooks there change:
+You only need to re-run the cleaning scripts if the raw source workbooks in
+`data/raw/` change:
 
 ```powershell
-uv run python data\raw\clean_lake_levels_all_scenarios.py
-uv run python data\raw\clean_still_water_summary.py
+uv run python -m great_lakes.clean_lake_levels_all_scenarios
+uv run python -m great_lakes.clean_still_water_summary
 ```
+
 
 # Batch tool 1: batch_run_avg.py
 
@@ -180,6 +184,13 @@ duluth_harbor_high_water_plot.png        <- only if plot_enabled=true
 
 Where these land depends on `subdirectory_structure` (see the config sheet table above).
 
+Every run also writes a `README.txt` in `output_directory` (see CONTEXT.md's "Run
+readme" entry) — a reproducibility record covering: inputs used, a timestamp, the
+succeeded/failed summary, the naming scheme, every file this run wrote, and any
+pre-existing files in that directory tree the run didn't recognize as its own (useful
+for spotting stale output left over from a prior run). It's written even if every row
+fails or the sheet has zero rows.
+
 ## Re-running with new/changed rows
 
 Set `overwrite=true` in the config sheet to let a re-run replace a row's existing output;
@@ -192,7 +203,7 @@ If `batch_run_avg.py`'s recognized resources-sheet columns or config-sheet optio
 change, regenerate the shipped template so it stays in sync:
 
 ```powershell
-uv run python templates\build_avg_template.py
+uv run python -m great_lakes.build_avg_template
 ```
 
 ## Running the tests
@@ -340,6 +351,11 @@ duluth_harbor_twl_1_plot.png      <- climate-canvas response-surface plot
 No `.toml`, no summary/output Excel workbook, and no raw per-scenario CSVs are written —
 this tool's output is deliberately minimal since there's no hydropattern run to summarize.
 
+Every run also writes a `README.txt` in `output_directory`, same as `batch_run_avg.py`
+(see CONTEXT.md's "Run readme" entry) — inputs, timestamp, succeeded/failed summary,
+the naming scheme for the row's `filename_style`, files this run wrote, and any
+pre-existing files it didn't recognize as its own.
+
 ### Equivalent elevation (`equivalent_elevation` resources-sheet column)
 
 If a row's `equivalent_elevation` cell is non-blank (`"baseline_magnitude"` or a number),
@@ -374,7 +390,7 @@ uses `plot_color_map` as configured with no automatic RdBu-direction reversal an
 ## Regenerating the template
 
 ```powershell
-uv run python templates\build_twl_template.py
+uv run python -m great_lakes.build_twl_template
 ```
 
 ## Running the tests

@@ -5,7 +5,7 @@ Re-run this script any time the recognized resources-sheet columns or config-she
 options in batch_run_twl.py change, so the shipped template stays in sync.
 
 Usage:
-    uv run python templates/build_twl_template.py
+    uv run python -m great_lakes.build_twl_template
 """
 
 from pathlib import Path
@@ -15,7 +15,8 @@ from openpyxl.comments import Comment
 from openpyxl.styles import Font
 from openpyxl.worksheet.worksheet import Worksheet
 
-TEMPLATE_PATH = Path(__file__).parent / "template_twl.xlsx"
+WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
+TEMPLATE_PATH = WORKSPACE_ROOT / "templates" / "template_twl.xlsx"
 
 # Column order: required columns first, then save-point selector (id OR lat+lon),
 # then optional magnitude/threshold extras.

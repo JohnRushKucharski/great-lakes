@@ -1,24 +1,23 @@
 """Split lake_levels_all_scenarios workbook into one CSV per lake.
 
-Reads `lake_levels_all_scenarios_9jul2026.xlsx` from this directory
-(data/raw/) and writes one CSV per lake (superior_avg.csv,
-michiganhuron_avg.csv, stclair_avg.csv, erie_avg.csv, ontario_avg.csv)
-into the sibling data/clean/ directory. Each output CSV has
-a "time" column (YYYY-MM-DD, matching hydropattern's default
-pd.read_csv(parse_dates=[0]) behavior) followed by the 17 scenario
-columns (_0_0 .. _20_7) unchanged. The "month" column is dropped.
+Reads `lake_levels_all_scenarios_9jul2026.xlsx` from data/raw/ and writes one CSV per
+lake (superior_avg.csv, michiganhuron_avg.csv, stclair_avg.csv, erie_avg.csv,
+ontario_avg.csv) into data/clean/. Each output CSV has a "time" column (YYYY-MM-DD,
+matching hydropattern's default pd.read_csv(parse_dates=[0]) behavior) followed by the
+17 scenario columns (_0_0 .. _20_7) unchanged. The "month" column is dropped.
 
 Uses pandas (vectorized, no manual per-row loops) with the "calamine"
 engine for reading (Rust-based, much faster than openpyxl for large
 sheets). Requires the "dev" dependency group: `uv sync --group dev`.
 
-Run with: uv run python clean_lake_levels_all_scenarios.py
+Run with: uv run python -m great_lakes.clean_lake_levels_all_scenarios
 """
 
 from pathlib import Path
 
 import pandas as pd
 
+WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
 SOURCE_FILE = "lake_levels_all_scenarios_9jul2026.xlsx"
 
 # sheet name -> output filename
@@ -47,8 +46,8 @@ def clean_lake_frame(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main() -> None:
-    raw_dir = Path(__file__).parent
-    clean_dir = raw_dir.parent / "clean"
+    raw_dir = WORKSPACE_ROOT / "data" / "raw"
+    clean_dir = WORKSPACE_ROOT / "data" / "clean"
     clean_dir.mkdir(parents=True, exist_ok=True)
     src_path = raw_dir / SOURCE_FILE
 

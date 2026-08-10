@@ -5,7 +5,7 @@ Re-run this script any time the recognized resources-sheet columns or config-she
 options in batch_run_avg.py change, so the shipped template stays in sync.
 
 Usage:
-    uv run python templates/build_avg_template.py
+    uv run python -m great_lakes.build_avg_template
 """
 
 from pathlib import Path
@@ -15,7 +15,8 @@ from openpyxl.comments import Comment
 from openpyxl.styles import Font
 from openpyxl.worksheet.worksheet import Worksheet
 
-TEMPLATE_PATH = Path(__file__).parent / "template_avg.xlsx"
+WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
+TEMPLATE_PATH = WORKSPACE_ROOT / "templates" / "template_avg.xlsx"
 
 # Column order matches the fixed characteristic emission order in batch_run_avg.py's
 # build_toml_text (timing, magnitude, rate_of_change, duration), required columns first.

@@ -6,6 +6,18 @@ import pytest
 
 from great_lakes import analyze_known_scenarios, common_twl
 
+WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
+
+
+def test_default_data_dir_and_output_dir_resolve_to_workspace_data():
+    # Regression guard: analyze_known_scenarios.py lives in src/great_lakes/, so its
+    # default DATA_DIR/OUTPUT_DIR must be anchored to the workspace root, not to the
+    # script's own (package) directory -- otherwise `main()` with no args silently
+    # looks in src/great_lakes/data/... where nothing exists.
+    assert analyze_known_scenarios.DATA_DIR == WORKSPACE_ROOT / "data" / "extrapolated"
+    assert analyze_known_scenarios.OUTPUT_DIR == WORKSPACE_ROOT / "data" / "analysis"
+
+
 # ---- sheet_name_for_suffix ----------------------------------------------------------
 
 def test_sheet_name_for_suffix_finds_matching_sheet():

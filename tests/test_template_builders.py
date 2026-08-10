@@ -1,30 +1,12 @@
 """Tests for the Great Lakes template-builder scripts.
 
-templates/build_avg_template.py and templates/build_twl_template.py are standalone
-scripts (templates/ has no __init__.py), so they're loaded here via importlib by file
-path, same as the raw-data cleaning scripts.
+build_avg_template.py and build_twl_template.py live in src/great_lakes/ (moved there
+so mypy/ruff cover them like the rest of the package); imported normally like any
+other great_lakes module.
 """
-import importlib.util
-import sys
-from pathlib import Path
-
 import openpyxl
 
-TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
-
-
-def _load(module_name: str, filename: str):
-    spec = importlib.util.spec_from_file_location(module_name, TEMPLATES_DIR / filename)
-    assert spec is not None and spec.loader is not None
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[module_name] = module
-    spec.loader.exec_module(module)
-    return module
-
-
-build_avg_template = _load("build_avg_template", "build_avg_template.py")
-build_twl_template = _load("build_twl_template", "build_twl_template.py")
-
+from great_lakes import build_avg_template, build_twl_template
 
 # ---- build_avg_template.py ----------------------------------------------------------
 

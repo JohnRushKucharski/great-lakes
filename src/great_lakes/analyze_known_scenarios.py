@@ -24,8 +24,8 @@ import pandas as pd
 from great_lakes import common_twl
 from great_lakes.fillin_twl import known_scenario_coords
 
-DATA_DIR = Path(__file__).parent / "data" / "extrapolated"
-OUTPUT_DIR = Path(__file__).parent / "data" / "analysis"
+DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "extrapolated"
+OUTPUT_DIR = Path(__file__).resolve().parents[2] / "data" / "analysis"
 
 # The only two same-axis known-vs-known pairs available (see module docstring).
 PRECIP_PAIR = ("_10_5", "_20_5")  # fixed temp_delta=5, precip_delta 10 -> 20
