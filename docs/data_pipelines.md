@@ -187,7 +187,7 @@ raw xlsx/xlsm
 
 **Overall:** the main numeric pipeline is internally consistent where I could verify it. The raw-to-clean transforms preserve sampled values, the TWL fill/extrapolation code matches ADR 0001, the 17-scenario coverage claim is true in the generated workbooks, ARI interpolation is linear in ARI-space with clamping, and the dashboard manifest matches underlying grid CSVs.
 
-**Update (post-audit fixes applied):** the string-boolean parsing defect below has been fixed in code, and the test-coverage gaps for raw cleaning, template builders, and the known-scenario analysis script have been closed with new unit tests. See "12. Post-audit fixes" for details. The stale `longtailpoint\batch_twl.xlsx` workbook (Issue 2) was intentionally left as-is, per operator instruction.
+**Update (post-audit fixes applied):** the string-boolean parsing defect below has been fixed in code, and the test-coverage gaps for raw cleaning, template builders, and the known-scenario analysis script have been closed with new unit tests. See "12. Post-audit fixes" for details. The stale `longtailpoint\batch_twl.xlsx` workbook (Issue 2) was intentionally left as-is, per operator instruction (since deleted in commit `6c59d94`; `batch_twl-nointerpolation.xlsx` was deleted and `batch_twl-interpolation_baseline.xlsx` renamed to `batch_twl-longtail.xlsx` in the same commit).
 
 **Originally flagged issue (now fixed):** the `batch_run_twl.py` config parser mis-parsed string booleans such as `"false"` as `True` (`batch_run_twl.py:63-67`, `616-629`), because `bool("false")` is `True` in Python. The shipped longtailpoint TWL workbooks use string booleans, so:
 
@@ -480,6 +480,8 @@ Regression tests: `tests\test_batch_run_twl.py::test_to_bool` / `test_to_bool_re
 
 ### Issue 2 — `longtailpoint\batch_twl.xlsx` is currently unrunnable as shipped — **left as-is**
 
+> **Resolved (commit `6c59d94`):** `batch_twl.xlsx` and `batch_twl-nointerpolation.xlsx` were deleted, and `batch_twl-interpolation_baseline.xlsx` was renamed to `batch_twl-longtail.xlsx`. Workbook names below are historical.
+
 **Evidence**
 
 - Workbook config contains `metric_mode = "return period"` (with a space).
@@ -568,7 +570,7 @@ For the **current numeric data products**, I found good evidence that:
 - unit conversion logic matches the cited datum table,
 - and the dashboard manifest reflects the underlying grid CSVs.
 
-The main integrity concern was **not** the interpolation math; it was the **TWL/AVG workbook config parsing bug for string booleans** — now fixed in both `batch_run_twl.py` and `batch_run_avg.py`, with regression tests. One stale invalid workbook (`longtailpoint\batch_twl.xlsx`) remains, left as-is by operator instruction. See section 12 for the full list of changes made after the initial audit.
+The main integrity concern was **not** the interpolation math; it was the **TWL/AVG workbook config parsing bug for string booleans** — now fixed in both `batch_run_twl.py` and `batch_run_avg.py`, with regression tests. One stale invalid workbook (`longtailpoint\batch_twl.xlsx`) remained at audit time; it was later deleted (commit `6c59d94`). See section 12 for the full list of changes made after the initial audit.
 
 ---
 
@@ -582,9 +584,9 @@ Applied after the initial audit above, per explicit operator instruction:
    - `tests\test_clean_raw_scripts.py` — raw AVG/TWL cleaning scripts. Required a small, behavior-preserving refactor: `clean_lake_frame()` was extracted from `clean_lake_levels_all_scenarios.py`'s `main()`, and `clean_scenario_frame()` was extracted from `clean_still_water_summary.py`'s `main()`, so each transform could be unit-tested against a synthetic in-memory DataFrame without touching the real (large) source workbooks. `main()`'s file-I/O behavior is otherwise unchanged.
    - `tests\test_template_builders.py` — `templates\build_avg_template.py` / `build_twl_template.py`. No production refactor needed; both already exposed a `build_template(path)` function.
    - `tests\test_analyze_known_scenarios.py` — `analyze_known_scenarios.py`. No production refactor needed; loaded the same way the script would run standalone (its own directory temporarily added to `sys.path`, matching its existing bare `import common_twl` / `from fillin_twl import ...` style).
-4. **Left unchanged** (per explicit instruction): the stale `longtailpoint\batch_twl.xlsx` workbook (Issue 2) and PNG/image-regression coverage.
+4. **Left unchanged** (per explicit instruction): the stale `longtailpoint\batch_twl.xlsx` workbook (Issue 2; deleted later in commit `6c59d94`) and PNG/image-regression coverage.
 
-Issue 2 (stale `longtailpoint\batch_twl.xlsx`) and PNG/image-regression testing remain open items for a future pass.
+Issue 2 (stale `longtailpoint\batch_twl.xlsx`) was resolved by deleting the workbook (commit `6c59d94`); PNG/image-regression testing remains an open item for a future pass.
 
 ## 13. Post-audit refactor: shared batch_runner.py
 
