@@ -8,9 +8,9 @@ computes:
 
 1. The scenario's overall mean average lake level -> `mean/<lake>.png` (one
    response surface per lake).
-2. The average lake level associated with the TWL workbooks' ARI values that
+2. The average lake level associated with the SWL workbooks' ARI values that
    are >= 1 year (1, 2, 5, 10, 20, 50, 100, 200, 500, 1000 -- see
-   ari_constants.TWL_ARIS; the <1-year TWL ARI values, 0.1/0.2/0.5, are dropped
+   ari_constants.SWL_ARIS; the <1-year SWL ARI values, 0.1/0.2/0.5, are dropped
    here -- see "Why ARI < 1 is dropped" below), for both the high-water tail
    (level exceeded on average once every ARI years) and the low-water tail
    (level undershot on average once every ARI years), using the
@@ -26,7 +26,7 @@ computes:
 
 Each of the plots above also gets a companion `interpolated/<name>.png` (in a
 sibling `interpolated/` subfolder alongside the raw plot) using climate_canvas's
-own `interpolate=True, fillin=True` (matching the TWL plots' convention) --
+own `interpolate=True, fillin=True` (matching the SWL plots' convention) --
 resampled to a finer grid; since the avg data already has every one of the 17
 scenarios (no NaN cells to begin with), this only resamples, it never needs the
 Delaunay fillin fallback.
@@ -40,10 +40,10 @@ shown in the title as "baseline average lake level=".
 
 The Poisson method's target annual exceedance probability is `aep = 1/ari`.
 `aep` is a probability, so it must be <= 1, which requires `ari >= 1` -- ARI
-values below 1 year (like the TWL data's 0.1/0.2/0.5) are mathematically
+values below 1 year (like the SWL data's 0.1/0.2/0.5) are mathematically
 undefined here, for *either* population (non-declustered or declustered): they
 don't reflect data limitations, they reflect `aep` no longer being a valid
-probability. (TWL's own <1-year ARI columns are fine -- they're precomputed by
+probability. (SWL's own <1-year ARI columns are fine -- they're precomputed by
 a different, already-tabulated method upstream, not derived through this
 Poisson inversion.)
 
@@ -83,18 +83,18 @@ import typer
 from climate_canvas.plots_utilities import plot_response_surface  # type: ignore[import-untyped]
 from hydropattern.scenario_grid import parse_scenario_name  # type: ignore[import-untyped]
 
-from great_lakes import ari_constants, common_twl, run_readme
-from great_lakes.fillin_twl import ALL_SCENARIO_SUFFIXES
+from great_lakes import ari_constants, common_swl, run_readme
+from great_lakes.fillin_swl import ALL_SCENARIO_SUFFIXES
 
 # ARI=1's target aep=1/1=1.0 is only reachable in the theoretical limit (needs
 # infinite Poisson rate); ARI<1 needs aep>1, which isn't a valid probability at
 # all. Drop ARI<1; ARI=1 itself is replaced per-lake/tail/decluster below with
 # the actual minimum achievable ARI (see module docstring).
-AVG_ARIS = tuple(ari for ari in ari_constants.TWL_ARIS if ari >= 1.0)
-METERS_TO_FEET = common_twl.METERS_TO_FEET
+AVG_ARIS = tuple(ari for ari in ari_constants.SWL_ARIS if ari >= 1.0)
+METERS_TO_FEET = common_swl.METERS_TO_FEET
 
 # The 3 distinct avg-level datasets (Michigan and Huron share one; see
-# common_twl.LAKE_AVG_FILENAMES).
+# common_swl.LAKE_AVG_FILENAMES).
 AVG_LAKES = ("superior", "michiganhuron", "ontario")
 
 ALL_COORDS = {suffix: parse_scenario_name(suffix) for suffix in ALL_SCENARIO_SUFFIXES}
@@ -202,7 +202,7 @@ def build_grid(columns: dict[str, np.ndarray],
 
 
 def one_sided_color_style(zs: np.ndarray, threshold: float, tail: str | None) -> tuple | None:
-    """Thin tail-gated wrapper around common_twl.one_sided_color_style (see there for
+    """Thin tail-gated wrapper around common_swl.one_sided_color_style (see there for
     the shared math/rationale): only low-tail plots may get the 'Reds_r'
     all-below-threshold treatment, and only high-tail plots may get 'Blues'
     all-above-threshold -- tail-agnostic (mean, tail=None) plots always keep the
@@ -216,7 +216,7 @@ def one_sided_color_style(zs: np.ndarray, threshold: float, tail: str | None) ->
         return None
     if tail == "high" and not (z_min >= threshold):
         return None
-    return common_twl.one_sided_color_style((z_min, z_max), threshold)
+    return common_swl.one_sided_color_style((z_min, z_max), threshold)
 
 
 def resolve_default_output_dir(data_dir: Path) -> Path:
@@ -312,7 +312,7 @@ _NAMING_SCHEME_TEXT = (
     "declustered = only local peaks/troughs are).\n"
     "ari/<clustered|declustered>/<high|low>/interpolated/<lake>_<ari>.png - same, "
     "climate_canvas interpolate+fillin resampled.\n"
-    "ARI values follow ari_constants.TWL_ARIS restricted to >=1 year; ARI=1 is "
+    "ARI values follow ari_constants.SWL_ARIS restricted to >=1 year; ARI=1 is "
     "replaced per lake/tail/clustered-or-declustered combination by that "
     "combination's actual minimum achievable ARI (flagged '[min]' in the plot "
     "title) -- see this module's docstring for why."

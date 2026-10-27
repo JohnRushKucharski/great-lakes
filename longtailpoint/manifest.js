@@ -1,7 +1,7 @@
 window.MANIFEST = {
   "entries": [
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "base",
       "save_point_id": 1968,
@@ -67,11 +67,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -128,11 +128,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -189,11 +189,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -250,16 +250,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -325,11 +325,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -386,11 +386,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -447,11 +447,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -508,16 +508,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -583,11 +583,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -644,11 +644,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -705,11 +705,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -766,16 +766,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -841,11 +841,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -902,11 +902,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -963,11 +963,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_587d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_587d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_587d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_587d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -1024,16 +1024,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "base",
       "save_point_id": 1968,
@@ -1099,11 +1099,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -1160,11 +1160,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -1221,11 +1221,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -1282,16 +1282,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -1357,11 +1357,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -1418,11 +1418,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -1479,11 +1479,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -1540,16 +1540,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -1615,11 +1615,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -1676,11 +1676,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -1737,11 +1737,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -1798,16 +1798,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -1873,11 +1873,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -1934,11 +1934,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -1995,11 +1995,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -2056,16 +2056,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "base",
       "save_point_id": 1968,
@@ -2131,11 +2131,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -2192,11 +2192,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -2253,11 +2253,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -2314,16 +2314,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -2389,11 +2389,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -2450,11 +2450,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -2511,11 +2511,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -2572,16 +2572,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -2647,11 +2647,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -2708,11 +2708,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -2769,11 +2769,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -2830,16 +2830,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -2905,11 +2905,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -2966,11 +2966,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -3027,11 +3027,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_586d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_586d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_586d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_586d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -3088,16 +3088,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "base",
       "save_point_id": 1968,
@@ -3163,11 +3163,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -3224,11 +3224,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -3285,11 +3285,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -3346,16 +3346,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -3421,11 +3421,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -3482,11 +3482,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -3543,11 +3543,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -3604,16 +3604,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -3679,11 +3679,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -3740,11 +3740,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -3801,11 +3801,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -3862,16 +3862,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -3937,11 +3937,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -3998,11 +3998,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -4059,11 +4059,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -4120,16 +4120,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "base",
       "save_point_id": 1968,
@@ -4195,11 +4195,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -4256,11 +4256,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -4317,11 +4317,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -4378,16 +4378,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -4453,11 +4453,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -4514,11 +4514,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -4575,11 +4575,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -4636,16 +4636,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -4711,11 +4711,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -4772,11 +4772,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -4833,11 +4833,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -4894,16 +4894,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -4969,11 +4969,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -5030,11 +5030,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -5091,11 +5091,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_585d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_585d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_585d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_585d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -5152,16 +5152,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "base",
       "save_point_id": 1968,
@@ -5227,11 +5227,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -5288,11 +5288,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -5349,11 +5349,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -5410,16 +5410,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -5485,11 +5485,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -5546,11 +5546,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -5607,11 +5607,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -5668,16 +5668,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -5743,11 +5743,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -5804,11 +5804,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -5865,11 +5865,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -5926,16 +5926,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -6001,11 +6001,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -6062,11 +6062,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -6123,11 +6123,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -6184,16 +6184,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "base",
       "save_point_id": 1968,
@@ -6259,11 +6259,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -6320,11 +6320,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -6381,11 +6381,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -6442,16 +6442,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -6517,11 +6517,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -6578,11 +6578,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -6639,11 +6639,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -6700,16 +6700,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -6775,11 +6775,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -6836,11 +6836,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -6897,11 +6897,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -6958,16 +6958,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -7033,11 +7033,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -7094,11 +7094,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -7155,11 +7155,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_584d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_584d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_584d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_584d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -7216,16 +7216,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "base",
       "save_point_id": 1968,
@@ -7291,11 +7291,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -7352,11 +7352,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -7413,11 +7413,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -7474,16 +7474,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -7549,11 +7549,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -7610,11 +7610,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -7671,11 +7671,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -7732,16 +7732,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -7807,11 +7807,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -7868,11 +7868,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -7929,11 +7929,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -7990,16 +7990,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -8065,11 +8065,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -8126,11 +8126,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -8187,11 +8187,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -8248,16 +8248,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "base",
       "save_point_id": 1968,
@@ -8323,11 +8323,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -8384,11 +8384,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -8445,11 +8445,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -8506,16 +8506,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -8581,11 +8581,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -8642,11 +8642,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -8703,11 +8703,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -8764,16 +8764,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -8839,11 +8839,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -8900,11 +8900,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -8961,11 +8961,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -9022,16 +9022,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -9097,11 +9097,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -9158,11 +9158,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -9219,11 +9219,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_583d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_583d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_583d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_583d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -9280,16 +9280,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "base",
       "save_point_id": 1968,
@@ -9355,11 +9355,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -9416,11 +9416,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -9477,11 +9477,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -9538,16 +9538,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -9613,11 +9613,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -9674,11 +9674,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -9735,11 +9735,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -9796,16 +9796,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -9871,11 +9871,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -9932,11 +9932,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -9993,11 +9993,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -10054,16 +10054,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -10129,11 +10129,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -10190,11 +10190,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -10251,11 +10251,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -10312,16 +10312,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "base",
       "save_point_id": 1968,
@@ -10387,11 +10387,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -10448,11 +10448,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -10509,11 +10509,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -10570,16 +10570,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "run2",
       "save_point_id": 1968,
@@ -10645,11 +10645,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -10706,11 +10706,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -10767,11 +10767,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -10828,16 +10828,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "run25",
       "save_point_id": 1968,
@@ -10903,11 +10903,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -10964,11 +10964,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -11025,11 +11025,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -11086,16 +11086,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "run3",
       "save_point_id": 1968,
@@ -11161,11 +11161,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -11222,11 +11222,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -11283,11 +11283,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/1968_582d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/1968_582d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/1968_582d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/1968_582d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -11344,16 +11344,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint1968_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint1968_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "base",
       "save_point_id": 4997,
@@ -11419,11 +11419,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -11480,11 +11480,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -11541,11 +11541,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -11602,16 +11602,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -11677,11 +11677,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -11738,11 +11738,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -11799,11 +11799,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -11860,16 +11860,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -11935,11 +11935,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -11996,11 +11996,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -12057,11 +12057,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -12118,16 +12118,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -12193,11 +12193,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -12254,11 +12254,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -12315,11 +12315,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_587d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_587d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_587d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_587d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -12376,16 +12376,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "base",
       "save_point_id": 4997,
@@ -12451,11 +12451,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -12512,11 +12512,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -12573,11 +12573,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -12634,16 +12634,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -12709,11 +12709,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -12770,11 +12770,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -12831,11 +12831,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -12892,16 +12892,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -12967,11 +12967,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -13028,11 +13028,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -13089,11 +13089,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -13150,16 +13150,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -13225,11 +13225,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -13286,11 +13286,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -13347,11 +13347,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -13408,16 +13408,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "base",
       "save_point_id": 4997,
@@ -13483,11 +13483,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -13544,11 +13544,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -13605,11 +13605,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -13666,16 +13666,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -13741,11 +13741,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -13802,11 +13802,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -13863,11 +13863,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -13924,16 +13924,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -13999,11 +13999,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -14060,11 +14060,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -14121,11 +14121,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -14182,16 +14182,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -14257,11 +14257,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -14318,11 +14318,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -14379,11 +14379,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_586d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_586d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_586d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_586d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -14440,16 +14440,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "base",
       "save_point_id": 4997,
@@ -14515,11 +14515,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -14576,11 +14576,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -14637,11 +14637,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -14698,16 +14698,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -14773,11 +14773,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -14834,11 +14834,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -14895,11 +14895,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -14956,16 +14956,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -15031,11 +15031,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -15092,11 +15092,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -15153,11 +15153,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -15214,16 +15214,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -15289,11 +15289,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -15350,11 +15350,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -15411,11 +15411,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -15472,16 +15472,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "base",
       "save_point_id": 4997,
@@ -15547,11 +15547,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -15608,11 +15608,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -15669,11 +15669,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -15730,16 +15730,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -15805,11 +15805,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -15866,11 +15866,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -15927,11 +15927,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -15988,16 +15988,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -16063,11 +16063,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -16124,11 +16124,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -16185,11 +16185,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -16246,16 +16246,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -16321,11 +16321,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -16382,11 +16382,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -16443,11 +16443,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_585d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_585d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_585d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_585d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -16504,16 +16504,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "base",
       "save_point_id": 4997,
@@ -16579,11 +16579,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -16640,11 +16640,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -16701,11 +16701,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -16762,16 +16762,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -16837,11 +16837,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -16898,11 +16898,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -16959,11 +16959,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -17020,16 +17020,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -17095,11 +17095,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -17156,11 +17156,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -17217,11 +17217,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -17278,16 +17278,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -17353,11 +17353,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -17414,11 +17414,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -17475,11 +17475,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -17536,16 +17536,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "base",
       "save_point_id": 4997,
@@ -17611,11 +17611,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -17672,11 +17672,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -17733,11 +17733,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -17794,16 +17794,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -17869,11 +17869,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -17930,11 +17930,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -17991,11 +17991,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -18052,16 +18052,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -18127,11 +18127,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -18188,11 +18188,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -18249,11 +18249,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -18310,16 +18310,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -18385,11 +18385,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -18446,11 +18446,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -18507,11 +18507,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_584d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_584d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_584d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_584d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -18568,16 +18568,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "base",
       "save_point_id": 4997,
@@ -18643,11 +18643,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -18704,11 +18704,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -18765,11 +18765,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -18826,16 +18826,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -18901,11 +18901,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -18962,11 +18962,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -19023,11 +19023,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -19084,16 +19084,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -19159,11 +19159,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -19220,11 +19220,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -19281,11 +19281,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -19342,16 +19342,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -19417,11 +19417,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -19478,11 +19478,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -19539,11 +19539,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -19600,16 +19600,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "base",
       "save_point_id": 4997,
@@ -19675,11 +19675,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -19736,11 +19736,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -19797,11 +19797,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -19858,16 +19858,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -19933,11 +19933,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -19994,11 +19994,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -20055,11 +20055,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -20116,16 +20116,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -20191,11 +20191,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -20252,11 +20252,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -20313,11 +20313,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -20374,16 +20374,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -20449,11 +20449,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -20510,11 +20510,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -20571,11 +20571,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_583d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_583d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_583d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_583d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -20632,16 +20632,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "base",
       "save_point_id": 4997,
@@ -20707,11 +20707,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -20768,11 +20768,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -20829,11 +20829,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -20890,16 +20890,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -20965,11 +20965,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -21026,11 +21026,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -21087,11 +21087,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -21148,16 +21148,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -21223,11 +21223,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -21284,11 +21284,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -21345,11 +21345,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -21406,16 +21406,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -21481,11 +21481,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -21542,11 +21542,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -21603,11 +21603,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -21664,16 +21664,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "base",
       "save_point_id": 4997,
@@ -21739,11 +21739,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -21800,11 +21800,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -21861,11 +21861,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -21922,16 +21922,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "run2",
       "save_point_id": 4997,
@@ -21997,11 +21997,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -22058,11 +22058,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -22119,11 +22119,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -22180,16 +22180,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "run25",
       "save_point_id": 4997,
@@ -22255,11 +22255,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -22316,11 +22316,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -22377,11 +22377,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -22438,16 +22438,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "run3",
       "save_point_id": 4997,
@@ -22513,11 +22513,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -22574,11 +22574,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -22635,11 +22635,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4997_582d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4997_582d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4997_582d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4997_582d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -22696,16 +22696,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4997_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4997_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "base",
       "save_point_id": 4999,
@@ -22771,11 +22771,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -22832,11 +22832,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -22893,11 +22893,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -22954,16 +22954,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -23029,11 +23029,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -23090,11 +23090,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -23151,11 +23151,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -23212,16 +23212,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -23287,11 +23287,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -23348,11 +23348,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -23409,11 +23409,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -23470,16 +23470,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17877",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -23545,11 +23545,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -23606,11 +23606,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -23667,11 +23667,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_587d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_587d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_587d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_587d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -23728,16 +23728,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "base",
       "save_point_id": 4999,
@@ -23803,11 +23803,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -23864,11 +23864,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -23925,11 +23925,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -23986,16 +23986,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -24061,11 +24061,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -24122,11 +24122,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -24183,11 +24183,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -24244,16 +24244,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -24319,11 +24319,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -24380,11 +24380,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -24441,11 +24441,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -24502,16 +24502,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17862",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -24577,11 +24577,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -24638,11 +24638,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -24699,11 +24699,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -24760,16 +24760,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "base",
       "save_point_id": 4999,
@@ -24835,11 +24835,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -24896,11 +24896,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -24957,11 +24957,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -25018,16 +25018,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -25093,11 +25093,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -25154,11 +25154,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -25215,11 +25215,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -25276,16 +25276,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -25351,11 +25351,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -25412,11 +25412,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -25473,11 +25473,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -25534,16 +25534,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17847",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -25609,11 +25609,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -25670,11 +25670,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -25731,11 +25731,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_586d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_586d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_586d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_586d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -25792,16 +25792,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "base",
       "save_point_id": 4999,
@@ -25867,11 +25867,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -25928,11 +25928,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -25989,11 +25989,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -26050,16 +26050,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -26125,11 +26125,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -26186,11 +26186,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -26247,11 +26247,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -26308,16 +26308,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -26383,11 +26383,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -26444,11 +26444,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -26505,11 +26505,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -26566,16 +26566,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17832",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -26641,11 +26641,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -26702,11 +26702,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -26763,11 +26763,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -26824,16 +26824,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "base",
       "save_point_id": 4999,
@@ -26899,11 +26899,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -26960,11 +26960,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -27021,11 +27021,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -27082,16 +27082,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -27157,11 +27157,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -27218,11 +27218,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -27279,11 +27279,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -27340,16 +27340,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -27415,11 +27415,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -27476,11 +27476,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -27537,11 +27537,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -27598,16 +27598,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17817",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -27673,11 +27673,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -27734,11 +27734,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -27795,11 +27795,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_585d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_585d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_585d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_585d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -27856,16 +27856,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "base",
       "save_point_id": 4999,
@@ -27931,11 +27931,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -27992,11 +27992,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -28053,11 +28053,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -28114,16 +28114,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -28189,11 +28189,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -28250,11 +28250,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -28311,11 +28311,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -28372,16 +28372,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -28447,11 +28447,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -28508,11 +28508,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -28569,11 +28569,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -28630,16 +28630,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17801",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -28705,11 +28705,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -28766,11 +28766,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -28827,11 +28827,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -28888,16 +28888,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "base",
       "save_point_id": 4999,
@@ -28963,11 +28963,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -29024,11 +29024,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -29085,11 +29085,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -29146,16 +29146,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -29221,11 +29221,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -29282,11 +29282,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -29343,11 +29343,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -29404,16 +29404,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -29479,11 +29479,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -29540,11 +29540,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -29601,11 +29601,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -29662,16 +29662,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17786",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -29737,11 +29737,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -29798,11 +29798,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -29859,11 +29859,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_584d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_584d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_584d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_584d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -29920,16 +29920,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "base",
       "save_point_id": 4999,
@@ -29995,11 +29995,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -30056,11 +30056,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -30117,11 +30117,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -30178,16 +30178,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -30253,11 +30253,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -30314,11 +30314,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -30375,11 +30375,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -30436,16 +30436,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -30511,11 +30511,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -30572,11 +30572,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -30633,11 +30633,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -30694,16 +30694,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17771",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -30769,11 +30769,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -30830,11 +30830,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -30891,11 +30891,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -30952,16 +30952,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "base",
       "save_point_id": 4999,
@@ -31027,11 +31027,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -31088,11 +31088,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -31149,11 +31149,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -31210,16 +31210,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -31285,11 +31285,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -31346,11 +31346,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -31407,11 +31407,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -31468,16 +31468,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -31543,11 +31543,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -31604,11 +31604,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -31665,11 +31665,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -31726,16 +31726,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17756",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -31801,11 +31801,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -31862,11 +31862,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -31923,11 +31923,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_583d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_583d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_583d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_583d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -31984,16 +31984,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "base",
       "save_point_id": 4999,
@@ -32059,11 +32059,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -32120,11 +32120,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -32181,11 +32181,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -32242,16 +32242,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -32317,11 +32317,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -32378,11 +32378,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -32439,11 +32439,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -32500,16 +32500,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -32575,11 +32575,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -32636,11 +32636,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -32697,11 +32697,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -32758,16 +32758,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17740",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -32833,11 +32833,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -32894,11 +32894,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -32955,11 +32955,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d50_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d50_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d50_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d50_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -33016,16 +33016,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "base",
       "save_point_id": 4999,
@@ -33091,11 +33091,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_0d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_0d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_0d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_0d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -33152,11 +33152,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_0d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_0d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_0d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_0d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -33213,11 +33213,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_0d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_0d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_0d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_0d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -33274,16 +33274,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "run2",
       "save_point_id": 4999,
@@ -33349,11 +33349,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_2d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_2d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_2d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_2d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -33410,11 +33410,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_2d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_2d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_2d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_2d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -33471,11 +33471,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_2d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_2d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_2d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_2d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -33532,16 +33532,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "run25",
       "save_point_id": 4999,
@@ -33607,11 +33607,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_2d50_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_2d50_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_2d50_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_2d50_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -33668,11 +33668,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_2d50_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_2d50_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_2d50_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_2d50_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -33729,11 +33729,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_2d50_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_2d50_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_2d50_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_2d50_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -33790,16 +33790,16 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     },
     {
-      "analysis_type": "twl",
+      "analysis_type": "swl",
       "resource_name": "longtail_17725",
       "component_name": "run3",
       "save_point_id": 4999,
@@ -33865,11 +33865,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_3d00_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_3d00_grid.csv"
         },
         "plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_3d00_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_3d00_plot.png"
         },
         "equivalent_elevation_grid": {
           "type": "grid",
@@ -33926,11 +33926,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_3d00_equivalent_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_3d00_equivalent_elevation_grid.csv"
         },
         "equivalent_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_3d00_equivalent_elevation_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_3d00_equivalent_elevation_plot.png"
         },
         "elevation_delta_grid": {
           "type": "grid",
@@ -33987,11 +33987,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/4999_582d00_3d00_elevation_delta_grid.csv"
+          "path": "batch_swl_output/baseline/4999_582d00_3d00_elevation_delta_grid.csv"
         },
         "elevation_delta_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/4999_582d00_3d00_elevation_delta_plot.png"
+          "path": "batch_swl_output/baseline/4999_582d00_3d00_elevation_delta_plot.png"
         },
         "threshold_ari_elevation_grid": {
           "type": "grid",
@@ -34048,11 +34048,11 @@ window.MANIFEST = {
               ]
             ]
           },
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv"
         },
         "threshold_ari_elevation_plot": {
           "type": "image",
-          "path": "batch_twl_output/baseline/savepoint4999_ari15_elevation_plot.png"
+          "path": "batch_swl_output/baseline/savepoint4999_ari15_elevation_plot.png"
         }
       }
     }

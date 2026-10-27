@@ -1,6 +1,6 @@
 """Tests for the Great Lakes raw-data cleaning scripts.
 
-clean_lake_levels_all_scenarios.py and clean_still_water_summary.py live in
+clean_lake_levels_all_scenarios.py and clean_swl_summary.py live in
 src/great_lakes/ (moved there so mypy/ruff cover them like the rest of the package);
 imported normally like any other great_lakes module.
 """
@@ -10,7 +10,7 @@ import pandas as pd
 import pytest
 
 from great_lakes import clean_lake_levels_all_scenarios as clean_avg
-from great_lakes import clean_still_water_summary as clean_twl
+from great_lakes import clean_swl_summary as clean_swl
 
 # ---- clean_lake_levels_all_scenarios.py: LAKES / DATE_COLUMN -----------------------
 
@@ -56,17 +56,17 @@ def test_clean_lake_frame_formats_dates_beyond_datetime64_range():
     assert cleaned["time"].tolist() == ["2999-12-01"]
 
 
-# ---- clean_still_water_summary.py: source_sheet_name -------------------------------
+# ---- clean_swl_summary.py: source_sheet_name -------------------------------
 
 @pytest.mark.parametrize("scenario,lake_tag,expected", [
     ("baseline", "sup", "baseline (sup TWL BE)"),
     ("lowLL", "mich", "lowLL (mich TWL BE)"),
 ])
 def test_source_sheet_name(scenario, lake_tag, expected):
-    assert clean_twl.source_sheet_name(scenario, lake_tag) == expected
+    assert clean_swl.source_sheet_name(scenario, lake_tag) == expected
 
 
-# ---- clean_still_water_summary.py: SCENARIOS regression ----------------------------
+# ---- clean_swl_summary.py: SCENARIOS regression ----------------------------
 
 def test_scenarios_mapping_matches_documented_precip_temp_deltas():
     # Regression guard: this module's own docstring/comment records that an earlier
@@ -74,7 +74,7 @@ def test_scenarios_mapping_matches_documented_precip_temp_deltas():
     # mislabeled every known-scenario sheet's precip/temp deltas. lowLL ("low lake
     # level") must map to the dry/hot _0_7 scenario; highLL ("high lake level") must
     # map to the wet _20_5 scenario.
-    assert clean_twl.SCENARIOS == {
+    assert clean_swl.SCENARIOS == {
         "baseline": "baseline-_0_0",
         "modnear": "nearterm-_5_1.5",
         "modfuture_low": "moderate_low-_10_5",
@@ -84,12 +84,12 @@ def test_scenarios_mapping_matches_documented_precip_temp_deltas():
 
 
 def test_new_header_matches_ari_columns_plus_id_lat_lon():
-    assert clean_twl.NEW_HEADER == [
+    assert clean_swl.NEW_HEADER == [
         "ID", "lat", "lon", 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000,
     ]
 
 
-# ---- clean_still_water_summary.py: clean_scenario_frame ----------------------------
+# ---- clean_swl_summary.py: clean_scenario_frame ----------------------------
 
 def test_clean_scenario_frame_drops_blank_id_rows_only():
     raw = pd.DataFrame({
@@ -99,7 +99,7 @@ def test_clean_scenario_frame_drops_blank_id_rows_only():
         1: [100.0, 101.0, 102.0],
     })
 
-    cleaned = clean_twl.clean_scenario_frame(raw)
+    cleaned = clean_swl.clean_scenario_frame(raw)
 
     assert cleaned["ID"].tolist() == [1, 3]
     assert cleaned[1].tolist() == [100.0, 102.0]
@@ -107,5 +107,5 @@ def test_clean_scenario_frame_drops_blank_id_rows_only():
 
 def test_clean_scenario_frame_keeps_all_rows_when_no_blank_ids():
     raw = pd.DataFrame({"ID": [1, 2, 3], "lat": [1.0, 2.0, 3.0], "lon": [1.0, 2.0, 3.0]})
-    cleaned = clean_twl.clean_scenario_frame(raw)
+    cleaned = clean_swl.clean_scenario_frame(raw)
     assert len(cleaned) == 3

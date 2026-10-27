@@ -1,12 +1,12 @@
 """Tests for the Great Lakes template-builder scripts.
 
-build_avg_template.py and build_twl_template.py live in src/great_lakes/ (moved there
+build_avg_template.py and build_swl_template.py live in src/great_lakes/ (moved there
 so mypy/ruff cover them like the rest of the package); imported normally like any
 other great_lakes module.
 """
 import openpyxl
 
-from great_lakes import build_avg_template, build_twl_template
+from great_lakes import build_avg_template, build_swl_template
 
 # ---- build_avg_template.py ----------------------------------------------------------
 
@@ -48,17 +48,17 @@ def test_build_avg_template_config_sheet_has_all_options_with_defaults(tmp_path)
     assert "REQUIRED" in output_dir_row.comment.text
 
 
-# ---- build_twl_template.py -----------------------------------------------------------
+# ---- build_swl_template.py -----------------------------------------------------------
 
-def test_build_twl_template_writes_resources_and_config_sheets(tmp_path):
-    out_path = build_twl_template.build_template(tmp_path / "template_twl.xlsx")
+def test_build_swl_template_writes_resources_and_config_sheets(tmp_path):
+    out_path = build_swl_template.build_template(tmp_path / "template_swl.xlsx")
 
     wb = openpyxl.load_workbook(out_path)
     assert wb.sheetnames == ["resources", "config"]
 
     resources_ws = wb["resources"]
     header = [cell.value for cell in resources_ws[1]]
-    assert header == build_twl_template.RESOURCES_HEADER
+    assert header == build_swl_template.RESOURCES_HEADER
 
     # Three example rows illustrate save_point_id, lat/lon, and success_pattern=True.
     assert resources_ws.max_row == 4
@@ -69,8 +69,8 @@ def test_build_twl_template_writes_resources_and_config_sheets(tmp_path):
     assert resource_names == ["duluth_harbor", "mackinac_strait", "kingston_shoal"]
 
 
-def test_build_twl_template_equivalent_elevation_column_has_explanatory_comment(tmp_path):
-    out_path = build_twl_template.build_template(tmp_path / "template_twl.xlsx")
+def test_build_swl_template_equivalent_elevation_column_has_explanatory_comment(tmp_path):
+    out_path = build_swl_template.build_template(tmp_path / "template_swl.xlsx")
 
     wb = openpyxl.load_workbook(out_path)
     resources_ws = wb["resources"]
@@ -81,14 +81,14 @@ def test_build_twl_template_equivalent_elevation_column_has_explanatory_comment(
     assert "baseline_magnitude" in comment.text
 
 
-def test_build_twl_template_config_sheet_matches_config_rows(tmp_path):
-    out_path = build_twl_template.build_template(tmp_path / "template_twl.xlsx")
+def test_build_swl_template_config_sheet_matches_config_rows(tmp_path):
+    out_path = build_swl_template.build_template(tmp_path / "template_swl.xlsx")
 
     wb = openpyxl.load_workbook(out_path)
     config_ws = wb["config"]
     rows = [(row[0].value, row[1].value) for row in config_ws.iter_rows(min_row=2)]
     expected = [
         (option, default if default != "" else None)
-        for option, default, _ in build_twl_template.CONFIG_ROWS
+        for option, default, _ in build_swl_template.CONFIG_ROWS
     ]
     assert rows == expected

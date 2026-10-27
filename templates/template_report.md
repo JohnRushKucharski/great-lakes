@@ -1,20 +1,20 @@
 # Standard Resource Assessment Workflow
-New batch run resource assessment workflowd are needed for twl and avg water level resources. Many parts of this work flow is identical to the current batch run workflows. However, there are a few additional stesps. 
+New batch run resource assessment workflowd are needed for swl and avg water level resources. Many parts of this work flow is identical to the current batch run workflows. However, there are a few additional stesps. 
 
 ## Inputs:
 The new work requires the following inputs:
 
 
-1. Water level data - directory containing data for each like, same as current batch run workflow. (Note: for twl resources this will be a directory containing TWL data, for an avg waterlevel resource this will be a directory containing avg data).
+1. Water level data - directory containing data for each like, same as current batch run workflow. (Note: for swl resources this will be a directory containing SWL data, for an avg waterlevel resource this will be a directory containing avg data).
 
-2. Resource data following the default avg or twl template. The `new_template_batch_run_avg.xlsx` and `new_template_batch_run_twl.xlsx` show required changes, including: addition of new keys, renaming of keys, reorganization of key-value pairs, changes to default values, etc.
+2. Resource data following the default avg or swl template. The `new_template_batch_run_avg.xlsx` and `new_template_batch_run_swl.xlsx` show required changes, including: addition of new keys, renaming of keys, reorganization of key-value pairs, changes to default values, etc.
 
 Note: This should be the new default pattern, but should not break existing analyses using the current input xlsx files.
 
 ## Outputs
 The new workflows must produce the following, outputs:
 
-1. Same standard output datafiles, grids and plots. For example standard, `config.metric_mode`-`resources.plot_threshold` _plot.png and _grid.csv outputs (i.e., for twl resources same {save_point_ID}_{elevation_NAVD88_in_ft}_{runup_value_in_ft}_plot.png, and {save_point_ID}_{elevation_NAVD88_in_ft}_{runup_value_in_ft}_grid.csv outputs from long tail point analysis).
+1. Same standard output datafiles, grids and plots. For example standard, `config.metric_mode`-`resources.plot_threshold` _plot.png and _grid.csv outputs (i.e., for swl resources same {save_point_ID}_{elevation_NAVD88_in_ft}_{runup_value_in_ft}_plot.png, and {save_point_ID}_{elevation_NAVD88_in_ft}_{runup_value_in_ft}_grid.csv outputs from long tail point analysis).
 
 2. Output report - new output discussed below. This output should be placed alongside the other outputs for the row being run. It should be name as follows: {config.output_filename_pattern}_report.md
 
@@ -27,9 +27,9 @@ The new workflows require several new steps:
 
 1. **`annual_probability` assessment** 
     
-    The typical AVG and TWL row assessments produce `{config.output_filename_pattern}_grid.csv` and `{config.output_filename_pattern}_plot.png` output files where the grid values are in the specified `frequency_type` units. The new workflow requires that these output files be produced in `annual_probability` units. If the `frequency_type` in the input excel sheet is set to something other than `annual probability` then output files in these units will be named: `{config.output_filename_pattern}_{config.frequency_type}-grid.csv` and `{config.output_filename_pattern}_{config.frequency_type}-plot.png`, repectively. The `annual probability`outputs, with the typical `{config.output_filename_pattern}_grid.csv` and `{config.output_filename_pattern}_plot.png` output filenames, will plot the same outputs, where the grid values and `plotting_threshold` have been transformed into `annual_probability` values.
+    The typical AVG and SWL row assessments produce `{config.output_filename_pattern}_grid.csv` and `{config.output_filename_pattern}_plot.png` output files where the grid values are in the specified `frequency_type` units. The new workflow requires that these output files be produced in `annual_probability` units. If the `frequency_type` in the input excel sheet is set to something other than `annual probability` then output files in these units will be named: `{config.output_filename_pattern}_{config.frequency_type}-grid.csv` and `{config.output_filename_pattern}_{config.frequency_type}-plot.png`, repectively. The `annual probability`outputs, with the typical `{config.output_filename_pattern}_grid.csv` and `{config.output_filename_pattern}_plot.png` output filenames, will plot the same outputs, where the grid values and `plotting_threshold` have been transformed into `annual_probability` values.
 
-2. **Runup Assessment (for TWL resources only)** 
+2. **Runup Assessment (for SWL resources only)** 
 
     A runup assessment, follows the same logic as the analysis used to produe the typical `{config.output_filename_pattern}_plot.png` and  `{config.output_filename_pattern}_grid.csv` outputs EXCEPT the analysis is performed on the *runup adjusted magnitude* instead of the typical `{resources.magnitude_value}`. The *runup adjusted magnitude* = `{resources.magnitude_value}` - *runup_value*. In this way the analysis used to produce the typical `{config.output_filename_pattern}_plot.png` and  `{config.output_filename_pattern}_grid.csv` outputs, can be viewed as a special case of a runup assessment wher the *runup_value* = 0.    
 
@@ -51,13 +51,13 @@ The new workflows require several new steps:
 
     1. Identify *baseline_metric* value: The *baseline_metric*, or metric value associated with the (0, 0) climate change scenario is retrieved from the row's `{config.output_filename_pattern}_grid.png`).
 
-        **TWL Resources with Runup Assessments**: note in the case of TWL rows with runup assessments, there will be multiple *baseline_metric* values, one for the no runup case (i.e. *runup_value* = 0), and one for each of the *runup_value*s that are assessed. 
+        **SWL Resources with Runup Assessments**: note in the case of SWL rows with runup assessments, there will be multiple *baseline_metric* values, one for the no runup case (i.e. *runup_value* = 0), and one for each of the *runup_value*s that are assessed. 
 
-    2. Compute the annualized *probability_baseline_metric*: For AVG rows the annualized *probability_baseline_metric* is the *baseline_metric* value converted to a `annual_probability` `frequency type` if it is not in this form already and the TWL edge case described below does not apply. 
+    2. Compute the annualized *probability_baseline_metric*: For AVG rows the annualized *probability_baseline_metric* is the *baseline_metric* value converted to a `annual_probability` `frequency type` if it is not in this form already and the SWL edge case described below does not apply. 
     
-        **TWL Resources Edge Case Adjustment(s)** - In the case of TWL resources, the following extra step (2a) must be followed to potentially adjusted the *probability_baseline_metric* value. In the case of TWL resources with runup assessments the extra step (2a) is completed for each of the multiple *baseline_metric* values (as discussed in step 1).
+        **SWL Resources Edge Case Adjustment(s)** - In the case of SWL resources, the following extra step (2a) must be followed to potentially adjusted the *probability_baseline_metric* value. In the case of SWL resources with runup assessments the extra step (2a) is completed for each of the multiple *baseline_metric* values (as discussed in step 1).
 
-        (2a) *probability_baseline_metric* edge cases: All *baseline_metrics* in TWL assessments must have originally been computed based an ARI value (i.e., the ARI value associated with the `{resources.magnitude_value}` in the TWL input data). Two edge cases must be dealt with to compute the *probability_baseline_metric*: (1) if the `{resources.magnitude_value}` - *runup_value* > the TWL elevation associated with the maximum ARI then the *frequency_baseline_metric* = 0. (2) if the `{resources.magnitude_value}` - *runup_value* < the 1 yr ARI TWL elevation, then the *frequency_baseline_metric* = 1.
+        (2a) *probability_baseline_metric* edge cases: All *baseline_metrics* in SWL assessments must have originally been computed based an ARI value (i.e., the ARI value associated with the `{resources.magnitude_value}` in the SWL input data). Two edge cases must be dealt with to compute the *probability_baseline_metric*: (1) if the `{resources.magnitude_value}` - *runup_value* > the SWL elevation associated with the maximum ARI then the *frequency_baseline_metric* = 0. (2) if the `{resources.magnitude_value}` - *runup_value* < the 1 yr ARI SWL elevation, then the *frequency_baseline_metric* = 1.
 
     3. Assign "n/a" baseline likelihood score: For resources without runup assessments if the *probability_baseline_metric* = 0, then the baseline likelihood score is "n/a". For resources with runup assessments, if the *probability_baseline_metric* associated the the *max_runup* value = 0, then the baseline liklihood score is "n/a".
     
@@ -71,7 +71,7 @@ The new workflows require several new steps:
 
 In AVG water level rows, when `frequency_type`= `portion` metric values are computed as follows: `portion` = "successes count" / total time steps in the AVG timeseries. The new `annual_probability` `frequency_type`, will effectively "annualize" the `portion` monthly probability values, such that `annual_probability` = `portion` / 12. Therefore, the `annual_return_interval` = 1 / `annual_probability`. 
 
-In TWL rows, the `annual_probability` metric values are computed as follows: `annual_probability` = 1 / ARI value.
+In SWL rows, the `annual_probability` metric values are computed as follows: `annual_probability` = 1 / ARI value.
 
  
 

@@ -1,6 +1,6 @@
 """Shared batch-run infrastructure for great_lakes's per-row Excel-driven batch scripts.
 
-batch_run_avg.py and batch_run_twl.py both: read a resources-sheet row, validate/parse
+batch_run_avg.py and batch_run_swl.py both: read a resources-sheet row, validate/parse
 it into a resource spec, resolve an output target, skip if that target repeats within
 this run, skip/fail if the target already has output on disk and overwrite=False, run
 job-specific work, and record a RowResult per row -- accumulating into a BatchSummary.
@@ -157,9 +157,9 @@ def _default_progress(row_index: int, total_rows: int, resource_name: str | None
 class RowProcessor(Protocol[ResourceT, ConfigT]):
     """Job-specific behavior run_batch delegates to (Strategy pattern).
 
-    One implementation per batch script (see batch_run_avg.py/batch_run_twl.py's
-    private _AvgRowProcessor/_TwlRowProcessor). run_batch itself only knows this
-    protocol -- it has no avg/twl-specific knowledge.
+    One implementation per batch script (see batch_run_avg.py/batch_run_swl.py's
+    private _AvgRowProcessor/_SwlRowProcessor). run_batch itself only knows this
+    protocol -- it has no avg/swl-specific knowledge.
     """
 
     def read_rows(self, resources_path: Path) -> list[dict[str, Any]]:

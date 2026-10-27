@@ -1,6 +1,6 @@
-"""Fill in missing TWL scenarios for Great Lakes save points.
+"""Fill in missing SWL scenarios for Great Lakes save points.
 
-Each `data/clean/<lake>_twl.xlsx` workbook (see batch_run_twl.py / common_twl.py) has 5
+Each `data/clean/<lake>_swl.xlsx` workbook (see batch_run_swl.py / common_swl.py) has 5
 of 17 possible precip/temp climate scenarios -- the **known scenarios** -- per save
 point. This script estimates the water-level-vs-ARI curve for the remaining 12
 **target scenarios**, via two methods depending on where they fall relative to the
@@ -27,9 +27,9 @@ from scipy.spatial import (  # type: ignore[import-untyped]  # pylint: disable=n
     Delaunay,
 )
 
-from great_lakes import common_twl
+from great_lakes import common_swl
 
-parse_scenario_sheet_name = common_twl.parse_scenario_sheet_name
+parse_scenario_sheet_name = common_swl.parse_scenario_sheet_name
 
 # All 17 precip/temp scenarios represented in the Great Lakes avg-level data (see
 # data/clean/*_avg.csv column headers). Not a full rectangular grid -- some
@@ -147,7 +147,7 @@ def fill_scenarios(known_frames: dict[str, pd.DataFrame],
     """Compute filled DataFrames for each target scenario from a weighted sum of knowns.
 
     known_frames: {known_suffix: save-point DataFrame}, one DataFrame per known
-    scenario, each with `ID`/`lat`/`lon` columns (see common_twl.NON_ARI_COLUMNS) plus
+    scenario, each with `ID`/`lat`/`lon` columns (see common_swl.NON_ARI_COLUMNS) plus
     one column per ARI. Rows must be aligned across all known frames (same save points,
     same order).
 
@@ -163,9 +163,9 @@ def fill_scenarios(known_frames: dict[str, pd.DataFrame],
     filled: dict[str, pd.DataFrame] = {}
     for suffix, (vertex_labels, vertex_weights) in weights.items():
         vertex_frames = [known_frames[label] for label in vertex_labels]
-        ari_columns = [c for c in vertex_frames[0].columns if c not in common_twl.NON_ARI_COLUMNS]
+        ari_columns = [c for c in vertex_frames[0].columns if c not in common_swl.NON_ARI_COLUMNS]
 
-        non_ari_columns = [c for c in vertex_frames[0].columns if c in common_twl.NON_ARI_COLUMNS]
+        non_ari_columns = [c for c in vertex_frames[0].columns if c in common_swl.NON_ARI_COLUMNS]
         result = vertex_frames[0][non_ari_columns].copy()
         for column in ari_columns:
             weighted_sum = sum(
@@ -211,7 +211,7 @@ def extrapolate_scenarios(resolved_frames: dict[str, pd.DataFrame],
     plus one column per ARI.
 
     avg_means: {suffix: average lake level}, as returned by
-    common_twl.read_avg_scenario_means() -- must cover every suffix in resolved_frames
+    common_swl.read_avg_scenario_means() -- must cover every suffix in resolved_frames
     plus every suffix in target_suffixes.
 
     For each target suffix, picks its anchor via select_anchor_scenario() (over
@@ -228,8 +228,8 @@ def extrapolate_scenarios(resolved_frames: dict[str, pd.DataFrame],
         anchor_frame = resolved_frames[anchor]
         delta = avg_means[suffix] - avg_means[anchor]
 
-        ari_columns = [c for c in anchor_frame.columns if c not in common_twl.NON_ARI_COLUMNS]
-        non_ari_columns = [c for c in anchor_frame.columns if c in common_twl.NON_ARI_COLUMNS]
+        ari_columns = [c for c in anchor_frame.columns if c not in common_swl.NON_ARI_COLUMNS]
+        non_ari_columns = [c for c in anchor_frame.columns if c in common_swl.NON_ARI_COLUMNS]
         result = anchor_frame[non_ari_columns].copy()
         for column in ari_columns:
             result[column] = (anchor_frame[column] + delta).round(2)
@@ -252,9 +252,9 @@ def write_filled_workbook(known_sheets: dict[str, pd.DataFrame],
                            filled_frames: dict[str, pd.DataFrame],
                            output_path: Path, overwrite: bool = False,
                            extrapolated_frames: dict[str, pd.DataFrame] | None = None) -> None:
-    """Write a self-contained `<lake>_twl.xlsx` with known + filled + extrapolated sheets.
+    """Write a self-contained `<lake>_swl.xlsx` with known + filled + extrapolated sheets.
 
-    known_sheets: {sheet_name: DataFrame} straight from common_twl.load_lake_sheets()
+    known_sheets: {sheet_name: DataFrame} straight from common_swl.load_lake_sheets()
     (full sheet names, e.g. "baseline-_0_0"), copied through as-is.
     filled_frames: {"filled-<suffix>": DataFrame} as returned by fill_scenarios().
     extrapolated_frames: {"extrapolated-<suffix>": DataFrame} as returned by
@@ -283,10 +283,10 @@ app = typer.Typer(add_completion=False, no_args_is_help=True)
 @app.command()
 def main(
     data_dir: Path = typer.Argument(
-        ..., help="Directory holding the clean <lake>_twl.xlsx workbooks and "
+        ..., help="Directory holding the clean <lake>_swl.xlsx workbooks and "
                    "<avg-lake>_avg.csv files."),
     output_dir: Optional[Path] = typer.Argument(
-        None, help="Directory to write the filled <lake>_twl.xlsx workbooks to. "
+        None, help="Directory to write the filled <lake>_swl.xlsx workbooks to. "
                     "Defaults to a sibling of data_dir: data/extrapolated when "
                     "--extrapolate (the default), or data/filled with --no-extrapolate."),
     overwrite: bool = typer.Option(
@@ -297,9 +297,9 @@ def main(
              "(see docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md). "
              "On by default."),
 ) -> None:
-    """Fill in the 12 target scenarios for all 4 Great Lakes twl workbooks.
+    """Fill in the 12 target scenarios for all 4 Great Lakes swl workbooks.
 
-    Reads each <lake>_twl.xlsx under data_dir, Delaunay-linear-interpolates the 7
+    Reads each <lake>_swl.xlsx under data_dir, Delaunay-linear-interpolates the 7
     in-hull target scenarios, then (unless --no-extrapolate is passed) row-shift-
     extrapolates the remaining 5 out-of-hull target scenarios using each lake's
     <avg-lake>_avg.csv average lake levels, and writes a self-contained workbook --
@@ -313,12 +313,12 @@ def main(
     if output_dir is None:
         output_dir = resolve_default_output_dir(data_dir, extrapolate)
 
-    lakes = list(common_twl.LAKE_TWL_FILENAMES)
+    lakes = list(common_swl.LAKE_SWL_FILENAMES)
 
     if not overwrite:
         existing = [
             output_path for lake in lakes
-            if (output_path := common_twl.resolve_lake_twl_path(lake, output_dir)).exists()
+            if (output_path := common_swl.resolve_lake_swl_path(lake, output_dir)).exists()
         ]
         if existing:
             existing_list = ", ".join(str(p) for p in existing)
@@ -327,12 +327,12 @@ def main(
             )
 
     lake_sheets = {
-        lake: pd.read_excel(common_twl.resolve_lake_twl_path(lake, data_dir), sheet_name=None)
+        lake: pd.read_excel(common_swl.resolve_lake_swl_path(lake, data_dir), sheet_name=None)
         for lake in lakes
     }
     total_rows = sum(len(next(iter(sheets.values()))) for sheets in lake_sheets.values())
 
-    with typer.progressbar(length=total_rows, label="Filling TWL scenarios") as progress:
+    with typer.progressbar(length=total_rows, label="Filling SWL scenarios") as progress:
         for lake in lakes:
             sheets = lake_sheets[lake]
             known_coords = known_scenario_coords(list(sheets.keys()))
@@ -342,7 +342,7 @@ def main(
             known_frames_by_suffix = {
                 suffix: df
                 for sheet_name, df in sheets.items()
-                if (suffix := common_twl.parse_scenario_sheet_name(sheet_name)) in known_coords
+                if (suffix := common_swl.parse_scenario_sheet_name(sheet_name)) in known_coords
             }
             filled_frames = fill_scenarios(known_frames_by_suffix, weights)
 
@@ -352,12 +352,12 @@ def main(
                     **known_frames_by_suffix,
                     **{suffix.removeprefix("filled-"): df for suffix, df in filled_frames.items()},
                 }
-                avg_means = common_twl.read_avg_scenario_means(lake, data_dir)
+                avg_means = common_swl.read_avg_scenario_means(lake, data_dir)
                 extrapolated_frames = extrapolate_scenarios(
                     resolved_frames, avg_means, classification.out_of_hull
                 )
 
-            output_path = common_twl.resolve_lake_twl_path(lake, output_dir)
+            output_path = common_swl.resolve_lake_swl_path(lake, output_dir)
             write_filled_workbook(sheets, filled_frames, output_path, overwrite=overwrite,
                                    extrapolated_frames=extrapolated_frames)
 

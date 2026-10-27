@@ -97,7 +97,7 @@ per year, as expected from the lakes' strong annual cycle.
 ## Why ARI < 1 is dropped, and why ARI=1 is replaced
 
 `AEP = 1/ARI` is a probability, so it must satisfy `AEP <= 1`, which requires
-`ARI >= 1`. The TWL workbooks include ARI values below 1 year (0.1, 0.2, 0.5)
+`ARI >= 1`. The SWL workbooks include ARI values below 1 year (0.1, 0.2, 0.5)
 because those come from a different, already-tabulated upstream method (likely
 fit to sub-annual storm events directly) -- they never pass through this
 Poisson-AEP inversion. For the avg-level Poisson method here, `ARI < 1` isn't
@@ -195,5 +195,5 @@ needed here, this only smooths/resamples).
 
 All values are in feet (converted from the source data's meters); the
 colormap threshold and title's "baseline avg=" figure is that lake's baseline
-(`_0_0`) scenario mean, matching the convention used for the twl scripts (see
+(`_0_0`) scenario mean, matching the convention used for the swl scripts (see
 `docs/filled_vs_climate_canvas_comparison.md`).

@@ -4,7 +4,17 @@ Tooling (dependent on `hydropattern` via a pinned git dependency) for batch-gene
 and running hydropattern `.toml` configs against Great Lakes lake-level timeseries, one
 `.toml`/run per row of a spreadsheet (`batch_run_avg.py`) — plus a second, standalone
 batch tool
-(`batch_run_twl.py`) that evaluates total-water-level frequency curves instead.
+(`batch_run_swl.py`) that evaluates storm water level (SWL) frequency curves instead.
+
+## Language
+
+**Storm water level (SWL)**:
+Water level including storm surge and wave set-up, as a frequency (ARI) curve per save
+point. Excludes near-shore processes (run-up, overtopping). Replaces this repo's earlier
+name "total water level (twl)"; USACE sources often call it "still water level" (same
+"SWL" abbreviation), which is easily mistaken for average (monthly) water levels.
+_Avoid_: Total water level, twl (old name), still water level (except when mapping
+source/USACE usage to this term), average water level (that's **avg** data).
 
 ## Language
 
@@ -33,16 +43,16 @@ output land, relative to the config's base output directory:
 - `"row"`: one subfolder per resource name, nested with one subfolder per component name.
 
 **Save point**:
-A single row in a `batch_run_twl.py` lake workbook sheet — a fixed lat/lon location with an
+A single row in a `batch_run_swl.py` lake workbook sheet — a fixed lat/lon location with an
 `ID`, whose water-level-vs-ARI curve is looked up by a resources-sheet row via
 `save_point_id` (exact match, wins if given) or nearest `lat`/`lon` (Euclidean distance,
 fallback).
-_Avoid_: Location, site (too generic — save point is the twl-data-specific unit each
+_Avoid_: Location, site (too generic — save point is the swl-data-specific unit each
 sheet row represents).
 
 **ARI (Average Return Interval)**:
-The twl workbook's column headers (in years) — the inverse of exceedance probability for
-a given water level at a save point. `batch_run_twl.py` linearly interpolates in ARI-space
+The swl workbook's column headers (in years) — the inverse of exceedance probability for
+a given water level at a save point. `batch_run_swl.py` linearly interpolates in ARI-space
 against a save point's (water level, ARI) pairs to find the ARI at a resource row's
 magnitude threshold. Out-of-range thresholds are clamped to the nearest end ARI (`0.1` or
 `1000`) with a warning, never extrapolated.
@@ -57,9 +67,9 @@ the baseline (`_0_0`) scenario's ARI at the resolved baseline-ARI lookup value, 
 interpolating the water level at that same ARI under every other scenario's own curve
 — the reverse direction of the ARI lookup used for the primary metric. Answers "what
 water level is equally likely, under this scenario, as the lookup value is under the
-baseline scenario?" All twl-workbook levels, `magnitude_value`, and `equivalent_elevation`
+baseline scenario?" All swl-workbook levels, `magnitude_value`, and `equivalent_elevation`
 are in meters, IGLD85 datum (the analysis itself never converts units), but the written
-output is converted to feet, NAVD88 datum (see `common_twl.m_igld85_to_ft_NAVD88`, a flat
+output is converted to feet, NAVD88 datum (see `common_swl.m_igld85_to_ft_NAVD88`, a flat
 +0.44ft offset plus a standard 0.3048 m/ft scale — see
 `longtailpoint/longtail_waterlevel.xlsx` Sheet2's "NAVD88 to IGLD85" table) since a water
 level, unlike the primary metric's portion/percentage/return_period units, has physical
@@ -102,9 +112,9 @@ _Avoid_: ARI-15 elevation, fixed-ARI elevation (the ARI is `resource.threshold`,
 hardcoded 15, even though 15 is this batch's value).
 
 **Runup allowance**:
-The `longtailpoint`-specific meaning of `component_name` in a twl resources sheet: an
-assumed wave-runup amount, in feet, added on top of still-water level to obtain the
-total water level being evaluated. Values used so far: `base` (0 ft), `run2` (2 ft),
+The `longtailpoint`-specific meaning of `component_name` in a swl resources sheet: an
+assumed wave-runup amount, in feet, added on top of storm water level to obtain the
+water level being evaluated. Values used so far: `base` (0 ft), `run2` (2 ft),
 `run25` (2.5 ft), `run3` (3 ft). The dashboard's "Runup (ft)" picker filters/displays
 the numeric ft value (`RUNUP_FT_BY_COMPONENT`'s value), not the raw `component_name`
 code, since the code itself is an internal label with no meaning to a dashboard user.
@@ -127,13 +137,13 @@ _Avoid_: Equivalent elevation value, baseline elevation (conflates the resolved
 per-row *label/basis* with the **equivalent elevation** output it produces).
 
 **Known scenario**:
-One of the 5 (of 17 total) precip/temp scenarios a `<lake>_twl.xlsx` workbook already has
+One of the 5 (of 17 total) precip/temp scenarios a `<lake>_swl.xlsx` workbook already has
 a sheet for, per save point (`baseline-_0_0`, `nearterm-_5_1.5`, `moderate_low-_10_5`,
-`extreme_low-_20_5`, `extreme_high-_0_7`) — identical set across all 4 lake twl workbooks.
+`extreme_low-_20_5`, `extreme_high-_0_7`) — identical set across all 4 lake swl workbooks.
 _Avoid_: Source scenario, observed scenario.
 
 **Target scenario**:
-One of the 12 remaining precip/temp scenarios a `<lake>_twl.xlsx` workbook has no sheet
+One of the 12 remaining precip/temp scenarios a `<lake>_swl.xlsx` workbook has no sheet
 for, whose water-level-vs-ARI curve is being estimated per save point. Splits into
 **in-hull** (7 scenarios, within the 5 known scenarios' convex hull — estimated via
 Delaunay-linear interpolation, sheet name `filled-_<precip>_<temp>`) and **out-of-hull**
@@ -158,7 +168,7 @@ _Avoid_: Base scenario, reference scenario (reference scenario collides with the
 `reference_timeseries` vocabulary used elsewhere in hydropattern core).
 
 **Run readme**:
-The `README.txt` a batch run (`batch_run_avg.py` or `batch_run_twl.py`) writes at the
+The `README.txt` a batch run (`batch_run_avg.py` or `batch_run_swl.py`) writes at the
 root of the config's `output_directory` after every invocation of `run_batch`, whether
 or not any row succeeded. Documents: the resources/config workbook and data directory
 used as inputs, the run's timestamp, a per-row succeeded/failed summary (with failure
@@ -174,7 +184,7 @@ _Avoid_: Naming readme, manifest (manifest collides with `build_dashboard.py`'s
 The mean of the full synthetic scenario record (all ~12,360 monthly rows spanning
 1970-2999) in `data/clean/<avg-lake>_avg.csv` for lake `l`'s scenario `s` column — a
 single scalar per lake+scenario, independent of save point or ARI. `michigan` and
-`huron` (separate `<lake>_twl.xlsx` workbooks) both read the same `michiganhuron_avg.csv`
+`huron` (separate `<lake>_swl.xlsx` workbooks) both read the same `michiganhuron_avg.csv`
 column, since Michigan-Huron is one hydraulically-connected lake with one water level.
 _Avoid_: Mean lake level (AVG is the established short form used in row-shift
 extrapolation's math; keep both docs and code consistent).

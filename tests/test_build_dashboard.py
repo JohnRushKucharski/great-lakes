@@ -1,6 +1,6 @@
 """Tests for the Great Lakes longtailpoint results dashboard generator.
 
-build_dashboard.py reads one or more batch_run_twl.py resources+config workbooks and
+build_dashboard.py reads one or more batch_run_swl.py resources+config workbooks and
 their already-generated outputs, and produces a self-contained dashboard.html +
 sidecar manifest.js (see docs/adr/0002-sidecar-js-manifest-for-longtailpoint-dashboard.md
 for why the manifest is a .js sidecar rather than a live JSON/CSV fetch).
@@ -10,12 +10,12 @@ from pathlib import Path
 import pytest
 
 from great_lakes import build_dashboard as dash
-from great_lakes import common_twl
+from great_lakes import common_swl
 
 # ---- compute_magnitude_ft -----------------------------------------------------------
 
 def _resource(**overrides):
-    from great_lakes import batch_run_twl as twl
+    from great_lakes import batch_run_swl as swl
     fields = dict(
         resource_name="longtail_17877",
         component_name="base",
@@ -26,12 +26,12 @@ def _resource(**overrides):
         equivalent_elevation=None,
     )
     fields.update(overrides)
-    return twl.ResourceSpec(**fields)
+    return swl.ResourceSpec(**fields)
 
 
 def test_compute_magnitude_ft_converts_m_igld85_to_ft_NAVD88():
     resource = _resource(magnitude_value=178.7747637915269)
-    expected = common_twl.m_igld85_to_ft_NAVD88(178.7747637915269)
+    expected = common_swl.m_igld85_to_ft_NAVD88(178.7747637915269)
     assert dash.compute_magnitude_ft(resource) == pytest.approx(expected)
 
 
@@ -58,7 +58,7 @@ def test_basis_is_baseline_magnitude_case_insensitive():
 def test_basis_is_override_label_in_ft_NAVD88_for_numeric_cell():
     resource = _resource(magnitude_value=178.77, equivalent_elevation=178.7)
     row = {"equivalent_elevation": 178.7}
-    expected_ft = common_twl.m_igld85_to_ft_NAVD88(178.7)
+    expected_ft = common_swl.m_igld85_to_ft_NAVD88(178.7)
     result = dash.compute_equivalent_elevation_basis(row, resource)
     assert result == f"{expected_ft:.2f} ft override"
 
@@ -109,9 +109,9 @@ def test_build_entries_reads_rows_and_resolves_output_dir(tmp_path):
     assert entry.qualified_name == "longtail_17877_base_1968"
     assert entry.output_dir == out_dir
     assert entry.equivalent_elevation_basis == "baseline_magnitude"
-    assert entry.magnitude_ft == pytest.approx(common_twl.m_igld85_to_ft_NAVD88(178.7747637915269))
+    assert entry.magnitude_ft == pytest.approx(common_swl.m_igld85_to_ft_NAVD88(178.7747637915269))
     assert entry.workbook_path == wb_path
-    assert entry.analysis_type == "twl"
+    assert entry.analysis_type == "swl"
 
 
 def test_build_entries_basis_none_when_blank(tmp_path):
@@ -142,8 +142,8 @@ def test_build_entries_file_stem_elevation_runup_savepoint_style(tmp_path):
         filename_style="elevation_runup_savepoint",
     )
     entries = dash.build_entries(wb_path)
-    expected_stem = common_twl.output_file_stem(
-        common_twl.m_igld85_to_ft_NAVD88(178.7747637915269), "base", 1968,
+    expected_stem = common_swl.output_file_stem(
+        common_swl.m_igld85_to_ft_NAVD88(178.7747637915269), "base", 1968,
     )
     assert entries[0].file_stem == expected_stem
     assert entries[0].qualified_name == "longtail_17877_base_1968"  # identity unchanged
@@ -156,7 +156,7 @@ def test_build_entries_elevation_ft_is_magnitude_plus_runup(tmp_path):
         [["longtail_17877", "run25", "michigan", ">=", 178.7747637915269, 1968, None]],
     )
     entries = dash.build_entries(wb_path)
-    magnitude_ft = common_twl.m_igld85_to_ft_NAVD88(178.7747637915269)
+    magnitude_ft = common_swl.m_igld85_to_ft_NAVD88(178.7747637915269)
     assert entries[0].elevation_ft == pytest.approx(magnitude_ft + 2.5)
 
 
@@ -173,7 +173,7 @@ def test_build_entries_threshold_none_when_blank(tmp_path):
 
 
 def test_build_entries_threshold_ari_paths_resolved_when_threshold_set(tmp_path):
-    from great_lakes import batch_run_twl as twl
+    from great_lakes import batch_run_swl as swl
 
     out_dir = tmp_path / "out"
     wb_path = _write_workbook(
@@ -187,13 +187,13 @@ def test_build_entries_threshold_ari_paths_resolved_when_threshold_set(tmp_path)
     entries = dash.build_entries(wb_path)
     entry = entries[0]
     assert entry.threshold == pytest.approx(15.0)
-    resource = twl.parse_resource_row({
+    resource = swl.parse_resource_row({
         "resource_name": "longtail_17877", "component_name": "base", "lake": "michigan",
         "magnitude_operator": ">=", "magnitude_value": 178.7747637915269,
         "save_point_id": 1968, "threshold": 15.0,
     })
-    config = twl.read_config_sheet(wb_path)
-    expected_grid, expected_plot = twl.resolve_save_point_ari_elevation_output_paths(
+    config = swl.read_config_sheet(wb_path)
+    expected_grid, expected_plot = swl.resolve_save_point_ari_elevation_output_paths(
         resource, config
     )
     assert entry.threshold_ari_grid_path == expected_grid
@@ -224,7 +224,7 @@ def _make_entry(
 ):
     fields = dict(
         workbook_path=Path("workbook.xlsx"),
-        analysis_type="twl",
+        analysis_type="swl",
         resource_name="longtail_17877",
         component_name="base",
         save_point_id=1968,
@@ -497,7 +497,7 @@ def test_build_dashboard_end_to_end_writes_manifest_and_html(tmp_path):
     )
     dashboard_dir = tmp_path / "dashboard"
     dash.build_dashboard(
-        twl_workbook_paths=[wb_path], avg_workbook_paths=[], output_dir=dashboard_dir
+        swl_workbook_paths=[wb_path], avg_workbook_paths=[], output_dir=dashboard_dir
     )
     assert (dashboard_dir / "manifest.js").exists()
     assert (dashboard_dir / "dashboard.html").exists()
@@ -543,7 +543,7 @@ def test_build_avg_entries_reads_rows_and_marks_analysis_type_avg(tmp_path):
     assert entry.equivalent_elevation_basis is None
     assert entry.qualified_name == "longtail_17877_mo_avg"
     assert entry.output_dir == out_dir
-    assert entry.magnitude_ft == pytest.approx(common_twl.m_igld85_to_ft_NAVD88(178.7747637915269))
+    assert entry.magnitude_ft == pytest.approx(common_swl.m_igld85_to_ft_NAVD88(178.7747637915269))
 
 
 def test_build_avg_entries_requires_magnitude_characteristic(tmp_path):
@@ -564,14 +564,14 @@ def test_build_avg_entries_requires_magnitude_characteristic(tmp_path):
 # ---- merge_and_validate distinguishes analysis_type -----------------------------------
 
 def test_merge_and_validate_allows_same_identifiers_across_different_analysis_types(tmp_path):
-    twl_entry = _make_entry(tmp_path, qualified_name="twl_a", analysis_type="twl",
+    swl_entry = _make_entry(tmp_path, qualified_name="swl_a", analysis_type="swl",
                              save_point_id=None, magnitude_ft=500.0, component_name="mo_avg",
                              equivalent_elevation_basis=None)
     avg_entry = _make_entry(tmp_path, qualified_name="avg_a", analysis_type="avg",
                              save_point_id=None, magnitude_ft=500.0, component_name="mo_avg",
                              equivalent_elevation_basis=None)
-    merged = dash.merge_and_validate([[twl_entry], [avg_entry]])
-    assert merged == [twl_entry, avg_entry]
+    merged = dash.merge_and_validate([[swl_entry], [avg_entry]])
+    assert merged == [swl_entry, avg_entry]
 
 
 def test_merge_and_validate_raises_on_duplicate_within_same_analysis_type(tmp_path):
@@ -773,14 +773,14 @@ def test_render_dashboard_html_hides_elevation_runup_for_threshold_ari_metric(tm
     assert "threshold_ari_elevation" in text
 
 
-def test_main_cli_accepts_twl_and_avg_workbooks(tmp_path):
-    twl_out = tmp_path / "twl_out"
-    twl_wb = _write_workbook(
-        tmp_path, twl_out,
+def test_main_cli_accepts_swl_and_avg_workbooks(tmp_path):
+    swl_out = tmp_path / "swl_out"
+    swl_wb = _write_workbook(
+        tmp_path, swl_out,
         [["longtail_1", "base", "michigan", ">=", 178.0, 1, "baseline_magnitude"]],
     )
-    _touch_all_six(twl_out, "longtail_1_base_1")
-    (twl_out / "longtail_1_base_1_grid.csv").write_text(
+    _touch_all_six(swl_out, "longtail_1_base_1")
+    (swl_out / "longtail_1_base_1_grid.csv").write_text(
         "temp_delta\\precip_delta,0.0\n0.0,1.0\n", encoding="utf-8"
     )
 
@@ -797,7 +797,7 @@ def test_main_cli_accepts_twl_and_avg_workbooks(tmp_path):
 
     dashboard_dir = tmp_path / "dashboard"
     exit_code = dash.main([
-        "--twl-workbooks", str(twl_wb),
+        "--swl-workbooks", str(swl_wb),
         "--avg-workbooks", str(avg_wb),
         "--output-dir", str(dashboard_dir),
     ])
@@ -807,7 +807,7 @@ def test_main_cli_accepts_twl_and_avg_workbooks(tmp_path):
     payload = text[len("window.MANIFEST = "):].rstrip().rstrip(";")
     manifest = json.loads(payload)
     analysis_types = {e["analysis_type"] for e in manifest["entries"]}
-    assert analysis_types == {"twl", "avg"}
+    assert analysis_types == {"swl", "avg"}
 
 
 def test_main_cli_invokes_build_dashboard(tmp_path, monkeypatch):
@@ -821,6 +821,6 @@ def test_main_cli_invokes_build_dashboard(tmp_path, monkeypatch):
         "temp_delta\\precip_delta,0.0\n0.0,1.0\n", encoding="utf-8"
     )
     dashboard_dir = tmp_path / "dashboard"
-    exit_code = dash.main(["--twl-workbooks", str(wb_path), "--output-dir", str(dashboard_dir)])
+    exit_code = dash.main(["--swl-workbooks", str(wb_path), "--output-dir", str(dashboard_dir)])
     assert exit_code == 0
     assert (dashboard_dir / "dashboard.html").exists()

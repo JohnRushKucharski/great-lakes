@@ -1,11 +1,11 @@
-"""Generate templates/template_twl.xlsx: the blank resources+config
-workbook consumed by batch_run_twl.py.
+"""Generate templates/template_swl.xlsx: the blank resources+config
+workbook consumed by batch_run_swl.py.
 
 Re-run this script any time the recognized resources-sheet columns or config-sheet
-options in batch_run_twl.py change, so the shipped template stays in sync.
+options in batch_run_swl.py change, so the shipped template stays in sync.
 
 Usage:
-    uv run python -m great_lakes.build_twl_template
+    uv run python -m great_lakes.build_swl_template
 """
 
 from pathlib import Path
@@ -16,7 +16,7 @@ from openpyxl.styles import Font
 from openpyxl.worksheet.worksheet import Worksheet
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
-TEMPLATE_PATH = WORKSPACE_ROOT / "templates" / "template_twl.xlsx"
+TEMPLATE_PATH = WORKSPACE_ROOT / "templates" / "template_swl.xlsx"
 
 # Column order: required columns first, then save-point selector (id OR lat+lon),
 # then optional magnitude/threshold extras.
@@ -36,7 +36,7 @@ RESOURCES_HEADER = [
 
 # Example rows, illustrating: save_point_id selection (row 1), lat/lon nearest-point
 # selection (row 2), and a success_pattern=True low-water row (row 3). component_name
-# is left blank on rows 1-2 to also illustrate its "twl" default. equivalent_elevation
+# is left blank on rows 1-2 to also illustrate its "swl" default. equivalent_elevation
 # illustrates all three states: blank/skipped (row 1), "baseline_magnitude" (row 2),
 # and a numeric override (row 3).
 EXAMPLE_RESOURCE_ROWS = [
@@ -73,7 +73,7 @@ EXAMPLE_RESOURCE_ROWS = [
 ]
 
 # (option, default value, help comment) -- mirrors BatchConfig's own field defaults in
-# batch_run_twl.py. output_directory has no sensible default (required); its value here
+# batch_run_swl.py. output_directory has no sensible default (required); its value here
 # is a placeholder the user must replace.
 CONFIG_ROWS = [
     ("output_directory", "output",
@@ -99,7 +99,7 @@ CONFIG_ROWS = [
 _HEADER_FONT = Font(bold=True)
 
 # threshold column note: unlike magnitude_value (a water-level threshold, same units as
-# the twl data), 'threshold' is a climate-canvas plot reference line, expressed in the
+# the swl data), 'threshold' is a climate-canvas plot reference line, expressed in the
 # *metric_mode*'s output units (e.g. a portion in [0,1], a percentage in [0,100], or an
 # ARI in years for return_period) -- not a water level. See docs/user/reference.md's
 # `[output.plot.climate-canvas].threshold`.

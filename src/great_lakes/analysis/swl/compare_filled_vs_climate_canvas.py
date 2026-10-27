@@ -1,10 +1,10 @@
-"""Compare hydropattern's fillin_twl.py in-hull fill against climate_canvas's own
+"""Compare hydropattern's fillin_swl.py in-hull fill against climate_canvas's own
 interpolate+fillin, at the same (precip_delta, temp_delta) coordinates.
 
 Both fill the 7 in-hull scenarios from the same 5 known scenarios using
 Delaunay-linear (barycentric) interpolation:
 
-- fillin_twl.py (data/filled/*.xlsx): builds one Delaunay triangulation over the
+- fillin_swl.py (data/filled/*.xlsx): builds one Delaunay triangulation over the
   5 known (precip, temp) points and evaluates it directly at each of the 7 in-hull
   target coordinates (see docs/adr/0001).
 - climate_canvas.data_utilities.interpolator(..., fillin=True): bilinear on the
@@ -13,7 +13,7 @@ Delaunay-linear (barycentric) interpolation:
   which is every in-hull scenario here, since none sit on the sparse known grid's
   own row/column lines.
 
-For each lake's centroid save point (common_twl.center_save_point_id) and every ARI
+For each lake's centroid save point (common_swl.center_save_point_id) and every ARI
 in ARIS, this evaluates both methods at each in-hull scenario coordinate present in
 filled_data_dir's workbook and writes a comparison CSV + README.txt to output_dir
 (default: `<filled_data_dir>/img/comparison` -- see resolve_default_output_dir).
@@ -25,7 +25,7 @@ over the same known points.
 
 ## Usage
 
-    uv run python -m great_lakes.analysis.twl.compare_filled_vs_climate_canvas \\
+    uv run python -m great_lakes.analysis.swl.compare_filled_vs_climate_canvas \\
         <clean_data_dir> <filled_data_dir> [output_dir]
 """
 
@@ -38,10 +38,10 @@ import typer
 from climate_canvas.data_utilities import interpolator  # type: ignore[import-untyped]
 from hydropattern.scenario_grid import parse_scenario_name  # type: ignore[import-untyped]
 
-from great_lakes import ari_constants, common_twl, run_readme
-from great_lakes.fillin_twl import known_scenario_coords
+from great_lakes import ari_constants, common_swl, run_readme
+from great_lakes.fillin_swl import known_scenario_coords
 
-LAKES = tuple(common_twl.LAKE_TWL_FILENAMES)
+LAKES = tuple(common_swl.LAKE_SWL_FILENAMES)
 ARIS = (1.0, 10.0, 50.0, 100.0)
 
 _COMPARISON_CSV_NAME = "filled_vs_climate_canvas_comparison.csv"
@@ -57,20 +57,20 @@ def resolve_default_output_dir(filled_data_dir: Path) -> Path:
 
 
 def run(clean_data_dir: Path, filled_data_dir: Path) -> pd.DataFrame:
-    """Compare fillin_twl.py's filled values against climate_canvas's own
+    """Compare fillin_swl.py's filled values against climate_canvas's own
     interpolate+fillin, for every lake in LAKES / ARI in ARIS, at each in-hull
     target scenario coordinate present in filled_data_dir's workbook.
 
     Returns one row per (lake, ari, scenario): lake, save_point_id, ari, scenario,
-    precip_delta, temp_delta, fillin_twl_ft, climate_canvas_ft, diff_ft.
+    precip_delta, temp_delta, fillin_swl_ft, climate_canvas_ft, diff_ft.
     """
     rows = []
     for lake in LAKES:
-        clean_path = common_twl.resolve_lake_twl_path(lake, clean_data_dir)
+        clean_path = common_swl.resolve_lake_swl_path(lake, clean_data_dir)
         known_sheets = pd.read_excel(clean_path, sheet_name=None)
-        save_point_id = common_twl.center_save_point_id(known_sheets)
+        save_point_id = common_swl.center_save_point_id(known_sheets)
 
-        filled_path = common_twl.resolve_lake_twl_path(lake, filled_data_dir)
+        filled_path = common_swl.resolve_lake_swl_path(lake, filled_data_dir)
         filled_sheets = pd.read_excel(filled_path, sheet_name=None)
 
         coords = known_scenario_coords(list(known_sheets.keys()))
@@ -80,27 +80,27 @@ def run(clean_data_dir: Path, filled_data_dir: Path) -> pd.DataFrame:
         for ari in ARIS:
             z = np.full((len(temps), len(precips)), np.nan)
             for name, df in known_sheets.items():
-                suffix = common_twl.parse_scenario_sheet_name(name)
+                suffix = common_swl.parse_scenario_sheet_name(name)
                 if suffix not in coords:
                     continue
                 p, t = parse_scenario_name(suffix)
                 row = df.loc[df["ID"] == save_point_id, ari]
                 if row.empty:
                     continue
-                z[temps.index(t), precips.index(p)] = row.iloc[0] * common_twl.METERS_TO_FEET
+                z[temps.index(t), precips.index(p)] = row.iloc[0] * common_swl.METERS_TO_FEET
             xs = np.array(precips, dtype=float)
             ys = np.array(temps, dtype=float)
             cc_interp = interpolator(xs, ys, z, fillin=True)
 
             for name, df in filled_sheets.items():
-                suffix = common_twl.parse_scenario_sheet_name(name)
+                suffix = common_swl.parse_scenario_sheet_name(name)
                 if suffix is None or suffix in coords or not suffix.startswith("_"):
                     continue  # skip known scenarios; only compare in-hull fills
                 p, t = parse_scenario_name(suffix)
                 row = df.loc[df["ID"] == save_point_id, ari]
                 if row.empty:
                     continue
-                filled_ft = row.iloc[0] * common_twl.METERS_TO_FEET
+                filled_ft = row.iloc[0] * common_swl.METERS_TO_FEET
                 cc_ft = cc_interp((p, t))
                 rows.append({
                     "lake": lake,
@@ -109,7 +109,7 @@ def run(clean_data_dir: Path, filled_data_dir: Path) -> pd.DataFrame:
                     "scenario": suffix,
                     "precip_delta": p,
                     "temp_delta": t,
-                    "fillin_twl_ft": round(filled_ft, 4),
+                    "fillin_swl_ft": round(filled_ft, 4),
                     "climate_canvas_ft": round(cc_ft, 4),
                     "diff_ft": round(filled_ft - cc_ft, 4),
                 })
@@ -126,9 +126,9 @@ def write_comparison_csv(comparison: pd.DataFrame, output_dir: Path) -> Path:
 
 _NAMING_SCHEME_TEXT = (
     f"{_COMPARISON_CSV_NAME} - one row per (lake, ari, in-hull target scenario): "
-    "fillin_twl_ft (hydropattern's own Delaunay fill), climate_canvas_ft (climate_"
+    "fillin_swl_ft (hydropattern's own Delaunay fill), climate_canvas_ft (climate_"
     "canvas's own interpolate+fillin over the same known points), and diff_ft "
-    "(fillin_twl_ft - climate_canvas_ft). ARI values: "
+    "(fillin_swl_ft - climate_canvas_ft). ARI values: "
     f"{', '.join(ari_constants.format_ari(a) for a in ARIS)}. See "
     "docs/filled_vs_climate_canvas_comparison.md for the write-up."
 )
@@ -139,16 +139,16 @@ app = typer.Typer(add_completion=False, no_args_is_help=True)
 @app.command()
 def main(
     clean_data_dir: Path = typer.Argument(
-        ..., help="Directory holding the known-scenario <lake>_twl.xlsx workbooks "
+        ..., help="Directory holding the known-scenario <lake>_swl.xlsx workbooks "
                    "(data/clean)."),
     filled_data_dir: Path = typer.Argument(
-        ..., help="Directory holding the filled <lake>_twl.xlsx workbooks to "
+        ..., help="Directory holding the filled <lake>_swl.xlsx workbooks to "
                    "validate (data/filled)."),
     output_dir: Optional[Path] = typer.Argument(
         None, help="Directory to write the comparison CSV + README.txt to. "
                     "Defaults to <filled_data_dir>/img/comparison."),
 ) -> None:
-    """Compare fillin_twl.py's in-hull fill against climate_canvas's own
+    """Compare fillin_swl.py's in-hull fill against climate_canvas's own
     interpolate+fillin, and write a README.txt documenting the run (see
     run_readme.write_readme).
     """
@@ -159,10 +159,10 @@ def main(
     csv_path = write_comparison_csv(comparison, output_dir)
 
     inputs = [
-        (f"{lake} known twl workbook", common_twl.resolve_lake_twl_path(lake, clean_data_dir))
+        (f"{lake} known swl workbook", common_swl.resolve_lake_swl_path(lake, clean_data_dir))
         for lake in LAKES
     ] + [
-        (f"{lake} filled twl workbook", common_twl.resolve_lake_twl_path(lake, filled_data_dir))
+        (f"{lake} filled swl workbook", common_swl.resolve_lake_swl_path(lake, filled_data_dir))
         for lake in LAKES
     ]
     if len(comparison):

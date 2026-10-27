@@ -14,19 +14,19 @@ job is the end-to-end path and how the stages connect.)
 +------------------------------+
                 |
                 | STEP 1: clean_lake_levels_all_scenarios.py
-                |         clean_still_water_summary.py
+                |         clean_swl_summary.py
                 v
 +----------------------------------+
-| data/clean/*_avg.csv, *_twl.xlsx |
+| data/clean/*_avg.csv, *_swl.xlsx |
 | (gitignored, regenerable)        |
 +----------------------------------+
                   |
-                  | STEP 2: fillin_twl.py
+                  | STEP 2: fillin_swl.py
                   |         (Delaunay fill, then optional row-shift extrapolation)
                   v
 +-------------------------------------------------+
-| data/filled/*_twl.xlsx           (12 scenarios) |
-| data/extrapolated/*_twl.xlsx     (17 scenarios) |
+| data/filled/*_swl.xlsx           (12 scenarios) |
+| data/extrapolated/*_swl.xlsx     (17 scenarios) |
 +-------------------------------------------------+
                          |
                          | STEP 3: fill in a copy of templates/template_*.xlsx by hand
@@ -36,7 +36,7 @@ job is the end-to-end path and how the stages connect.)
 | resources+config .xlsx |
 +------------------------+
              |
-             | STEP 4: batch_run_avg.py  /  batch_run_twl.py
+             | STEP 4: batch_run_avg.py  /  batch_run_swl.py
              v
 +------------------------------------------------+
 | output_directory/                              |
@@ -56,7 +56,7 @@ job is the end-to-end path and how the stages connect.)
 ```
 
 **STEP 5 (optional, not shown above — a side branch, not part of the main trunk):**
-`analyze_known_scenarios.py` reads `data/extrapolated/*_twl.xlsx` directly (step 2's
+`analyze_known_scenarios.py` reads `data/extrapolated/*_swl.xlsx` directly (step 2's
 output) and writes `data/analysis/known_scenario_directionality.csv` + a summary
 `.xlsx`. It doesn't feed into steps 3/4/6 and doesn't require them to have run.
 
@@ -84,44 +84,44 @@ uv sync --group test --group dev
 
 ```powershell
 uv run python -m great_lakes.clean_lake_levels_all_scenarios
-uv run python -m great_lakes.clean_still_water_summary
+uv run python -m great_lakes.clean_swl_summary
 ```
 Inputs: `data\raw\lake_levels_all_scenarios_9jul2026.xlsx`,
 `data\raw\still_water_summary__22may2026.xlsm` (committed).
 Outputs: `data\clean\{superior,michiganhuron,stclair,erie,ontario}_avg.csv`,
-`data\clean\{superior,michigan,huron,ontario}_twl.xlsx` (gitignored, regenerable —
+`data\clean\{superior,michigan,huron,ontario}_swl.xlsx` (gitignored, regenerable —
 commit only if you intend them as new ground truth).
 
-### 2. Fill in the missing TWL scenarios
+### 2. Fill in the missing SWL scenarios
 
 ```powershell
-uv run python -m great_lakes.fillin_twl data\clean
+uv run python -m great_lakes.fillin_swl data\clean
 ```
-Inputs: `data\clean\*_twl.xlsx` + `data\clean\*_avg.csv` (step 1's outputs).
-Output (default, `--extrapolate`): `data\extrapolated\*_twl.xlsx` (17 scenarios).
-With `--no-extrapolate`: `data\filled\*_twl.xlsx` (12 scenarios) instead.
-See `README.md`'s "Batch tool 3: fillin_twl.py" section for the interpolation/
+Inputs: `data\clean\*_swl.xlsx` + `data\clean\*_avg.csv` (step 1's outputs).
+Output (default, `--extrapolate`): `data\extrapolated\*_swl.xlsx` (17 scenarios).
+With `--no-extrapolate`: `data\filled\*_swl.xlsx` (12 scenarios) instead.
+See `README.md`'s "Batch tool 3: fillin_swl.py" section for the interpolation/
 extrapolation math and all flags.
 
 ### 3. Fill in a resources+config workbook
 
 ```powershell
-Copy-Item templates\template_avg.xlsx my_run.xlsx   # or template_twl.xlsx
+Copy-Item templates\template_avg.xlsx my_run.xlsx   # or template_swl.xlsx
 ```
 This is the one **manual, human-authored input** in the whole pipeline — one row per
 hydropattern component/analysis you want, plus a `config` sheet of shared options
 (`output_directory`, `overwrite`, plot settings, etc.). See `README.md`'s "resources
 sheet" / "config sheet" tables for every column. Regenerate the template with
-`uv run python -m great_lakes.build_avg_template` / `build_twl_template` if the
+`uv run python -m great_lakes.build_avg_template` / `build_swl_template` if the
 script's recognized columns ever change.
 
 ### 4. Run the batch analysis
 
 ```powershell
 uv run python -m great_lakes.batch_run_avg my_run.xlsx data\clean
-uv run python -m great_lakes.batch_run_twl my_twl_run.xlsx data\clean
+uv run python -m great_lakes.batch_run_swl my_swl_run.xlsx data\clean
 ```
-(`batch_run_twl.py` typically points at `data\extrapolated` or `data\filled` instead of
+(`batch_run_swl.py` typically points at `data\extrapolated` or `data\filled` instead of
 `data\clean`, depending on which scenario coverage the analysis needs.)
 
 Inputs: the workbook from step 3, plus the matching clean/filled/extrapolated data
@@ -138,13 +138,13 @@ readme first when checking whether an output tree reflects a specific run.
 ```powershell
 uv run python -m great_lakes.analyze_known_scenarios
 ```
-Input: `data\extrapolated\*_twl.xlsx` (step 2's output). Output:
+Input: `data\extrapolated\*_swl.xlsx` (step 2's output). Output:
 `data\analysis\known_scenario_directionality.csv` + summary `.xlsx`.
 
 ### 6. Build the results dashboard
 
 ```powershell
-uv run python -m great_lakes.build_dashboard --twl-workbooks my_twl_run.xlsx --avg-workbooks my_run.xlsx --output-dir longtailpoint
+uv run python -m great_lakes.build_dashboard --swl-workbooks my_swl_run.xlsx --avg-workbooks my_run.xlsx --output-dir longtailpoint
 ```
 Inputs: one or more **already-run** (step 4 complete) resources+config workbooks — the
 tool reads each workbook's own `output_directory` for the grids/plots it produced.
@@ -175,24 +175,24 @@ This note audits the Great Lakes example workflow end to end:
 
 ```text
 raw xlsx/xlsm
-  -> clean lake-average csv / clean TWL xlsx
-  -> filled TWL xlsx (7 in-hull scenarios)
-  -> extrapolated TWL xlsx (5 out-of-hull scenarios)
-  -> batch analysis outputs (AVG + TWL grids/plots)
+  -> clean lake-average csv / clean SWL xlsx
+  -> filled SWL xlsx (7 in-hull scenarios)
+  -> extrapolated SWL xlsx (5 out-of-hull scenarios)
+  -> batch analysis outputs (AVG + SWL grids/plots)
   -> longtailpoint outputs
   -> manifest.js + dashboard.html
 ```
 
 ## Executive summary
 
-**Overall:** the main numeric pipeline is internally consistent where I could verify it. The raw-to-clean transforms preserve sampled values, the TWL fill/extrapolation code matches ADR 0001, the 17-scenario coverage claim is true in the generated workbooks, ARI interpolation is linear in ARI-space with clamping, and the dashboard manifest matches underlying grid CSVs.
+**Overall:** the main numeric pipeline is internally consistent where I could verify it. The raw-to-clean transforms preserve sampled values, the SWL fill/extrapolation code matches ADR 0001, the 17-scenario coverage claim is true in the generated workbooks, ARI interpolation is linear in ARI-space with clamping, and the dashboard manifest matches underlying grid CSVs.
 
-**Update (post-audit fixes applied):** the string-boolean parsing defect below has been fixed in code, and the test-coverage gaps for raw cleaning, template builders, and the known-scenario analysis script have been closed with new unit tests. See "12. Post-audit fixes" for details. The stale `longtailpoint\batch_twl.xlsx` workbook (Issue 2) was intentionally left as-is, per operator instruction (since deleted in commit `6c59d94`; `batch_twl-nointerpolation.xlsx` was deleted and `batch_twl-interpolation_baseline.xlsx` renamed to `batch_twl-longtail.xlsx` in the same commit).
+**Update (post-audit fixes applied):** the string-boolean parsing defect below has been fixed in code, and the test-coverage gaps for raw cleaning, template builders, and the known-scenario analysis script have been closed with new unit tests. See "12. Post-audit fixes" for details. The stale `longtailpoint\batch_swl.xlsx` workbook (Issue 2) was intentionally left as-is, per operator instruction (since deleted in commit `6c59d94`; `batch_swl-nointerpolation.xlsx` was deleted and `batch_swl-interpolation_baseline.xlsx` renamed to `batch_swl-longtail.xlsx` in the same commit).
 
-**Originally flagged issue (now fixed):** the `batch_run_twl.py` config parser mis-parsed string booleans such as `"false"` as `True` (`batch_run_twl.py:63-67`, `616-629`), because `bool("false")` is `True` in Python. The shipped longtailpoint TWL workbooks use string booleans, so:
+**Originally flagged issue (now fixed):** the `batch_run_swl.py` config parser mis-parsed string booleans such as `"false"` as `True` (`batch_run_swl.py:63-67`, `616-629`), because `bool("false")` is `True` in Python. The shipped longtailpoint SWL workbooks use string booleans, so:
 
 - `overwrite = "false"` was parsed as `True`;
-- `batch_twl-nointerpolation.xlsx` would actually have run with `plot_interpolate=True`.
+- `batch_swl-nointerpolation.xlsx` would actually have run with `plot_interpolate=True`.
 
 That was a real reproducibility / operator-expectation defect. The identical bug also existed in `batch_run_avg.py`'s copy of `_to_bool` and has been fixed there too. See section 12.
 
@@ -203,12 +203,12 @@ That was a real reproducibility / operator-expectation defect. The identical bug
 | Stage | Inputs | Script(s) | Outputs |
 |---|---|---|---|
 | Raw AVG cleaning | `data\raw\lake_levels_all_scenarios_9jul2026.xlsx` | `data\raw\clean_lake_levels_all_scenarios.py` | `data\clean\{superior,michiganhuron,stclair,erie,ontario}_avg.csv` |
-| Raw TWL cleaning | `data\raw\still_water_summary__22may2026.xlsm` | `data\raw\clean_still_water_summary.py` | `data\clean\{superior,michigan,huron,ontario}_twl.xlsx` |
-| Fill / extrapolate TWL scenarios | clean TWL xlsx + clean AVG csv | `fillin_twl.py`, `common_twl.py` | `data\filled\*_twl.xlsx`, `data\extrapolated\*_twl.xlsx` |
+| Raw SWL cleaning | `data\raw\still_water_summary__22may2026.xlsm` | `data\raw\clean_swl_summary.py` | `data\clean\{superior,michigan,huron,ontario}_swl.xlsx` |
+| Fill / extrapolate SWL scenarios | clean SWL xlsx + clean AVG csv | `fillin_swl.py`, `common_swl.py` | `data\filled\*_swl.xlsx`, `data\extrapolated\*_swl.xlsx` |
 | AVG batch analysis | clean AVG csv + workbook templates | `batch_run_avg.py`, `templates\build_avg_template.py` | hydropattern `.toml`, output folders, grid CSVs, PNGs, Excel outputs |
-| TWL batch analysis | clean / extrapolated TWL xlsx + workbook templates | `batch_run_twl.py`, `templates\build_twl_template.py` | TWL grid CSVs + PNGs; equivalent-elevation and elevation-delta grids/plots when requested |
-| Known-scenario side analysis | extrapolated TWL xlsx | `analyze_known_scenarios.py` | `data\analysis\known_scenario_directionality.csv` + summary xlsx |
-| Dashboard build | completed TWL/AVG batch outputs | `build_dashboard.py` | `longtailpoint\manifest.js`, `dashboard.html` |
+| SWL batch analysis | clean / extrapolated SWL xlsx + workbook templates | `batch_run_swl.py`, `templates\build_swl_template.py` | SWL grid CSVs + PNGs; equivalent-elevation and elevation-delta grids/plots when requested |
+| Known-scenario side analysis | extrapolated SWL xlsx | `analyze_known_scenarios.py` | `data\analysis\known_scenario_directionality.csv` + summary xlsx |
+| Dashboard build | completed SWL/AVG batch outputs | `build_dashboard.py` | `longtailpoint\manifest.js`, `dashboard.html` |
 
 ---
 
@@ -253,11 +253,11 @@ That was a real reproducibility / operator-expectation defect. The identical bug
 - **Date range preservation:** yes.
 - **Units:** preserved, but not re-labeled in the cleaner itself. The pipeline treats these values as meter-scale lake levels consistent with later IGLD85→NAVG88 conversion logic.
 
-### 2.2 Still-water/TWL workbooks (`*_twl.xlsx`)
+### 2.2 Storm water level (SWL) workbooks (`*_swl.xlsx`)
 
 **Code path**
 
-- `clean_still_water_summary.py` maps lake tags `sup`, `mich`, `hur`, `ont` to four output workbooks (`clean_still_water_summary.py:30-36`).
+- `clean_swl_summary.py` maps lake tags `sup`, `mich`, `hur`, `ont` to four output workbooks (`clean_swl_summary.py:30-36`).
 - Scenario mapping is explicit in `SCENARIOS` (`:48-54`):
   - `baseline -> baseline-_0_0`
   - `modnear -> nearterm-_5_1.5`
@@ -278,7 +278,7 @@ That was a real reproducibility / operator-expectation defect. The identical bug
 | `highLL` | 20 | 5 | `extreme_high-_20_5` |
 | `lowLL` | 0 | 7 | `extreme_low-_0_7` |
 
-- Each clean TWL workbook has exactly those five sheets for all four lakes.
+- Each clean SWL workbook has exactly those five sheets for all four lakes.
 - Raw-vs-clean baseline spot-checks matched exactly:
 
 | Lake | First ID | Raw first ARI 0.1 | Clean first ARI 0.1 | Row count match |
@@ -292,7 +292,7 @@ That was a real reproducibility / operator-expectation defect. The identical bug
 
 - **Correct raw sheets/columns selected:** yes, based on code and sampled value preservation.
 - **Known-scenario relabeling:** yes, and it matches the raw workbook's own `summary` dP/dT definitions.
-- **TWL lake coverage:** four lakes only (`superior`, `michigan`, `huron`, `ontario`); `stclair`/`erie` absence is intentional, not a silent drop.
+- **SWL lake coverage:** four lakes only (`superior`, `michigan`, `huron`, `ontario`); `stclair`/`erie` absence is intentional, not a silent drop.
 
 ---
 
@@ -300,7 +300,7 @@ That was a real reproducibility / operator-expectation defect. The identical bug
 
 ### 3.1 In-hull fill
 
-`fillin_twl.py` defines the full 17-scenario set in `ALL_SCENARIO_SUFFIXES` (`fillin_twl.py:49-55`) and classifies missing scenarios by Delaunay hull membership (`:90-111`).
+`fillin_swl.py` defines the full 17-scenario set in `ALL_SCENARIO_SUFFIXES` (`fillin_swl.py:49-55`) and classifies missing scenarios by Delaunay hull membership (`:90-111`).
 
 The actual classification implied by the clean workbooks is:
 
@@ -314,10 +314,10 @@ ADR 0001 says: choose the nearest resolved scenario on the same `temp_delta` row
 
 The implementation matches that:
 
-- same-row / nearest-precip anchor selection: `fillin_twl.py:191-213`
+- same-row / nearest-precip anchor selection: `fillin_swl.py:191-213`
 - additive `delta = avg_means[target] - avg_means[anchor]`: `:238-247`
 - stage ordering guarantees filled scenarios can serve as anchors for extrapolation: `:347-369`
-- Michigan and Huron both resolve to `michiganhuron_avg.csv` through `common_twl.TWL_LAKE_TO_AVG_LAKE` (`common_twl.py:36-41`, `88-96`)
+- Michigan and Huron both resolve to `michiganhuron_avg.csv` through `common_swl.SWL_LAKE_TO_AVG_LAKE` (`common_swl.py:36-41`, `88-96`)
 
 **Integrity evidence**
 
@@ -325,12 +325,12 @@ The implementation matches that:
 
 I listed actual sheet names in all generated workbooks:
 
-- every file in `data\filled\*_twl.xlsx` has **12** sheets:
+- every file in `data\filled\*_swl.xlsx` has **12** sheets:
   - 5 known + 7 `filled-*`
-- every file in `data\extrapolated\*_twl.xlsx` has **17** sheets:
+- every file in `data\extrapolated\*_swl.xlsx` has **17** sheets:
   - 5 known + 7 `filled-*` + 5 `extrapolated-*`
 
-This is true for all four TWL lakes (`superior`, `michigan`, `huron`, `ontario`).
+This is true for all four SWL lakes (`superior`, `michigan`, `huron`, `ontario`).
 
 #### Manual recomputation of extrapolated cells
 
@@ -369,11 +369,11 @@ The Superior case is especially important because `_10_3` is itself a **filled**
   - y-axis: `temp_delta`
   - colorbar: `lake level (ft)`
 
-### 4.2 TWL batch runs and longtailpoint outputs
+### 4.2 SWL batch runs and longtailpoint outputs
 
 **Code path**
 
-- ARI lookup is linear in ARI-space via `np.interp` (`batch_run_twl.py:78-110`).
+- ARI lookup is linear in ARI-space via `np.interp` (`batch_run_swl.py:78-110`).
 - Reverse lookup for equivalent elevation is also linear in ARI-space (`:113-143`).
 - Out-of-range thresholds clamp to the nearest endpoint with a warning (`:98-109`, `136-143`).
 - Primary metric evaluation is scenario-sheet-by-scenario-sheet (`:637-660`).
@@ -381,7 +381,7 @@ The Superior case is especially important because `_10_3` is itself a **filled**
 
 **Unit conversion evidence**
 
-`common_twl.py:55-69` documents and implements a flat +0.44 ft offset after converting meters to feet. I checked the cited workbook directly:
+`common_swl.py:55-69` documents and implements a flat +0.44 ft offset after converting meters to feet. I checked the cited workbook directly:
 
 | `longtail_waterlevel.xlsx` `Sheet2` | Value |
 |---|---:|
@@ -390,19 +390,19 @@ The Superior case is especially important because `_10_3` is itself a **filled**
 | NAVG88 low | 582.00 ft |
 | IGLD85 low | 581.56 ft |
 
-That is exactly the +0.44 ft relationship the code uses. The conversion tests in `tests\test_common_twl.py` also assert those exact pairs.
+That is exactly the +0.44 ft relationship the code uses. The conversion tests in `tests\test_common_swl.py` also assert those exact pairs.
 
 **Integrity evidence**
 
-- `batch_run_twl.py` converts only the **equivalent-elevation** and **elevation-delta** outputs to ft/NAVG88 (`:810-849`); the primary TWL metric remains in `metric_mode` units.
+- `batch_run_swl.py` converts only the **equivalent-elevation** and **elevation-delta** outputs to ft/NAVG88 (`:810-849`); the primary SWL metric remains in `metric_mode` units.
 - Spot-checked plots looked label-consistent:
-  - `data\analysis\twl\ontario_0.5.png`
-  - `data\analysis\twl\ontario_0.5_interpolated.png`
+  - `data\analysis\swl\ontario_0.5.png`
+  - `data\analysis\swl\ontario_0.5_interpolated.png`
   - `data\filled\img\michigan_20.png`
   - `data\extrapolated\img\michigan_20_interpolated.png`
 - Example observed labels/titles:
   - `Ontario save point 6695 -- ARI=0.5 (baseline average lake level=245.64 ft)`
-  - colorbar `TWL (ft)`
+  - colorbar `SWL (ft)`
   - interpolated/non-interpolated variants differ visually in the expected way (sparse blocks vs filled surface).
 
 **Judgment**
@@ -419,12 +419,12 @@ That is exactly the +0.44 ft relationship the code uses. The conversion tests in
 
 **Integrity evidence**
 
-- `longtailpoint\manifest.js` contains both TWL and AVG entries:
-  - `twl`: 264 entries
+- `longtailpoint\manifest.js` contains both SWL and AVG entries:
+  - `swl`: 264 entries
   - `avg`: 11 entries
 - First manifest entry:
   - `qualified_name = longtail_17877_base_1968`
-  - grid path `batch_twl_output/baseline/longtail_17877_base_1968_grid.csv`
+  - grid path `batch_swl_output/baseline/longtail_17877_base_1968_grid.csv`
   - manifest grid value at `(temp=0.0, precip=0.0)` = `1.0010005001667084`
   - CSV value at the same cell = `1.0010005001667084`
 - `dashboard.html` uses the expected user-facing labels:
@@ -444,48 +444,48 @@ That is exactly the +0.44 ft relationship the code uses. The conversion tests in
 
 | Question | Answer |
 |---|---|
-| Raw->clean: correct raw sheet/column selected, no silent mislabeling? | **Yes, with one caveat.** The cleaners select the intended sheets/columns and preserve sampled numeric values exactly. Scenario relabeling in TWL cleaning matches the raw workbook `summary` dP/dT definitions. Caveat: the AVG cleaner itself does not add an explicit units label; units are inferred from surrounding docs/value ranges. |
-| Is Michigan-Huron treated as one connected lake everywhere it should be? | **Yes in the audited code paths.** AVG cleaning emits `michiganhuron_avg.csv`; `batch_run_avg.py` uses `michiganhuron`; `common_twl.py` maps both `michigan` and `huron` TWL workbooks to the shared AVG CSV for extrapolation. |
+| Raw->clean: correct raw sheet/column selected, no silent mislabeling? | **Yes, with one caveat.** The cleaners select the intended sheets/columns and preserve sampled numeric values exactly. Scenario relabeling in SWL cleaning matches the raw workbook `summary` dP/dT definitions. Caveat: the AVG cleaner itself does not add an explicit units label; units are inferred from surrounding docs/value ranges. |
+| Is Michigan-Huron treated as one connected lake everywhere it should be? | **Yes in the audited code paths.** AVG cleaning emits `michiganhuron_avg.csv`; `batch_run_avg.py` uses `michiganhuron`; `common_swl.py` maps both `michigan` and `huron` SWL workbooks to the shared AVG CSV for extrapolation. |
 | Does fill/extrapolation match ADR 0001 exactly? | **Yes.** Same-row nearest-precip anchor selection and additive `AVG(target)-AVG(anchor)` shifting are implemented as described, and real output cells matched manual recomputation. |
-| Is `17 = 5 known + 7 filled + 5 extrapolated` true in actual files? | **Yes for all 4 TWL lakes.** |
-| Are unit conversions applied exactly once, in the correct direction, only at final output? | **Yes for equivalent-elevation / elevation-delta outputs.** Primary TWL metrics are not elevation units and are not converted. |
+| Is `17 = 5 known + 7 filled + 5 extrapolated` true in actual files? | **Yes for all 4 SWL lakes.** |
+| Are unit conversions applied exactly once, in the correct direction, only at final output? | **Yes for equivalent-elevation / elevation-delta outputs.** Primary SWL metrics are not elevation units and are not converted. |
 | Do plot/dashboard labels match documented conventions? | **Mostly yes; I found no mislabeled sampled PNGs or dashboard controls.** |
 | Is ARI interpolation truly linear-in-ARI-space with clamping? | **Yes.** Code uses `np.interp` directly on ARI values and clamps to endpoint ARIs/levels with warnings. |
-| Which stages lack test coverage? | **Raw cleaning scripts, `analyze_known_scenarios.py`, template builders, and image-regression checks have no direct tests.** `batch_run_twl.py` also lacks a real-workbook config regression for string booleans, which allowed a real bug to slip through. |
+| Which stages lack test coverage? | **Raw cleaning scripts, `analyze_known_scenarios.py`, template builders, and image-regression checks have no direct tests.** `batch_run_swl.py` also lacks a real-workbook config regression for string booleans, which allowed a real bug to slip through. |
 
 ---
 
 ## 7. Flagged issues
 
-### Issue 1 — real config boolean parsing defect in `batch_run_twl.py` — **FIXED**
+### Issue 1 — real config boolean parsing defect in `batch_run_swl.py` — **FIXED**
 
 **Evidence (original bug)**
 
-- `_to_bool()` returned `bool(value)` for any nonblank value (`batch_run_twl.py:63-67`, pre-fix).
-- `read_config_sheet()` routes `overwrite`, `plot_interpolate`, and `fillin` through `_to_bool()` (`batch_run_twl.py:616-629`).
+- `_to_bool()` returned `bool(value)` for any nonblank value (`batch_run_swl.py:63-67`, pre-fix).
+- `read_config_sheet()` routes `overwrite`, `plot_interpolate`, and `fillin` through `_to_bool()` (`batch_run_swl.py:616-629`).
 - The identical `_to_bool()` body was duplicated in `batch_run_avg.py:105-118` (pre-fix), routing `excel`, `overwrite`, `plot_enabled`, `plot_interpolate` through the same defect.
-- The shipped longtailpoint TWL workbooks store booleans as strings:
-  - `batch_twl-interpolation_baseline.xlsx`: `overwrite='false'`, `plot_interpolate='true'`, `fillin='true'`
-  - `batch_twl-interpolation_586ft.xlsx`: same pattern
-  - `batch_twl-nointerpolation.xlsx`: `overwrite='false'`, `plot_interpolate='false'`
-- Pre-fix parser result: `batch_twl-interpolation_baseline.xlsx` parsed `overwrite=True`; `batch_twl-nointerpolation.xlsx` parsed `plot_interpolate=True`.
+- The shipped longtailpoint SWL workbooks store booleans as strings:
+  - `batch_swl-interpolation_baseline.xlsx`: `overwrite='false'`, `plot_interpolate='true'`, `fillin='true'`
+  - `batch_swl-interpolation_586ft.xlsx`: same pattern
+  - `batch_swl-nointerpolation.xlsx`: `overwrite='false'`, `plot_interpolate='false'`
+- Pre-fix parser result: `batch_swl-interpolation_baseline.xlsx` parsed `overwrite=True`; `batch_swl-nointerpolation.xlsx` parsed `plot_interpolate=True`.
 
 **Fix applied**
 
-`_to_bool()` in both `batch_run_twl.py` and `batch_run_avg.py` now special-cases `str` inputs: `"true"/"1"/"yes"` (case-insensitive, trimmed) -> `True`, `"false"/"0"/"no"` -> `False`, anything else raises `ValueError`. Non-string inputs still fall back to plain `bool(value)` (unchanged behavior for real Excel booleans / numeric 0/1). Verified against the actual shipped workbook cell values (`overwrite='false'` in `batch_twl-nointerpolation.xlsx`, confirmed via `openpyxl` read) now parses to `False` as intended.
+`_to_bool()` in both `batch_run_swl.py` and `batch_run_avg.py` now special-cases `str` inputs: `"true"/"1"/"yes"` (case-insensitive, trimmed) -> `True`, `"false"/"0"/"no"` -> `False`, anything else raises `ValueError`. Non-string inputs still fall back to plain `bool(value)` (unchanged behavior for real Excel booleans / numeric 0/1). Verified against the actual shipped workbook cell values (`overwrite='false'` in `batch_swl-nointerpolation.xlsx`, confirmed via `openpyxl` read) now parses to `False` as intended.
 
-Regression tests: `tests\test_batch_run_twl.py::test_to_bool` / `test_to_bool_rejects_unparsable_string`, `tests\test_batch_run_avg.py::test_to_bool` / `test_to_bool_rejects_unparsable_string` (new — `batch_run_avg.py` previously had no `_to_bool` test at all).
+Regression tests: `tests\test_batch_run_swl.py::test_to_bool` / `test_to_bool_rejects_unparsable_string`, `tests\test_batch_run_avg.py::test_to_bool` / `test_to_bool_rejects_unparsable_string` (new — `batch_run_avg.py` previously had no `_to_bool` test at all).
 
 **Severity:** was high for reproducibility / operational integrity; now fixed and covered.
 
-### Issue 2 — `longtailpoint\batch_twl.xlsx` is currently unrunnable as shipped — **left as-is**
+### Issue 2 — `longtailpoint\batch_swl.xlsx` is currently unrunnable as shipped — **left as-is**
 
-> **Resolved (commit `6c59d94`):** `batch_twl.xlsx` and `batch_twl-nointerpolation.xlsx` were deleted, and `batch_twl-interpolation_baseline.xlsx` was renamed to `batch_twl-longtail.xlsx`. Workbook names below are historical.
+> **Resolved (commit `6c59d94`):** `batch_swl.xlsx` and `batch_swl-nointerpolation.xlsx` were deleted, and `batch_swl-interpolation_baseline.xlsx` was renamed to `batch_swl-longtail.xlsx`. Workbook names below are historical.
 
 **Evidence**
 
 - Workbook config contains `metric_mode = "return period"` (with a space).
-- `batch_run_twl.read_config_sheet()` only accepts `portion`, `percentage`, or `return_period` (`batch_run_twl.py:600-604`).
+- `batch_run_swl.read_config_sheet()` only accepts `portion`, `percentage`, or `return_period` (`batch_run_swl.py:600-604`).
 - Reading that workbook raises `SheetValidationError`.
 
 **Impact**
@@ -503,8 +503,8 @@ I did not inspect all 558 PNGs. I sampled representative files across the four P
 | Area | Sampled file(s) | Observation |
 |---|---|---|
 | AVG analysis | `data\analysis\avg\high\superior_10.png`, `...superior_10_interpolated.png` | Titles/axes/colorbar sane; interpolated variant visually smoother than blocky base plot. |
-| TWL analysis | `data\analysis\twl\ontario_0.5.png`, `...ontario_0.5_interpolated.png` | Titles, `TWL (ft)` colorbar, and save-point naming looked coherent; interpolation visually present only in `_interpolated` variant. |
-| Filled-scenario visualizations | `data\filled\img\michigan_20.png` | Lake name, save point, ARI, and TWL units consistent with filename/context. |
+| SWL analysis | `data\analysis\swl\ontario_0.5.png`, `...ontario_0.5_interpolated.png` | Titles, `SWL (ft)` colorbar, and save-point naming looked coherent; interpolation visually present only in `_interpolated` variant. |
+| Filled-scenario visualizations | `data\filled\img\michigan_20.png` | Lake name, save point, ARI, and SWL units consistent with filename/context. |
 | Extrapolated-scenario visualizations | `data\extrapolated\img\michigan_20_interpolated.png` | Same labeling convention; no obvious empty/bugged axes. |
 
 No sampled plot showed a lake-name swap, unit mismatch, or empty rendering.
@@ -518,7 +518,7 @@ No sampled plot showed a lake-name swap, unit mismatch, or empty rendering.
 Command run (original audit pass):
 
 ```powershell
-uv run pytest tests\test_common_twl.py tests\test_fillin_twl.py tests\test_batch_run_avg.py tests\test_batch_run_twl.py tests\test_build_dashboard.py tests\test_scenario_grid.py tests\test_twl_batch_run.py -v
+uv run pytest tests\test_common_swl.py tests\test_fillin_swl.py tests\test_batch_run_avg.py tests\test_batch_run_swl.py tests\test_build_dashboard.py tests\test_scenario_grid.py tests\test_swl_batch_run.py -v
 ```
 
 Result (original audit pass, before fixes):
@@ -541,20 +541,20 @@ Result: **685 passed**, plus 2 pre-existing failures in `tests\test_stable_reque
 | Pipeline stage | Covered by | Coverage quality | Gaps / comments |
 |---|---|---|---|
 | Raw AVG cleaning (`clean_lake_levels_all_scenarios.py`) | `tests\test_clean_raw_scripts.py` (new) | Good | Covers the `LAKES` sheet-name mapping and the extracted `clean_lake_frame()` transform (month drop, `time` rename, string-date formatting past pandas' datetime64 range). |
-| Raw TWL cleaning (`clean_still_water_summary.py`) | `tests\test_clean_raw_scripts.py` (new) | Good | Covers `source_sheet_name()`, a regression test locking the `SCENARIOS` precip/temp mapping (guards the exact historical lowLL/highLL swap bug called out in the script's own comment), `NEW_HEADER`, and the extracted `clean_scenario_frame()` blank-ID-row transform. |
-| Shared unit conversion / Michigan-Huron AVG mapping (`common_twl.py`) | `tests\test_common_twl.py` | Good | Strong low-level checks, including the 0.44 ft datum offset and shared Michigan/Huron AVG file mapping. |
+| Raw SWL cleaning (`clean_swl_summary.py`) | `tests\test_clean_raw_scripts.py` (new) | Good | Covers `source_sheet_name()`, a regression test locking the `SCENARIOS` precip/temp mapping (guards the exact historical lowLL/highLL swap bug called out in the script's own comment), `NEW_HEADER`, and the extracted `clean_scenario_frame()` blank-ID-row transform. |
+| Shared unit conversion / Michigan-Huron AVG mapping (`common_swl.py`) | `tests\test_common_swl.py` | Good | Strong low-level checks, including the 0.44 ft datum offset and shared Michigan/Huron AVG file mapping. |
 | Scenario-grid core | `tests\test_scenario_grid.py` | Good | Covers parsing and sparse-grid behavior. |
-| Fill / extrapolate TWL (`fillin_twl.py`) | `tests\test_fillin_twl.py` | Strong | Covers hull split, barycentric weights, anchor selection, extrapolation math, workbook writing, and CLI orchestration. |
+| Fill / extrapolate SWL (`fillin_swl.py`) | `tests\test_fillin_swl.py` | Strong | Covers hull split, barycentric weights, anchor selection, extrapolation math, workbook writing, and CLI orchestration. |
 | AVG batch runner (`batch_run_avg.py`) | `tests\test_batch_run_avg.py` | Strong | Includes parser tests, an end-to-end run against real AVG CSVs, and (new) `_to_bool` regression tests for string booleans. |
-| TWL batch runner (`batch_run_twl.py`) | `tests\test_batch_run_twl.py` | Strong | Good synthetic coverage of ARI interpolation, equivalent elevation, and output writing, plus (new) `_to_bool` regression tests covering `"true"`/`"false"`/`"1"`/`"0"`/`"yes"`/`"no"` strings and rejection of unparsable strings — the exact case that let Issue 1 ship. |
+| SWL batch runner (`batch_run_swl.py`) | `tests\test_batch_run_swl.py` | Strong | Good synthetic coverage of ARI interpolation, equivalent elevation, and output writing, plus (new) `_to_bool` regression tests covering `"true"`/`"false"`/`"1"`/`"0"`/`"yes"`/`"no"` strings and rejection of unparsable strings — the exact case that let Issue 1 ship. |
 | Dashboard (`build_dashboard.py`) | `tests\test_build_dashboard.py` | Strong | Good synthetic manifest/html tests. No regression that the checked-in `longtailpoint\manifest.js` still matches real files (still a gap; not addressed in this pass). |
 | Known-scenario side analysis (`analyze_known_scenarios.py`) | `tests\test_analyze_known_scenarios.py` (new) | Good | Covers `sheet_name_for_suffix()` (happy path + both error branches), `summarize()` (stat correctness + sign-share logic on a hand-computable synthetic input), and `analyze_lake()` end-to-end against a synthetic 4-sheet workbook with hand-checked precip/temp deltas. |
-| Template builders (`templates\build_avg_template.py`, `templates\build_twl_template.py`) | `tests\test_template_builders.py` (new) | Good | Covers header/example-row contents and config-sheet option/default/comment fidelity for both templates. |
+| Template builders (`templates\build_avg_template.py`, `templates\build_swl_template.py`) | `tests\test_template_builders.py` (new) | Good | Covers header/example-row contents and config-sheet option/default/comment fidelity for both templates. |
 | PNG rendering correctness | **None** | **None** | Still no image-regression tests; visual issues would still be caught only manually. Not addressed in this pass (no lightweight image-regression tool was already in the project's dependency set, and adding one was judged out of scope for this fix pass). |
 
 ### 9.3 Notable meta-gap — resolved
 
-`tests\test_twl_batch_run.py` was an empty 0-byte file contributing no coverage. It has been deleted; its intended subject (`batch_run_twl.py`) is fully covered by `tests\test_batch_run_twl.py`.
+`tests\test_swl_batch_run.py` was an empty 0-byte file contributing no coverage. It has been deleted; its intended subject (`batch_run_swl.py`) is fully covered by `tests\test_batch_run_swl.py`.
 
 ---
 
@@ -570,7 +570,7 @@ For the **current numeric data products**, I found good evidence that:
 - unit conversion logic matches the cited datum table,
 - and the dashboard manifest reflects the underlying grid CSVs.
 
-The main integrity concern was **not** the interpolation math; it was the **TWL/AVG workbook config parsing bug for string booleans** — now fixed in both `batch_run_twl.py` and `batch_run_avg.py`, with regression tests. One stale invalid workbook (`longtailpoint\batch_twl.xlsx`) remained at audit time; it was later deleted (commit `6c59d94`). See section 12 for the full list of changes made after the initial audit.
+The main integrity concern was **not** the interpolation math; it was the **SWL/AVG workbook config parsing bug for string booleans** — now fixed in both `batch_run_swl.py` and `batch_run_avg.py`, with regression tests. One stale invalid workbook (`longtailpoint\batch_swl.xlsx`) remained at audit time; it was later deleted (commit `6c59d94`). See section 12 for the full list of changes made after the initial audit.
 
 ---
 
@@ -578,20 +578,20 @@ The main integrity concern was **not** the interpolation math; it was the **TWL/
 
 Applied after the initial audit above, per explicit operator instruction:
 
-1. **Fixed** the string-boolean parsing bug (Issue 1) in both `batch_run_twl.py` and `batch_run_avg.py`. `_to_bool()` now parses `"true"/"1"/"yes"` -> `True` and `"false"/"0"/"no"` -> `False` (case-insensitive, whitespace-trimmed) for string cells, and raises `ValueError` on an unrecognized string, instead of falling through to Python's `bool(str)` truthiness. Non-string values (real Excel booleans, `0`/`1`) are unaffected.
-2. **Deleted** `tests\test_twl_batch_run.py` (empty, 0 bytes, no coverage contributed).
+1. **Fixed** the string-boolean parsing bug (Issue 1) in both `batch_run_swl.py` and `batch_run_avg.py`. `_to_bool()` now parses `"true"/"1"/"yes"` -> `True` and `"false"/"0"/"no"` -> `False` (case-insensitive, whitespace-trimmed) for string cells, and raises `ValueError` on an unrecognized string, instead of falling through to Python's `bool(str)` truthiness. Non-string values (real Excel booleans, `0`/`1`) are unaffected.
+2. **Deleted** `tests\test_swl_batch_run.py` (empty, 0 bytes, no coverage contributed).
 3. **Added tests** for every pipeline stage the audit flagged as having zero coverage:
-   - `tests\test_clean_raw_scripts.py` — raw AVG/TWL cleaning scripts. Required a small, behavior-preserving refactor: `clean_lake_frame()` was extracted from `clean_lake_levels_all_scenarios.py`'s `main()`, and `clean_scenario_frame()` was extracted from `clean_still_water_summary.py`'s `main()`, so each transform could be unit-tested against a synthetic in-memory DataFrame without touching the real (large) source workbooks. `main()`'s file-I/O behavior is otherwise unchanged.
-   - `tests\test_template_builders.py` — `templates\build_avg_template.py` / `build_twl_template.py`. No production refactor needed; both already exposed a `build_template(path)` function.
-   - `tests\test_analyze_known_scenarios.py` — `analyze_known_scenarios.py`. No production refactor needed; loaded the same way the script would run standalone (its own directory temporarily added to `sys.path`, matching its existing bare `import common_twl` / `from fillin_twl import ...` style).
-4. **Left unchanged** (per explicit instruction): the stale `longtailpoint\batch_twl.xlsx` workbook (Issue 2; deleted later in commit `6c59d94`) and PNG/image-regression coverage.
+   - `tests\test_clean_raw_scripts.py` — raw AVG/SWL cleaning scripts. Required a small, behavior-preserving refactor: `clean_lake_frame()` was extracted from `clean_lake_levels_all_scenarios.py`'s `main()`, and `clean_scenario_frame()` was extracted from `clean_swl_summary.py`'s `main()`, so each transform could be unit-tested against a synthetic in-memory DataFrame without touching the real (large) source workbooks. `main()`'s file-I/O behavior is otherwise unchanged.
+   - `tests\test_template_builders.py` — `templates\build_avg_template.py` / `build_swl_template.py`. No production refactor needed; both already exposed a `build_template(path)` function.
+   - `tests\test_analyze_known_scenarios.py` — `analyze_known_scenarios.py`. No production refactor needed; loaded the same way the script would run standalone (its own directory temporarily added to `sys.path`, matching its existing bare `import common_swl` / `from fillin_swl import ...` style).
+4. **Left unchanged** (per explicit instruction): the stale `longtailpoint\batch_swl.xlsx` workbook (Issue 2; deleted later in commit `6c59d94`) and PNG/image-regression coverage.
 
-Issue 2 (stale `longtailpoint\batch_twl.xlsx`) was resolved by deleting the workbook (commit `6c59d94`); PNG/image-regression testing remains an open item for a future pass.
+Issue 2 (stale `longtailpoint\batch_swl.xlsx`) was resolved by deleting the workbook (commit `6c59d94`); PNG/image-regression testing remains an open item for a future pass.
 
 ## 13. Post-audit refactor: shared batch_runner.py
 
 A later thermo-nuclear code-quality review found that `batch_run_avg.py` and
-`batch_run_twl.py` had re-diverged into duplicating roughly a dozen identical helpers
+`batch_run_swl.py` had re-diverged into duplicating roughly a dozen identical helpers
 (`_is_blank`, `_to_bool`, `_require_str`, `RowValidationError`, `SheetValidationError`,
 `RowResult`, `BatchSummary`, `format_summary`, `_default_progress`,
 `_parse_color_map_ticks`, and the `run_batch` loop shape) -- the exact kind of
@@ -599,14 +599,14 @@ duplication that let the `_to_bool` bug documented in section 12 exist twice and
 fixed twice, independently. That duplication has since been extracted into
 `src\great_lakes\batch_runner.py`: a generic `run_batch(...)` loop plus a
 `RowProcessor` protocol (Strategy pattern), with each script now supplying only a
-thin job-specific adapter (`_AvgRowProcessor` / `_TwlRowProcessor`). This was a
+thin job-specific adapter (`_AvgRowProcessor` / `_SwlRowProcessor`). This was a
 behavior-preserving refactor (verified via the full existing test suite plus new
 `tests\test_batch_runner.py` coverage of the shared loop) -- no CLI entry point,
 `.toml`/output file naming, or run behavior changed.
 
 ## 14. Run readme feature
 
-Both `batch_run_avg.py` and `batch_run_twl.py` now call the shared
+Both `batch_run_avg.py` and `batch_run_swl.py` now call the shared
 `batch_runner.write_run_readme(...)` at the end of every `run_batch()` call, writing
 `README.txt` to `output_directory` unconditionally -- even if every row fails or the
 resources sheet has zero rows. See CONTEXT.md's "Run readme" glossary entry for the
@@ -616,17 +616,17 @@ naming-scheme explanation for the run's output-filename convention, every file t
 wrote (from each row's `RowResult.output_paths`), and a recursive scan of
 `output_directory` for pre-existing files this run doesn't recognize as its own --
 flagged as likely-stale leftovers from a previous run, to help operators keep an output
-tree honest. `batch_run_twl.py`'s old `_write_naming_readmes()` (which only wrote a
+tree honest. `batch_run_swl.py`'s old `_write_naming_readmes()` (which only wrote a
 readme for certain `filename_style` values and only when at least one row succeeded)
 was replaced by this unconditional, richer readme; `batch_run_avg.py` gained a run
 readme for the first time (it previously wrote none). This is a deliberate, tested
 behavior expansion, not a silent change -- see `tests\test_batch_runner.py` and the
-`run_batch` tests in `tests\test_batch_run_avg.py` / `tests\test_batch_run_twl.py`.
+`run_batch` tests in `tests\test_batch_run_avg.py` / `tests\test_batch_run_swl.py`.
 ## 15. Relocated pipeline scripts into src/great_lakes/
 
 Sections 1, 4, and 12 above (dated audit record) describe `data\raw\clean_lake_levels_all_scenarios.py`,
-`data\raw\clean_still_water_summary.py`, `templates\build_avg_template.py`, and
-`templates\build_twl_template.py` living outside `src\great_lakes\`. A later review
+`data\raw\clean_swl_summary.py`, `templates\build_avg_template.py`, and
+`templates\build_swl_template.py` living outside `src\great_lakes\`. A later review
 found this let them escape CI's `mypy -p great_lakes` scope (ruff still covered them,
 since `ruff check .` scans the whole repo) and forced their tests to load them via
 `importlib.util.spec_from_file_location` instead of a normal import. All four are now
@@ -637,7 +637,7 @@ files themselves (`data\raw\*.xlsx`/`*.xlsm`, `templates\*.xlsx`) stay in their
 original directories -- those are data/artifacts, not code. Behavior-preserving move:
 each script's `main()` was updated to resolve `data\raw\` / `data\clean\` /
 `templates\` via a `WORKSPACE_ROOT = Path(__file__).resolve().parents[2]` constant
-(mirroring the pattern already used in `batch_run_twl.py`) instead of a path relative
+(mirroring the pattern already used in `batch_run_swl.py`) instead of a path relative
 to the script's own (now different) directory; no output filenames, sheet names, or
 transform logic changed.
 
@@ -651,7 +651,7 @@ regression test (`test_default_data_dir_and_output_dir_resolve_to_workspace_data
 
 ## 16. Integrated the legacy `data/analysis/` scripts into `src/great_lakes/analysis/`
 
-`data/analysis/avg/plot_avg_levels.py` and `data/analysis/twl/{plot_center_save_points.py,
+`data/analysis/avg/plot_avg_levels.py` and `data/analysis/swl/{plot_center_save_points.py,
 plot_filled_and_extrapolated.py, compare_filled_vs_climate_canvas.py, ari_constants.py}`
 were leftover write-up/plotting scripts from before this repo was split out of
 `hydropattern` -- broken by that move (`sys.path` hacks pointing at paths that no
@@ -660,24 +660,24 @@ longer exist) and never re-integrated. They're now real modules:
 | old (`data/analysis/...`, deleted) | new |
 |---|---|
 | `avg/plot_avg_levels.py` | `great_lakes.analysis.avg.plot_levels` |
-| `twl/plot_center_save_points.py` | `great_lakes.analysis.twl.plot_known_scenarios` |
-| `twl/plot_filled_and_extrapolated.py` | `great_lakes.analysis.twl.plot_filled_and_extrapolated` |
-| `twl/compare_filled_vs_climate_canvas.py` | `great_lakes.analysis.twl.compare_filled_vs_climate_canvas` |
-| `twl/ari_constants.py` | `great_lakes.ari_constants` |
+| `swl/plot_center_save_points.py` | `great_lakes.analysis.swl.plot_known_scenarios` |
+| `swl/plot_filled_and_extrapolated.py` | `great_lakes.analysis.swl.plot_filled_and_extrapolated` |
+| `swl/compare_filled_vs_climate_canvas.py` | `great_lakes.analysis.swl.compare_filled_vs_climate_canvas` |
+| `swl/ari_constants.py` | `great_lakes.ari_constants` |
 | `avg/declustered/METHOD.md` | `docs/avg_level_ari_poisson_method.md` |
-| `twl/FILLED_VS_CLIMATE_CANVAS.md` | `docs/filled_vs_climate_canvas_comparison.md` |
+| `swl/FILLED_VS_CLIMATE_CANVAS.md` | `docs/filled_vs_climate_canvas_comparison.md` |
 
 Each is now a real `typer` CLI module (`uv run python -m
-great_lakes.analysis.<avg|twl>.<name> <data_dir> [output_dir]`), imports
-`great_lakes.common_twl` / `great_lakes.ari_constants` / `great_lakes.fillin_twl`
+great_lakes.analysis.<avg|swl>.<name> <data_dir> [output_dir]`), imports
+`great_lakes.common_swl` / `great_lakes.ari_constants` / `great_lakes.fillin_swl`
 normally instead of via `sys.path.insert`, writes a `README.txt` via the shared
 `great_lakes.run_readme.write_readme()` (same reproducibility record as section 14,
 generalized out of `batch_runner.write_run_readme` into `run_readme.py` so it isn't
 tied to a resources workbook), and exposes a pure `resolve_default_output_dir(data_dir)`
 so its default output location is independently testable. The 3x-copy-pasted
 `center_save_point_id()` / near-identical `build_grid()`/`build_known_grid()` helpers
-across the old scripts were deduplicated into `common_twl.center_save_point_id()` /
-`common_twl.build_scenario_ari_grid()`.
+across the old scripts were deduplicated into `common_swl.center_save_point_id()` /
+`common_swl.build_scenario_ari_grid()`.
 
 Output locations moved out of the old `data/analysis/` tree (deleted) to sibling `img/`
 folders under the data directory each script reads, so they sit next to the data they
@@ -688,7 +688,7 @@ were computed from and stay gitignored/regenerable like `data/clean`, `data/fill
 - `data/clean/img/avg/ari/{clustered,declustered}/{high,low}/<lake>_<ari>.png` (+ an
   `interpolated/` sibling subfolder each) -- "clustered" replaces the old bare
   `high/`/`low/` naming to make explicit it's the non-declustered population
-- `data/clean/img/twl/known/<lake>_<ari>.png` (+ `known/interpolated/...`)
+- `data/clean/img/swl/known/<lake>_<ari>.png` (+ `known/interpolated/...`)
 - `data/filled/img/<lake>_<ari>.png` and `data/extrapolated/img/<lake>_<ari>.png` (+
   `img/interpolated/...` each)
 - `data/filled/img/comparison/filled_vs_climate_canvas_comparison.csv`

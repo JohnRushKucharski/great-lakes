@@ -1,7 +1,7 @@
-"""Shared helpers for reading `<lake>_twl.xlsx` workbooks and `<avg-lake>_avg.csv` files.
+"""Shared helpers for reading `<lake>_swl.xlsx` workbooks and `<avg-lake>_avg.csv` files.
 
-Used by both batch_run_twl.py (evaluates twl frequency curves against a resource's
-magnitude threshold) and fillin_twl.py (estimates missing scenario sheets via
+Used by both batch_run_swl.py (evaluates swl frequency curves against a resource's
+magnitude threshold) and fillin_swl.py (estimates missing scenario sheets via
 Delaunay-linear interpolation and row-shift extrapolation). Factored out here rather
 than duplicated, or imported one from the other, since neither script is a natural
 "owner" of the other's logic.
@@ -16,24 +16,24 @@ import pandas as pd
 from climate_canvas.data_utilities import contour_levels  # type: ignore[import-untyped]
 from matplotlib.colors import Normalize
 
-# lake code -> twl xlsx filename, shared by data/clean/ and data/filled/ (directory
-# alone disambiguates the two). Only 4 lakes have twl data (michigan and huron are
+# lake code -> swl xlsx filename, shared by data/clean/ and data/filled/ (directory
+# alone disambiguates the two). Only 4 lakes have swl data (michigan and huron are
 # separate files here, unlike batch_run_avg.py's combined "michiganhuron"; stclair/erie
-# have no twl data at all).
-LAKE_TWL_FILENAMES = {
-    "superior": "superior_twl.xlsx",
-    "michigan": "michigan_twl.xlsx",
-    "huron": "huron_twl.xlsx",
-    "ontario": "ontario_twl.xlsx",
+# have no swl data at all).
+LAKE_SWL_FILENAMES = {
+    "superior": "superior_swl.xlsx",
+    "michigan": "michigan_swl.xlsx",
+    "huron": "huron_swl.xlsx",
+    "ontario": "ontario_swl.xlsx",
 }
 
-# twl-lake code -> avg-lake key. Michigan and Huron are one hydraulically-connected
-# lake body sharing a single average-lake-level record, despite having separate twl
+# swl-lake code -> avg-lake key. Michigan and Huron are one hydraulically-connected
+# lake body sharing a single average-lake-level record, despite having separate swl
 # workbooks/codes above (see docs/adr/0001-row-shift-extrapolation-for-out-of-hull-
-# scenarios.md for why this matters: extrapolation shifts a twl sheet by a delta in
+# scenarios.md for why this matters: extrapolation shifts a swl sheet by a delta in
 # *average lake level*, which must come from the correct shared record for Michigan
 # and Huron).
-TWL_LAKE_TO_AVG_LAKE = {
+SWL_LAKE_TO_AVG_LAKE = {
     "superior": "superior",
     "michigan": "michiganhuron",
     "huron": "michiganhuron",
@@ -42,7 +42,7 @@ TWL_LAKE_TO_AVG_LAKE = {
 
 # avg-lake key -> average-lake-level csv filename (see
 # data/raw/clean_lake_levels_all_scenarios.py, which produces these files; stclair and
-# erie also exist there but have no corresponding twl data, so are omitted here).
+# erie also exist there but have no corresponding swl data, so are omitted here).
 LAKE_AVG_FILENAMES = {
     "superior": "superior_avg.csv",
     "michiganhuron": "michiganhuron_avg.csv",
@@ -53,7 +53,7 @@ LAKE_AVG_FILENAMES = {
 NON_ARI_COLUMNS = frozenset({"ID", "lat", "lon"})
 
 # Plain SI meters->feet scale, used by the great_lakes.analysis response-surface
-# scripts to convert raw twl/avg-level *data values* (not elevations already tied to
+# scripts to convert raw swl/avg-level *data values* (not elevations already tied to
 # a specific vertical datum) to feet. Deliberately distinct from
 # m_igld85_to_ft_NAVD88's 1/3.281 factor below, which matches how longtailpoint's own
 # resources sheets were populated -- these two conversions serve different data and
@@ -88,7 +88,7 @@ def ft_NAVD88_to_m_igld85(value_ft_NAVD88: float) -> float:
 
     Inverse of m_igld85_to_ft_NAVD88 -- used to translate a NAVD88-ft input (e.g. an
     equivalent_elevation override expressed in NAVD88 feet) into the meters-IGLD85
-    value the rest of the pipeline (twl curves, magnitude_value) operates in.
+    value the rest of the pipeline (swl curves, magnitude_value) operates in.
     """
     ft_igld85 = value_ft_NAVD88 - _IGLD85_TO_NAVD88_OFFSET_FT
     return ft_igld85 * _METERS_PER_FOOT
@@ -125,7 +125,7 @@ def _format_ft_trim(value: float) -> str:
 
 
 def output_file_stem(magnitude_ft: float, component_name: str, save_point_id: object) -> str:
-    """Build the human-readable output-filename stem for one longtailpoint twl resource
+    """Build the human-readable output-filename stem for one longtailpoint swl resource
     row: "<elevation>ft_plus<runup>ft-runup_savepoint<id>".
 
     magnitude_ft is the resource's magnitude_value already converted to ft, NAVD88
@@ -188,7 +188,7 @@ def build_plot_title(
     plot_kind: str, magnitude_ft: float, component_name: str, save_point_id: object,
     baseline_ari: float | None = None,
 ) -> str:
-    """Build a plot title for one longtailpoint twl resource's response-surface plot.
+    """Build a plot title for one longtailpoint swl resource's response-surface plot.
 
     3-line default:
 
@@ -426,24 +426,24 @@ def naming_scheme_readme_text(filename_style: str) -> str:
     return header + _NAMING_SCHEME_README_BODIES[filename_style]
 
 
-def resolve_lake_twl_path(lake: str, data_dir: Path) -> Path:
-    """Resolve a lake code to its twl xlsx path under data_dir."""
-    return data_dir / LAKE_TWL_FILENAMES[lake]
+def resolve_lake_swl_path(lake: str, data_dir: Path) -> Path:
+    """Resolve a lake code to its swl xlsx path under data_dir."""
+    return data_dir / LAKE_SWL_FILENAMES[lake]
 
 
 def resolve_lake_avg_path(lake: str, data_dir: Path) -> Path:
-    """Resolve a twl-lake code (e.g. "michigan") to its average-lake-level csv path.
+    """Resolve a swl-lake code (e.g. "michigan") to its average-lake-level csv path.
 
-    Looks up the shared avg-lake key first (TWL_LAKE_TO_AVG_LAKE), since michigan and
-    huron share one avg csv (michiganhuron_avg.csv) despite having separate twl
+    Looks up the shared avg-lake key first (SWL_LAKE_TO_AVG_LAKE), since michigan and
+    huron share one avg csv (michiganhuron_avg.csv) despite having separate swl
     workbooks.
     """
-    avg_lake = TWL_LAKE_TO_AVG_LAKE[lake]
+    avg_lake = SWL_LAKE_TO_AVG_LAKE[lake]
     return data_dir / LAKE_AVG_FILENAMES[avg_lake]
 
 
 def parse_scenario_sheet_name(sheet_name: str) -> str | None:
-    """Parse a twl workbook sheet name into its bare scenario-grid suffix.
+    """Parse a swl workbook sheet name into its bare scenario-grid suffix.
 
     Sheet names follow the `<label>-_<precip_delta>_<temp_delta>` convention (e.g.
     `baseline-_0_0`, `moderate_low-_10_5` -- note the label itself may contain
@@ -461,11 +461,11 @@ def parse_scenario_sheet_name(sheet_name: str) -> str | None:
 
 
 def center_save_point_id(sheets: dict[str, pd.DataFrame]) -> int:
-    """Return the ID of the save point nearest a twl workbook's lat/lon centroid.
+    """Return the ID of the save point nearest a swl workbook's lat/lon centroid.
 
     Uses the first sheet's lat/lon columns -- identical across every known sheet in
-    a `<lake>_twl.xlsx` workbook, so any one of them would do. Shared by
-    great_lakes.analysis's twl scripts (plot_center_save_points.py,
+    a `<lake>_swl.xlsx` workbook, so any one of them would do. Shared by
+    great_lakes.analysis's swl scripts (plot_center_save_points.py,
     plot_filled_and_extrapolated.py, compare_filled_vs_climate_canvas.py), which
     each pick this same centroid save point per lake before plotting/comparing its
     water-level-vs-ARI curve.
@@ -483,13 +483,13 @@ def build_scenario_ari_grid(
     save_point_id: int,
     ari: float,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Build the (precip x, temp y, TWL-in-feet z) response-surface grid for one save
+    """Build the (precip x, temp y, SWL-in-feet z) response-surface grid for one save
     point/ARI column, over exactly the scenario coordinate space given by `coords`.
 
     `coords` controls which scenarios the grid spans -- pass the 5-known-scenario
     coordinates (known_scenario_coords) for a known-only grid (blank elsewhere), or
     the full 17-scenario coordinates (parse_scenario_name over
-    fillin_twl.ALL_SCENARIO_SUFFIXES) for a full grid (blank only where `sheets` is
+    fillin_swl.ALL_SCENARIO_SUFFIXES) for a full grid (blank only where `sheets` is
     missing a scenario, e.g. data/filled/'s 5 out-of-hull gaps). Any sheet in
     `sheets` whose parsed suffix isn't a key of `coords` is ignored -- this lets
     callers pass the same full `sheets` dict regardless of which coordinate space
@@ -517,9 +517,9 @@ def build_scenario_ari_grid(
 
 @lru_cache(maxsize=None)
 def load_lake_sheets(path: Path) -> dict[str, pd.DataFrame]:
-    """Read every sheet of a `<lake>_twl.xlsx` workbook into {sheet_name: DataFrame}.
+    """Read every sheet of a `<lake>_swl.xlsx` workbook into {sheet_name: DataFrame}.
 
-    Cached per path: twl workbooks are large (~20k save-point rows), and a batch run
+    Cached per path: swl workbooks are large (~20k save-point rows), and a batch run
     commonly needs the same lake's data more than once, so re-reading per call would
     be wasteful.
     """

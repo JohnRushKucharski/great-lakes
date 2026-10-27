@@ -175,9 +175,9 @@
     <label>Analysis
       <select id="metric-select">
         <option value="primary">Return Interval</option>
-        <option value="equivalent_elevation" class="twl-only">Equivalent Elevation</option>
-        <option value="elevation_delta" class="twl-only">Elevation Delta</option>
-        <option value="threshold_ari_elevation" class="twl-only">Threshold ARI Elevation</option>
+        <option value="equivalent_elevation" class="swl-only">Equivalent Elevation</option>
+        <option value="elevation_delta" class="swl-only">Elevation Delta</option>
+        <option value="threshold_ari_elevation" class="swl-only">Threshold ARI Elevation</option>
       </select>
     </label>
     <label>Form
@@ -265,7 +265,7 @@ function currentFilters(suffix) {
 }
 
 // Entries allowed by the top-of-page initial filter -- gated on which criterion radio
-// is active (rule 1: Elevation OR Baseline ARI, never both at once). twl rows only
+// is active (rule 1: Elevation OR Baseline ARI, never both at once). swl rows only
 // (avg rows have no baseline ARI/grid concept, and are always shown regardless of
 // this filter; see CONTEXT.md's "Save point"/"ARI" entries). A blank min or max field
 // means "no constraint on that side". If max < min for the active criterion, the
@@ -296,7 +296,7 @@ function initialFilterAllowedEntries() {
   const ariMin = parseFloatOrNull(document.getElementById("initial-ari-min").value);
   const ariMax = parseFloatOrNull(document.getElementById("initial-ari-max").value);
   return ENTRIES.filter((e) => {
-    if (e.analysis_type !== "twl") return true; // avg rows always pass through
+    if (e.analysis_type !== "swl") return true; // avg rows always pass through
     if (hasError) return true; // invalid range -- treat as unconstrained until fixed
     if (criterion === "elevation") {
       if (elevMin !== null && e.elevation_ft < elevMin) return false;
@@ -334,11 +334,11 @@ function updateInitialFilterCount() {
     `${allowed.length} design scenario${allowed.length === 1 ? "" : "s"} available below`;
 }
 
-// Populates the Elevation min/max <select>s with every unique twl elevation_ft value
+// Populates the Elevation min/max <select>s with every unique swl elevation_ft value
 // in the manifest (rule 2: same discrete values as the later Elevation picker,
 // derived dynamically rather than hardcoded so a future run's range stays correct).
 function populateInitialElevationSelects() {
-  const values = uniqueSorted(ENTRIES.filter((e) => e.analysis_type === "twl").map((e) => e.elevation_ft));
+  const values = uniqueSorted(ENTRIES.filter((e) => e.analysis_type === "swl").map((e) => e.elevation_ft));
   populateSelect(document.getElementById("initial-elev-min"), values);
   populateSelect(document.getElementById("initial-elev-max"), values);
   const maxSelect = document.getElementById("initial-elev-max");
@@ -602,7 +602,7 @@ function updateVisibilityForAnalysisType() {
   ["save-point-wrap", "save-point-wrap-b"].forEach((id) => {
     document.getElementById(id).style.display = isAvg ? "none" : "";
   });
-  document.querySelectorAll(".twl-only").forEach((opt) => {
+  document.querySelectorAll(".swl-only").forEach((opt) => {
     opt.disabled = isAvg;
   });
   const metricSelect = document.getElementById("metric-select");
@@ -696,7 +696,7 @@ function init() {
   // Hide the Water Level Type picker entirely when the manifest only has one
   // analysis_type (e.g. no --avg-workbooks passed to build_dashboard) -- a
   // single-option dropdown with nothing to switch between is just clutter. It
-  // reappears automatically on a rebuild that includes both twl and avg workbooks.
+  // reappears automatically on a rebuild that includes both swl and avg workbooks.
   document.getElementById("analysis-type-wrap").style.display =
     analysisTypes.length > 1 ? "" : "none";
   populateInitialElevationSelects();

@@ -1,12 +1,12 @@
-"""Tests for great_lakes.analysis.twl.compare_filled_vs_climate_canvas."""
+"""Tests for great_lakes.analysis.swl.compare_filled_vs_climate_canvas."""
 from pathlib import Path
 
 import pandas as pd
 import pytest
 from typer.testing import CliRunner
 
-from great_lakes.analysis.twl import compare_filled_vs_climate_canvas as cfc
-from great_lakes.ari_constants import TWL_ARIS
+from great_lakes.analysis.swl import compare_filled_vs_climate_canvas as cfc
+from great_lakes.ari_constants import SWL_ARIS
 
 runner = CliRunner()
 
@@ -23,7 +23,7 @@ _KNOWN_SHEETS = {
 
 def _sheet(value: float) -> pd.DataFrame:
     rows = {"ID": [1], "lat": [44.0], "lon": [-87.0]}
-    for ari in TWL_ARIS:
+    for ari in SWL_ARIS:
         rows[ari] = [value]
     return pd.DataFrame(rows)
 
@@ -39,7 +39,7 @@ def clean_dir(tmp_path):
     d = tmp_path / "data" / "clean"
     d.mkdir(parents=True)
     sheets = {name: _sheet(100.0 + i) for i, name in enumerate(_KNOWN_SHEETS)}
-    _write_workbook(d / "superior_twl.xlsx", sheets)
+    _write_workbook(d / "superior_swl.xlsx", sheets)
     return d
 
 
@@ -48,7 +48,7 @@ def filled_dir(tmp_path):
     d = tmp_path / "data" / "filled"
     d.mkdir(parents=True)
     sheets = {"filled-_5_3": _sheet(103.5)}  # one in-hull target scenario
-    _write_workbook(d / "superior_twl.xlsx", sheets)
+    _write_workbook(d / "superior_swl.xlsx", sheets)
     return d
 
 
@@ -71,7 +71,7 @@ def test_run_produces_one_row_per_in_hull_target_scenario(clean_dir, filled_dir,
     assert row["lake"] == "superior"
     assert row["scenario"] == "_5_3"
     assert row["ari"] == 1.0
-    assert "fillin_twl_ft" in row
+    assert "fillin_swl_ft" in row
     assert "climate_canvas_ft" in row
     assert "diff_ft" in row
 
@@ -83,7 +83,7 @@ def test_main_writes_csv_and_readme(clean_dir, filled_dir, small_scope, tmp_path
     csv_path = output_dir / "filled_vs_climate_canvas_comparison.csv"
     assert csv_path.exists()
     text = (output_dir / "README.txt").read_text()
-    assert "superior_twl.xlsx" in text
+    assert "superior_swl.xlsx" in text
     assert "filled_vs_climate_canvas_comparison.csv" in text
 
 

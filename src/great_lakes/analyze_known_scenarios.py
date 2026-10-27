@@ -1,13 +1,13 @@
-"""Analyze the known-vs-known TWL directionality for precip and temp deltas.
+"""Analyze the known-vs-known SWL directionality for precip and temp deltas.
 
-Each `<lake>_twl.xlsx` workbook has only 5 **known** (not filled/extrapolated)
+Each `<lake>_swl.xlsx` workbook has only 5 **known** (not filled/extrapolated)
 scenarios. Of those 5, exactly one same-axis pair exists for each climate driver:
 
 - **precip effect** (fixed temp_delta=5): `_10_5` -> `_20_5`
 - **temp effect** (fixed precip_delta=0): `_0_0` -> `_0_7`
 
 This script computes, for *every* save point and *every* ARI column in each of the 4
-Great Lakes twl workbooks (no sampling), the percent change in TWL along each of
+Great Lakes swl workbooks (no sampling), the percent change in SWL along each of
 those two known-known pairs. It writes:
 
 - a long-format CSV of the full per-save-point/per-ARI results (one row per
@@ -21,8 +21,8 @@ from pathlib import Path
 
 import pandas as pd
 
-from great_lakes import common_twl
-from great_lakes.fillin_twl import known_scenario_coords
+from great_lakes import common_swl
+from great_lakes.fillin_swl import known_scenario_coords
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "extrapolated"
 OUTPUT_DIR = Path(__file__).resolve().parents[2] / "data" / "analysis"
@@ -39,7 +39,7 @@ def sheet_name_for_suffix(
     if suffix not in known_coords:
         raise ValueError(f"{suffix!r} is not a known scenario in this workbook.")
     for name in sheet_names:
-        if common_twl.parse_scenario_sheet_name(name) == suffix:
+        if common_swl.parse_scenario_sheet_name(name) == suffix:
             return name
     raise ValueError(f"No sheet found for suffix {suffix!r}.")
 
@@ -48,11 +48,11 @@ def analyze_lake(lake: str, data_dir: Path) -> pd.DataFrame:
     """Compute per-save-point/per-ARI precip and temp directionality for one lake.
 
     Returns a long-format DataFrame with one row per (ID, ari), columns:
-    lake, ID, lat, lon, ari, twl_p10_dt5, twl_p20_dt5, precip_delta, precip_pct,
-    twl_dt0_p0, twl_dt7_p0, temp_delta, temp_pct.
+    lake, ID, lat, lon, ari, swl_p10_dt5, swl_p20_dt5, precip_delta, precip_pct,
+    swl_dt0_p0, swl_dt7_p0, temp_delta, temp_pct.
     """
-    path = common_twl.resolve_lake_twl_path(lake, data_dir)
-    sheets = common_twl.load_lake_sheets(path)
+    path = common_swl.resolve_lake_swl_path(lake, data_dir)
+    sheets = common_swl.load_lake_sheets(path)
     sheet_names = list(sheets.keys())
     coords = known_scenario_coords(sheet_names)
 
@@ -66,7 +66,7 @@ def analyze_lake(lake: str, data_dir: Path) -> pd.DataFrame:
     df_t0 = sheets[t0_name].set_index("ID")
     df_t7 = sheets[t7_name].set_index("ID")
 
-    ari_columns = [c for c in df_p10.columns if c not in common_twl.NON_ARI_COLUMNS]
+    ari_columns = [c for c in df_p10.columns if c not in common_swl.NON_ARI_COLUMNS]
 
     rows = []
     for ari in ari_columns:
@@ -81,12 +81,12 @@ def analyze_lake(lake: str, data_dir: Path) -> pd.DataFrame:
             "lat": df_p10["lat"].to_numpy(),
             "lon": df_p10["lon"].to_numpy(),
             "ari": ari,
-            "twl_p10_dt5": precip_p10.to_numpy(),
-            "twl_p20_dt5": precip_p20.to_numpy(),
+            "swl_p10_dt5": precip_p10.to_numpy(),
+            "swl_p20_dt5": precip_p20.to_numpy(),
             "precip_delta": (precip_p20 - precip_p10).to_numpy(),
             "precip_pct": ((precip_p20 / precip_p10 - 1) * 100).to_numpy(),
-            "twl_dt0_p0": temp_p0.to_numpy(),
-            "twl_dt7_p0": temp_p7.to_numpy(),
+            "swl_dt0_p0": temp_p0.to_numpy(),
+            "swl_dt7_p0": temp_p7.to_numpy(),
             "temp_delta": (temp_p7 - temp_p0).to_numpy(),
             "temp_pct": ((temp_p7 / temp_p0 - 1) * 100).to_numpy(),
         })
@@ -100,7 +100,7 @@ def summarize(results: pd.DataFrame) -> dict[str, pd.DataFrame]:
 
     Returns {"by_lake_and_ari": ..., "by_ari": ..., "overall": ...}, each a DataFrame
     of descriptive stats (mean/median/std/min/max) plus the share of rows where the
-    sign matches "TWL falls as precip rises" / "TWL rises as temp rises" for
+    sign matches "SWL falls as precip rises" / "SWL rises as temp rises" for
     precip_pct / temp_pct respectively.
     """
     def _agg(group: pd.DataFrame) -> pd.Series:
@@ -141,7 +141,7 @@ def summarize(results: pd.DataFrame) -> dict[str, pd.DataFrame]:
 
 
 def main(data_dir: Path = DATA_DIR, output_dir: Path = OUTPUT_DIR) -> None:
-    lakes = list(common_twl.LAKE_TWL_FILENAMES)
+    lakes = list(common_swl.LAKE_SWL_FILENAMES)
     all_results = pd.concat(
         [analyze_lake(lake, data_dir) for lake in lakes], ignore_index=True
     )

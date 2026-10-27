@@ -7,7 +7,7 @@ import pytest
 from typer.testing import CliRunner
 
 from great_lakes.analysis.avg import plot_levels
-from great_lakes.fillin_twl import ALL_SCENARIO_SUFFIXES
+from great_lakes.fillin_swl import ALL_SCENARIO_SUFFIXES
 
 runner = CliRunner()
 

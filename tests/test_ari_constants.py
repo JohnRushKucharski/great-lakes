@@ -4,8 +4,8 @@ import pytest
 from great_lakes import ari_constants
 
 
-def test_twl_aris_matches_all_13_workbook_ari_columns():
-    assert ari_constants.TWL_ARIS == (
+def test_swl_aris_matches_all_13_workbook_ari_columns():
+    assert ari_constants.SWL_ARIS == (
         0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0, 100.0, 200.0, 500.0, 1000.0,
     )
 

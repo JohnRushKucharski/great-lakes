@@ -1,12 +1,12 @@
-"""Tests for great_lakes.analysis.twl.plot_filled_and_extrapolated."""
+"""Tests for great_lakes.analysis.swl.plot_filled_and_extrapolated."""
 from pathlib import Path
 
 import pandas as pd
 import pytest
 from typer.testing import CliRunner
 
-from great_lakes.analysis.twl import plot_filled_and_extrapolated as pfe
-from great_lakes.ari_constants import TWL_ARIS
+from great_lakes.analysis.swl import plot_filled_and_extrapolated as pfe
+from great_lakes.ari_constants import SWL_ARIS
 
 runner = CliRunner()
 
@@ -19,9 +19,9 @@ _SHEETS_BY_SUFFIX = {
 }
 
 
-def _tiny_twl_sheet(offset: float) -> pd.DataFrame:
+def _tiny_swl_sheet(offset: float) -> pd.DataFrame:
     rows = {"ID": [1, 2], "lat": [44.0, 45.0], "lon": [-87.0, -86.0]}
-    for i, ari in enumerate(TWL_ARIS):
+    for i, ari in enumerate(SWL_ARIS):
         rows[ari] = [100.0 + offset + i, 105.0 + offset + i]
     return pd.DataFrame(rows)
 
@@ -29,14 +29,14 @@ def _tiny_twl_sheet(offset: float) -> pd.DataFrame:
 def _write_workbook(path: Path) -> None:
     with pd.ExcelWriter(path) as writer:
         for i, sheet_name in enumerate(_SHEETS_BY_SUFFIX):
-            _tiny_twl_sheet(offset=float(i)).to_excel(writer, sheet_name=sheet_name, index=False)
+            _tiny_swl_sheet(offset=float(i)).to_excel(writer, sheet_name=sheet_name, index=False)
 
 
 @pytest.fixture
 def filled_dir(tmp_path):
     d = tmp_path / "data" / "filled"
     d.mkdir(parents=True)
-    _write_workbook(d / "superior_twl.xlsx")
+    _write_workbook(d / "superior_swl.xlsx")
     return d
 
 
@@ -79,5 +79,5 @@ def test_main_writes_readme_and_defaults(filled_dir, clean_dir, small_scope):
     assert result.exit_code == 0, result.output
     default_output = pfe.resolve_default_output_dir(filled_dir)
     text = (default_output / "README.txt").read_text()
-    assert "superior_twl.xlsx" in text
+    assert "superior_swl.xlsx" in text
     assert (default_output / "superior_1.png").exists()
