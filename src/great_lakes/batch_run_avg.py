@@ -626,7 +626,7 @@ WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
 def _naming_scheme_text() -> str:
     """Generic naming-scheme blurb for this script's one, fixed output naming
     convention (resource_name_component_name -- no per-run configurable
-    filename_style, unlike batch_run_twl.py's longtailpoint-specific styles)."""
+    filename_style, unlike batch_run_swl.py's longtailpoint-specific styles)."""
     header = "Output filename naming scheme for this directory\n" + "=" * 50 + "\n\n"
     return header + (
         "Output filename pattern: <resource_name>_<component_name>...\n\n"

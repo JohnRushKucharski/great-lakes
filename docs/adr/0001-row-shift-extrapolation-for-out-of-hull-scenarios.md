@@ -2,15 +2,15 @@
 status: accepted
 ---
 
-# Row-shift extrapolation for out-of-hull TWL scenarios
+# Row-shift extrapolation for out-of-hull SWL scenarios
 
 ## Context
 
-Each `<lake>_twl.xlsx` workbook has 5 **known scenarios** (of 17 total precip/temp
+Each `<lake>_swl.xlsx` workbook has 5 **known scenarios** (of 17 total precip/temp
 scenarios represented in the `<avg-lake>_avg.csv` average-lake-level data) per save
 point. Of the 12 **target scenarios**, 7 fall inside the known scenarios' convex hull
 in (precip_delta, temp_delta) space and are estimated via Delaunay-linear
-(barycentric) interpolation (see `fillin_twl.py`). The remaining 5 fall *outside* the
+(barycentric) interpolation (see `fillin_swl.py`). The remaining 5 fall *outside* the
 hull. Delaunay-linear interpolation cannot extrapolate — `scipy.spatial.Delaunay`
 raises (`find_simplex` returns `-1`) for any point outside the triangulation. Those 5
 scenarios need a different estimation method, or they stay unfilled indefinitely.
@@ -26,7 +26,7 @@ Considered options:
    was already discussed and set aside earlier in this project in favor of the
    piecewise Delaunay approach for the in-hull case.
 3. **Row-shift extrapolation** (chosen): for each out-of-hull target scenario, shift a
-   same-warming-row known-or-filled scenario's full TWL sheet by the difference in
+   same-warming-row known-or-filled scenario's full SWL sheet by the difference in
    average lake level between the two scenarios.
 
 ## Decision
@@ -41,11 +41,11 @@ the difference in **average lake level (AVG)** between `s` and `a`.
 
 ### Underlying physical assumption
 
-TWL at a save point and return interval decomposes into a mean-lake-level term and a
+SWL at a save point and return interval decomposes into a mean-lake-level term and a
 "waves" term (storm surge / wind setup / wave runup above the mean level):
 
 ```
-waves(l, x, p, r) = TWL(l, x, p, r) - AVG(l, x)
+waves(l, x, p, r) = SWL(l, x, p, r) - AVG(l, x)
 ```
 
 The assumption: **for two scenarios sharing the same temp_delta (warming amount),
@@ -53,7 +53,7 @@ the waves term is approximately unchanged by precip_delta** — the storm/wind/i
 climate driving wave setup is governed primarily by *warming*, not by precipitation
 inputs to the lake's water balance. Precipitation instead governs `AVG(l, x)` (the
 lake's mean water balance / mean level) directly. So moving along a fixed-dT row
-(varying only precip_delta) changes TWL almost entirely through the shift in AVG, not
+(varying only precip_delta) changes SWL almost entirely through the shift in AVG, not
 through a change in storm/wave climate:
 
 ```
@@ -66,9 +66,9 @@ waves(l, s, p, r) ≈ waves(l, a, p, r)   for all save points p, all return inte
 Starting from the assumption above:
 
 ```
-~TWL(l, s, p, r) = waves(l, a, p, r) + AVG(l, s)
-                 = [TWL(l, a, p, r) - AVG(l, a)] + AVG(l, s)
-                 = TWL(l, a, p, r) + [AVG(l, s) - AVG(l, a)]
+~SWL(l, s, p, r) = waves(l, a, p, r) + AVG(l, s)
+                 = [SWL(l, a, p, r) - AVG(l, a)] + AVG(l, s)
+                 = SWL(l, a, p, r) + [AVG(l, s) - AVG(l, a)]
 ```
 
 `AVG(l, s)` and `AVG(l, a)` are both single scalars (independent of save point `p` and
@@ -78,12 +78,12 @@ call it `Δ(l, a, s)`. The estimate for the *entire* target sheet is therefore a
 ARI column:
 
 ```
-~TWL(l, s, p, r) = TWL(l, a, p, r) + Δ(l, a, s),  for every (p, r)
+~SWL(l, s, p, r) = SWL(l, a, p, r) + Δ(l, a, s),  for every (p, r)
 ```
 
 `AVG(l, x)` itself is the mean of the *entire* synthetic scenario record (~12,360
 monthly rows spanning 1970-2999) in `data/clean/<avg-lake>_avg.csv` for scenario `x`'s
-column. `michigan` and `huron` (separate `<lake>_twl.xlsx` workbooks) both read
+column. `michigan` and `huron` (separate `<lake>_swl.xlsx` workbooks) both read
 `michiganhuron_avg.csv`, since Michigan-Huron is one hydraulically-connected lake with
 one water level.
 

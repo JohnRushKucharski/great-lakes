@@ -1,15 +1,15 @@
-"""Tests for great_lakes.analysis.twl.plot_known_scenarios."""
+"""Tests for great_lakes.analysis.swl.plot_known_scenarios."""
 from pathlib import Path
 
 import pandas as pd
 import pytest
 from typer.testing import CliRunner
 
-from great_lakes.analysis.twl import plot_known_scenarios
+from great_lakes.analysis.swl import plot_known_scenarios
 
 runner = CliRunner()
 
-# Real known-scenario sheet names/coords shared by every <lake>_twl.xlsx workbook.
+# Real known-scenario sheet names/coords shared by every <lake>_swl.xlsx workbook.
 _KNOWN_SHEETS = {
     "baseline-_0_0": (0.0, 0.0),
     "nearterm-_5_1.5": (5.0, 1.5),
@@ -19,15 +19,15 @@ _KNOWN_SHEETS = {
 }
 
 
-def _tiny_twl_sheet(offset: float) -> pd.DataFrame:
+def _tiny_swl_sheet(offset: float) -> pd.DataFrame:
     """2 save points, all 13 real ARI columns."""
-    from great_lakes.ari_constants import TWL_ARIS
+    from great_lakes.ari_constants import SWL_ARIS
     rows = {
         "ID": [1, 2],
         "lat": [44.0, 45.0],
         "lon": [-87.0, -86.0],
     }
-    for i, ari in enumerate(TWL_ARIS):
+    for i, ari in enumerate(SWL_ARIS):
         rows[ari] = [100.0 + offset + i, 105.0 + offset + i]
     return pd.DataFrame(rows)
 
@@ -36,11 +36,11 @@ def _tiny_twl_sheet(offset: float) -> pd.DataFrame:
 def data_dir(tmp_path):
     d = tmp_path / "clean"
     d.mkdir()
-    for lake, filename in {"superior": "superior_twl.xlsx"}.items():
+    for lake, filename in {"superior": "superior_swl.xlsx"}.items():
         path = d / filename
         with pd.ExcelWriter(path) as writer:
             for i, (sheet_name, _coord) in enumerate(_KNOWN_SHEETS.items()):
-                _tiny_twl_sheet(offset=float(i)).to_excel(
+                _tiny_swl_sheet(offset=float(i)).to_excel(
                     writer, sheet_name=sheet_name, index=False
                 )
     (d / "superior_avg.csv").write_text("time,_0_0\n1970-01-01,183.0\n1970-02-01,183.2\n")
@@ -53,10 +53,10 @@ def small_scope(monkeypatch):
     monkeypatch.setattr(plot_known_scenarios, "ARIS", (1.0, 10.0))
 
 
-def test_resolve_default_output_dir_is_img_twl_known_sibling_of_data_dir():
+def test_resolve_default_output_dir_is_img_swl_known_sibling_of_data_dir():
     data_dir = Path("data/clean")
     assert plot_known_scenarios.resolve_default_output_dir(data_dir) == Path(
-        "data/clean/img/twl/known"
+        "data/clean/img/swl/known"
     )
 
 
@@ -76,7 +76,7 @@ def test_main_writes_readme(data_dir, small_scope, tmp_path):
     result = runner.invoke(plot_known_scenarios.app, [str(data_dir), str(output_dir)])
     assert result.exit_code == 0, result.output
     text = (output_dir / "README.txt").read_text()
-    assert "superior_twl.xlsx" in text
+    assert "superior_swl.xlsx" in text
     assert "interpolated" in text
 
 

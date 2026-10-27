@@ -1,5 +1,5 @@
 """Regenerate a presentation-friendly copy of one save-point threshold-ARI elevation
-figure from its existing grid csv (see batch_twl_output/baseline/savepoint<id>_ari<ari>
+figure from its existing grid csv (see batch_swl_output/baseline/savepoint<id>_ari<ari>
 _elevation_grid.csv), with changes suited to slides:
 
 - colorbar ticks and grid-pixel value labels rounded to 1 decimal (vs. the batch
@@ -9,13 +9,13 @@ _elevation_grid.csv), with changes suited to slides:
 
 Doesn't touch climate_canvas or the original baseline outputs -- reads the existing
 grid csv, re-renders through climate_canvas's own _render_surface (identical
-pcolormesh/contour/labeling logic as batch_run_twl.py's original call), then
+pcolormesh/contour/labeling logic as batch_run_swl.py's original call), then
 overrides just the label/title font sizes and colorbar tick formatting before saving
 to a new path.
 
 Usage: python make_presentation_figure.py <save_point_id> <ari> <out_stem>
 Example: python make_presentation_figure.py 4999 15 4999_ari15_elevation
-    reads  ../batch_twl_output/baseline/savepoint4999_ari15_elevation_grid.csv
+    reads  ../batch_swl_output/baseline/savepoint4999_ari15_elevation_grid.csv
     writes ./4999_ari15_elevation.png (grid csv is copied separately, see README)
 """
 import shutil
@@ -23,18 +23,18 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-from matplotlib import pyplot as plt
 from climate_canvas.plots_utilities import _render_surface  # type: ignore[import-untyped]
 from hydropattern.cli import write_grid_csv  # type: ignore[import-untyped]
+from matplotlib import pyplot as plt
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
-from great_lakes import common_twl  # noqa: E402
+from great_lakes import common_swl  # noqa: E402
 
 LABEL_FONTSIZE = 16
 TITLE_FONTSIZE = 18
 TICK_DECIMALS = 1
 
-BASELINE_DIR = Path(__file__).resolve().parent.parent / "batch_twl_output" / "baseline"
+BASELINE_DIR = Path(__file__).resolve().parent.parent / "batch_swl_output" / "baseline"
 
 
 def read_grid_csv(path: Path):
@@ -66,12 +66,12 @@ def build_presentation_figure(
     # _render_surface computes its own RdBu/TwoSlopeNorm defaults, matching the
     # original batch plot's color scheme exactly; only override them (Reds_r/Blues)
     # when every cell falls on one side of baseline_ft, same as the original call.
-    style = common_twl.one_sided_color_style(z_range, baseline_ft)
+    style = common_swl.one_sided_color_style(z_range, baseline_ft)
     color_map = style[0] if style is not None else "RdBu"
     norm = style[1] if style is not None else None
     levels = style[2] if style is not None else None
     widths = style[3] if style is not None else None
-    title = common_twl.build_threshold_ari_title(ari, save_point_id)
+    title = common_swl.build_threshold_ari_title(ari, save_point_id)
     if elevation_offset_ft:
         # Append the runup allowance to the title's 2nd line ("ARI: <n> yr"), so a
         # runup variant is visually distinguishable from the plain elevation plot.

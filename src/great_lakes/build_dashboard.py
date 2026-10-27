@@ -1,6 +1,6 @@
-"""Build a self-contained results dashboard for batch_run_twl.py outputs.
+"""Build a self-contained results dashboard for batch_run_swl.py outputs.
 
-Reads one or more batch_run_twl.py resources+config workbooks (already run, with
+Reads one or more batch_run_swl.py resources+config workbooks (already run, with
 outputs already written to disk -- see config sheet's output_directory) and produces:
 
 - manifest.js: a sidecar JS file (`window.MANIFEST = {...};`) embedding per-row
@@ -28,12 +28,12 @@ from typing import Any
 import pandas as pd
 
 from great_lakes import batch_run_avg as avg
-from great_lakes import batch_run_twl as twl
-from great_lakes import common_twl
+from great_lakes import batch_run_swl as swl
+from great_lakes import common_swl
 
-# Resolved equivalent_elevation keyword, mirrored from batch_run_twl.py's
+# Resolved equivalent_elevation keyword, mirrored from batch_run_swl.py's
 # _BASELINE_MAGNITUDE_KEYWORD (kept as a local copy rather than importing the private
-# name, same rationale as batch_run_twl.py's own _VALID_OPERATORS copy).
+# name, same rationale as batch_run_swl.py's own _VALID_OPERATORS copy).
 _BASELINE_MAGNITUDE_KEYWORD = "baseline_magnitude"
 
 # output-kind key -> filename suffix, shared by resolve_files and build_manifest.
@@ -69,17 +69,17 @@ _PRIMARY_KINDS = frozenset({"grid", "plot"})
 MISSING = "__missing__"
 
 
-def compute_magnitude_ft(resource: "twl.ResourceSpec") -> float:
+def compute_magnitude_ft(resource: "swl.ResourceSpec") -> float:
     """Convert resource.magnitude_value (meters, IGLD85) to feet, NAVD88.
 
     Used for dashboard filtering/display, since the raw meters-IGLD85 value (and the
     filename numbers derived from it) aren't a human-friendly/authoritative NAVD88
     elevation on their own -- see CONTEXT.md's "Equivalent elevation" definition.
     """
-    return common_twl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
+    return common_swl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
 
 
-def compute_equivalent_elevation_basis(row: dict[str, Any], resource: "twl.ResourceSpec") -> str | None:
+def compute_equivalent_elevation_basis(row: dict[str, Any], resource: "swl.ResourceSpec") -> str | None:
     """Resolve a row's equivalent_elevation into a dashboard filter/display label.
 
     None -> None (resource.equivalent_elevation is None; row has no
@@ -94,7 +94,7 @@ def compute_equivalent_elevation_basis(row: dict[str, Any], resource: "twl.Resou
     raw = row.get("equivalent_elevation")
     if isinstance(raw, str) and raw.strip().lower() == _BASELINE_MAGNITUDE_KEYWORD:
         return _BASELINE_MAGNITUDE_KEYWORD
-    override_ft = common_twl.m_igld85_to_ft_NAVD88(resource.equivalent_elevation)
+    override_ft = common_swl.m_igld85_to_ft_NAVD88(resource.equivalent_elevation)
     return f"{override_ft:.2f} ft override"
 
 
@@ -110,7 +110,7 @@ class ManifestEntry:
     """
 
     workbook_path: Path
-    analysis_type: str  # "twl" or "avg" -- see build_entries / build_avg_entries
+    analysis_type: str  # "swl" or "avg" -- see build_entries / build_avg_entries
     resource_name: str
     component_name: str  # runup allowance label, e.g. "base"/"run2"/"run25"/"run3"
     save_point_id: Any
@@ -120,27 +120,27 @@ class ManifestEntry:
     output_dir: Path
     # On-disk file-name stem (no suffix), per the workbook's config.filename_style --
     # equals qualified_name for "qualified_name" style (and always for avg entries,
-    # which have no filename_style concept) or common_twl.output_file_stem's ft-based
+    # which have no filename_style concept) or common_swl.output_file_stem's ft-based
     # stem for "elevation_runup_savepoint" style. resolve_files uses this (not
     # qualified_name) to find each entry's actual output files.
     file_stem: str
     # The actual crest elevation being evaluated: magnitude_ft + this component's
-    # runup allowance (common_twl.RUNUP_FT_BY_COMPONENT), or just magnitude_ft for avg
+    # runup allowance (common_swl.RUNUP_FT_BY_COMPONENT), or just magnitude_ft for avg
     # entries (no runup allowance concept there). Used by the dashboard's "Elevation
     # (NAVD88)" picker instead of the raw magnitude_ft, since the runup allowance
     # itself is already a separate picker ("Runup (ft)").
     elevation_ft: float
-    # The numeric runup allowance itself (common_twl.RUNUP_FT_BY_COMPONENT's value for
+    # The numeric runup allowance itself (common_swl.RUNUP_FT_BY_COMPONENT's value for
     # component_name), 0.0 for avg entries. The dashboard's "Runup (ft)" picker filters
     # on this numeric value directly (not the raw component_name code) -- see
     # CONTEXT.md's "Runup allowance" entry.
     runup_ft: float = 0.0
     # resource.threshold (the target ARI, in years) -- None for avg entries and for
-    # twl rows with a blank threshold cell (no threshold_ari_elevation output). See
+    # swl rows with a blank threshold cell (no threshold_ari_elevation output). See
     # CONTEXT.md's "Threshold-ARI elevation" entry.
     threshold: float | None = None
     # The save-point threshold-ARI elevation output's grid csv/plot png paths (see
-    # batch_run_twl.resolve_save_point_ari_elevation_output_paths) -- shared across
+    # batch_run_swl.resolve_save_point_ari_elevation_output_paths) -- shared across
     # every entry for the same save point, unlike this entry's own output_dir/
     # file_stem-based files. None when threshold is None.
     threshold_ari_grid_path: Path | None = None
@@ -154,23 +154,23 @@ def build_entries(workbook_path: Path) -> list[ManifestEntry]:
     only resolves each row's identity and where its output folder *should* be, per the
     workbook's own config sheet.
     """
-    config = twl.read_config_sheet(workbook_path)
-    rows = twl.read_resources_sheet(workbook_path)
+    config = swl.read_config_sheet(workbook_path)
+    rows = swl.read_resources_sheet(workbook_path)
     entries = []
     for row in rows:
-        resource = twl.parse_resource_row(row)
-        output_dir = twl.resolve_output_folder(resource, config)
+        resource = swl.parse_resource_row(row)
+        output_dir = swl.resolve_output_folder(resource, config)
         magnitude_ft = compute_magnitude_ft(resource)
-        runup_ft = common_twl.RUNUP_FT_BY_COMPONENT.get(resource.component_name, 0.0)
+        runup_ft = common_swl.RUNUP_FT_BY_COMPONENT.get(resource.component_name, 0.0)
         threshold_ari_grid_path = threshold_ari_plot_path = None
         if resource.threshold is not None:
             threshold_ari_grid_path, threshold_ari_plot_path = (
-                twl.resolve_save_point_ari_elevation_output_paths(resource, config)
+                swl.resolve_save_point_ari_elevation_output_paths(resource, config)
             )
         entries.append(
             ManifestEntry(
                 workbook_path=workbook_path,
-                analysis_type="twl",
+                analysis_type="swl",
                 resource_name=resource.resource_name,
                 component_name=resource.component_name,
                 save_point_id=resource.save_point_id,
@@ -178,7 +178,7 @@ def build_entries(workbook_path: Path) -> list[ManifestEntry]:
                 equivalent_elevation_basis=compute_equivalent_elevation_basis(row, resource),
                 qualified_name=resource.qualified_name,
                 output_dir=output_dir,
-                file_stem=twl.resolve_output_stem(resource, config),
+                file_stem=swl.resolve_output_stem(resource, config),
                 elevation_ft=magnitude_ft + runup_ft,
                 runup_ft=runup_ft,
                 threshold=resource.threshold,
@@ -211,7 +211,7 @@ def build_avg_entries(workbook_path: Path) -> list[ManifestEntry]:
             )
         output_dir = avg.resolve_output_folder(resource, config)
         magnitude_value = resource.magnitude[1]
-        magnitude_ft = common_twl.m_igld85_to_ft_NAVD88(magnitude_value)
+        magnitude_ft = common_swl.m_igld85_to_ft_NAVD88(magnitude_value)
         entries.append(
             ManifestEntry(
                 workbook_path=workbook_path,
@@ -266,13 +266,13 @@ def resolve_files(entry: ManifestEntry) -> dict[str, Path | None | str]:
             "threshold_ari_elevation_grid": entry.threshold_ari_grid_path,
             "threshold_ari_elevation_plot": entry.threshold_ari_plot_path,
         }
-        for kind, path in threshold_ari_paths.items():
-            if path is None or not path.exists():
+        for kind, ari_path in threshold_ari_paths.items():
+            if ari_path is None or not ari_path.exists():
                 raise FileNotFoundError(
                     f"Expected output file missing for {entry.qualified_name!r} "
-                    f"({kind}): {path}"
+                    f"({kind}): {ari_path}"
                 )
-            files[kind] = path
+            files[kind] = ari_path
     return files
 
 
@@ -311,7 +311,7 @@ def merge_and_validate(entries_lists: list[list[ManifestEntry]]) -> list[Manifes
 
 
 def read_grid_csv(path: Path) -> dict[str, Any]:
-    """Parse a batch_run_twl.py `_grid.csv` (`temp_delta\\precip_delta` header row, one
+    """Parse a batch_run_swl.py `_grid.csv` (`temp_delta\\precip_delta` header row, one
     row per temp_delta, one column per precip_delta, blank cells for scenarios outside
     the valid grid) into row/column labels + a values matrix for JS table rendering.
 
@@ -570,9 +570,9 @@ _DASHBOARD_HTML_TEMPLATE = """<!DOCTYPE html>
     <label>Analysis
       <select id="metric-select">
         <option value="primary">Return Interval</option>
-        <option value="equivalent_elevation" class="twl-only">Equivalent Elevation</option>
-        <option value="elevation_delta" class="twl-only">Elevation Delta</option>
-        <option value="threshold_ari_elevation" class="twl-only">Threshold ARI Elevation</option>
+        <option value="equivalent_elevation" class="swl-only">Equivalent Elevation</option>
+        <option value="elevation_delta" class="swl-only">Elevation Delta</option>
+        <option value="threshold_ari_elevation" class="swl-only">Threshold ARI Elevation</option>
       </select>
     </label>
     <label>Form
@@ -660,7 +660,7 @@ function currentFilters(suffix) {
 }
 
 // Entries allowed by the top-of-page initial filter -- gated on which criterion radio
-// is active (rule 1: Elevation OR Baseline ARI, never both at once). twl rows only
+// is active (rule 1: Elevation OR Baseline ARI, never both at once). swl rows only
 // (avg rows have no baseline ARI/grid concept, and are always shown regardless of
 // this filter; see CONTEXT.md's "Save point"/"ARI" entries). A blank min or max field
 // means "no constraint on that side". If max < min for the active criterion, the
@@ -691,7 +691,7 @@ function initialFilterAllowedEntries() {
   const ariMin = parseFloatOrNull(document.getElementById("initial-ari-min").value);
   const ariMax = parseFloatOrNull(document.getElementById("initial-ari-max").value);
   return ENTRIES.filter((e) => {
-    if (e.analysis_type !== "twl") return true; // avg rows always pass through
+    if (e.analysis_type !== "swl") return true; // avg rows always pass through
     if (hasError) return true; // invalid range -- treat as unconstrained until fixed
     if (criterion === "elevation") {
       if (elevMin !== null && e.elevation_ft < elevMin) return false;
@@ -729,11 +729,11 @@ function updateInitialFilterCount() {
     `${allowed.length} design scenario${allowed.length === 1 ? "" : "s"} available below`;
 }
 
-// Populates the Elevation min/max <select>s with every unique twl elevation_ft value
+// Populates the Elevation min/max <select>s with every unique swl elevation_ft value
 // in the manifest (rule 2: same discrete values as the later Elevation picker,
 // derived dynamically rather than hardcoded so a future run's range stays correct).
 function populateInitialElevationSelects() {
-  const values = uniqueSorted(ENTRIES.filter((e) => e.analysis_type === "twl").map((e) => e.elevation_ft));
+  const values = uniqueSorted(ENTRIES.filter((e) => e.analysis_type === "swl").map((e) => e.elevation_ft));
   populateSelect(document.getElementById("initial-elev-min"), values);
   populateSelect(document.getElementById("initial-elev-max"), values);
   const maxSelect = document.getElementById("initial-elev-max");
@@ -997,7 +997,7 @@ function updateVisibilityForAnalysisType() {
   ["save-point-wrap", "save-point-wrap-b"].forEach((id) => {
     document.getElementById(id).style.display = isAvg ? "none" : "";
   });
-  document.querySelectorAll(".twl-only").forEach((opt) => {
+  document.querySelectorAll(".swl-only").forEach((opt) => {
     opt.disabled = isAvg;
   });
   const metricSelect = document.getElementById("metric-select");
@@ -1091,7 +1091,7 @@ function init() {
   // Hide the Water Level Type picker entirely when the manifest only has one
   // analysis_type (e.g. no --avg-workbooks passed to build_dashboard) -- a
   // single-option dropdown with nothing to switch between is just clutter. It
-  // reappears automatically on a rebuild that includes both twl and avg workbooks.
+  // reappears automatically on a rebuild that includes both swl and avg workbooks.
   document.getElementById("analysis-type-wrap").style.display =
     analysisTypes.length > 1 ? "" : "none";
   populateInitialElevationSelects();
@@ -1137,16 +1137,16 @@ def render_dashboard_html(path: Path) -> None:
 
 
 def build_dashboard(
-    twl_workbook_paths: list[Path], avg_workbook_paths: list[Path], output_dir: Path
+    swl_workbook_paths: list[Path], avg_workbook_paths: list[Path], output_dir: Path
 ) -> None:
     """Build the full dashboard (manifest.js + dashboard.html) into output_dir.
 
-    twl_workbook_paths / avg_workbook_paths are explicit lists of already-run
-    batch_run_twl.py / batch_run_avg.py workbooks to include (see CONTEXT.md: folder
+    swl_workbook_paths / avg_workbook_paths are explicit lists of already-run
+    batch_run_swl.py / batch_run_avg.py workbooks to include (see CONTEXT.md: folder
     inclusion is a deliberate per-invocation choice, not auto-scanned, since one-off
     elevation-override variants come and go).
     """
-    entries_lists = [build_entries(wp) for wp in twl_workbook_paths]
+    entries_lists = [build_entries(wp) for wp in swl_workbook_paths]
     entries_lists += [build_avg_entries(wp) for wp in avg_workbook_paths]
     entries = merge_and_validate(entries_lists)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1159,13 +1159,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Build a self-contained results dashboard (dashboard.html + manifest.js) "
-            "from one or more already-run batch_run_twl.py / batch_run_avg.py "
+            "from one or more already-run batch_run_swl.py / batch_run_avg.py "
             "resources+config workbooks."
         )
     )
     parser.add_argument(
-        "--twl-workbooks", nargs="+", type=Path, default=[],
-        help="Path(s) to already-run batch_run_twl.py resources+config .xlsx workbook(s).",
+        "--swl-workbooks", nargs="+", type=Path, default=[],
+        help="Path(s) to already-run batch_run_swl.py resources+config .xlsx workbook(s).",
     )
     parser.add_argument(
         "--avg-workbooks", nargs="+", type=Path, default=[],
@@ -1176,9 +1176,9 @@ def main(argv: list[str] | None = None) -> int:
         help="Directory to write dashboard.html + manifest.js into.",
     )
     args = parser.parse_args(argv)
-    if not args.twl_workbooks and not args.avg_workbooks:
-        parser.error("at least one of --twl-workbooks/--avg-workbooks is required.")
-    build_dashboard(args.twl_workbooks, args.avg_workbooks, args.output_dir)
+    if not args.swl_workbooks and not args.avg_workbooks:
+        parser.error("at least one of --swl-workbooks/--avg-workbooks is required.")
+    build_dashboard(args.swl_workbooks, args.avg_workbooks, args.output_dir)
     print(f"Dashboard written to {args.output_dir / 'dashboard.html'}")
     return 0
 

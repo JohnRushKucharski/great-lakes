@@ -1,11 +1,11 @@
-"""Plot TWL response surfaces (like plot_known_scenarios.py) for a data_dir holding
-already-filled/extrapolated `<lake>_twl.xlsx` workbooks (data/filled or
+"""Plot SWL response surfaces (like plot_known_scenarios.py) for a data_dir holding
+already-filled/extrapolated `<lake>_swl.xlsx` workbooks (data/filled or
 data/extrapolated), using their own actual values (no climate_canvas
 interpolation/fillin -- these directories already hold hydropattern's own
-fillin_twl.py fill/extrapolation for every scenario cell they have).
+fillin_swl.py fill/extrapolation for every scenario cell they have).
 
-Same centroid save point per lake (common_twl.center_save_point_id), same 13 ARI
-columns present in every TWL workbook (ari_constants.TWL_ARIS), same threshold
+Same centroid save point per lake (common_swl.center_save_point_id), same 13 ARI
+columns present in every SWL workbook (ari_constants.SWL_ARIS), same threshold
 (baseline `_0_0` average lake level from a `clean`-sibling data dir, in feet) as
 plot_known_scenarios.py.
 
@@ -23,7 +23,7 @@ output_dir (default: `<data_dir>/img` -- see resolve_default_output_dir).
 
 ## Usage
 
-    uv run python -m great_lakes.analysis.twl.plot_filled_and_extrapolated \\
+    uv run python -m great_lakes.analysis.swl.plot_filled_and_extrapolated \\
         <data_dir> [output_dir] [--avg-data-dir DIR]
 
 Run once per data_dir (data/filled, then data/extrapolated) -- see
@@ -38,11 +38,11 @@ import typer
 from climate_canvas.plots_utilities import plot_response_surface  # type: ignore[import-untyped]
 from hydropattern.scenario_grid import parse_scenario_name  # type: ignore[import-untyped]
 
-from great_lakes import ari_constants, common_twl, run_readme
-from great_lakes.fillin_twl import ALL_SCENARIO_SUFFIXES
+from great_lakes import ari_constants, common_swl, run_readme
+from great_lakes.fillin_swl import ALL_SCENARIO_SUFFIXES
 
-LAKES = tuple(common_twl.LAKE_TWL_FILENAMES)
-ARIS = ari_constants.TWL_ARIS
+LAKES = tuple(common_swl.LAKE_SWL_FILENAMES)
+ARIS = ari_constants.SWL_ARIS
 
 # All 17 scenarios' (precip, temp) coords, keyed by bare suffix, e.g. "_0_0" -> (0., 0.)
 ALL_COORDS = {suffix: parse_scenario_name(suffix) for suffix in ALL_SCENARIO_SUFFIXES}
@@ -71,7 +71,7 @@ def _write_pair(xs, ys, zs, title: str, directory: Path, filename: str,
     (interpolate=True, fillin=True) companion into `directory` and
     `directory/interpolated`, both named `<filename>.png`.
     """
-    labels = ("precip_delta", "temp_delta", "TWL (ft)")
+    labels = ("precip_delta", "temp_delta", "SWL (ft)")
     directory.mkdir(parents=True, exist_ok=True)
     raw_path = directory / f"{filename}.png"
     plot_response_surface(
@@ -90,22 +90,22 @@ def _write_pair(xs, ys, zs, title: str, directory: Path, filename: str,
 
 
 def run(data_dir: Path, output_dir: Path, avg_data_dir: Path) -> tuple[Path, ...]:
-    """Generate every filled/extrapolated TWL response-surface plot for every lake
+    """Generate every filled/extrapolated SWL response-surface plot for every lake
     in LAKES/ARI in ARIS, under output_dir (with a sibling interpolated/ subfolder).
     Returns every file written.
     """
     written: list[Path] = []
     for lake in LAKES:
-        path = common_twl.resolve_lake_twl_path(lake, data_dir)
+        path = common_swl.resolve_lake_swl_path(lake, data_dir)
         sheets = pd.read_excel(path, sheet_name=None)
-        save_point_id = common_twl.center_save_point_id(sheets)
+        save_point_id = common_swl.center_save_point_id(sheets)
 
-        avg_means = common_twl.read_avg_scenario_means(lake, avg_data_dir)
-        baseline_avg_ft = avg_means["_0_0"] * common_twl.METERS_TO_FEET
+        avg_means = common_swl.read_avg_scenario_means(lake, avg_data_dir)
+        baseline_avg_ft = avg_means["_0_0"] * common_swl.METERS_TO_FEET
 
         for ari in ARIS:
             ari_label = ari_constants.format_ari(ari)
-            xs, ys, zs = common_twl.build_scenario_ari_grid(ALL_COORDS, sheets, save_point_id, ari)
+            xs, ys, zs = common_swl.build_scenario_ari_grid(ALL_COORDS, sheets, save_point_id, ari)
             title = (f"{lake.capitalize()} save point {save_point_id} -- ARI={ari_label} "
                       f"(baseline average lake level={baseline_avg_ft:.2f} ft)")
             written.extend(_write_pair(
@@ -115,12 +115,12 @@ def run(data_dir: Path, output_dir: Path, avg_data_dir: Path) -> tuple[Path, ...
 
 
 _NAMING_SCHEME_TEXT = (
-    "<lake>_<ari>.png - raw actual-value TWL response surface (interpolate=False; "
+    "<lake>_<ari>.png - raw actual-value SWL response surface (interpolate=False; "
     "NaN wherever data_dir's workbook has no sheet for that scenario, e.g. "
     "data/filled/'s 5 out-of-hull gaps).\n"
     "interpolated/<lake>_<ari>.png - same, climate_canvas interpolate+fillin "
     "resampled (Delaunay-linear fillin for any remaining NaN cell).\n"
-    "ARI values follow ari_constants.TWL_ARIS (all 13 workbook columns)."
+    "ARI values follow ari_constants.SWL_ARIS (all 13 workbook columns)."
 )
 
 app = typer.Typer(add_completion=False, no_args_is_help=True)
@@ -129,7 +129,7 @@ app = typer.Typer(add_completion=False, no_args_is_help=True)
 @app.command()
 def main(
     data_dir: Path = typer.Argument(
-        ..., help="Directory holding the <lake>_twl.xlsx workbooks to plot "
+        ..., help="Directory holding the <lake>_swl.xlsx workbooks to plot "
                    "(data/filled or data/extrapolated)."),
     output_dir: Optional[Path] = typer.Argument(
         None, help="Directory to write plots + README.txt to. Defaults to "
@@ -139,7 +139,7 @@ def main(
         help="Directory holding <avg-lake>_avg.csv files for the baseline "
              "threshold. Defaults to a 'clean' sibling of data_dir."),
 ) -> None:
-    """Plot filled/extrapolated TWL response surfaces for every lake's centroid
+    """Plot filled/extrapolated SWL response surfaces for every lake's centroid
     save point, and write a README.txt documenting the run (see
     run_readme.write_readme).
     """
@@ -151,14 +151,14 @@ def main(
     written = run(data_dir, output_dir, avg_data_dir)
 
     inputs = [
-        (f"{lake} twl workbook", common_twl.resolve_lake_twl_path(lake, data_dir))
+        (f"{lake} swl workbook", common_swl.resolve_lake_swl_path(lake, data_dir))
         for lake in LAKES
     ]
     inputs.append(("avg data directory", avg_data_dir))
     workspace_root = Path(__file__).resolve().parents[4]
     run_readme.write_readme(
         output_directory=output_dir,
-        title="Filled/extrapolated TWL analysis report",
+        title="Filled/extrapolated SWL analysis report",
         inputs=inputs,
         results_text=f"Wrote {len(written)} plot file(s) across {len(LAKES)} lake(s).",
         naming_scheme_text=_NAMING_SCHEME_TEXT,

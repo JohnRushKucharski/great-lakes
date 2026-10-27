@@ -2,8 +2,8 @@
 
 Batch-generating and running `hydropattern` `.toml` configs against Great Lakes
 lake-level timeseries — one `.toml` file and one hydropattern run per row of a
-spreadsheet — plus standalone tools for total-water-level (twl) frequency-curve
-analysis, twl scenario fill-in/extrapolation, known-scenario directionality analysis,
+spreadsheet — plus standalone tools for storm water level (SWL) frequency-curve
+analysis, SWL scenario fill-in/extrapolation, known-scenario directionality analysis,
 and a results dashboard.
 
 See [`CONTEXT.md`](./CONTEXT.md) for the domain vocabulary (**resource**, **resources
@@ -21,41 +21,41 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 │       └── 0002-sidecar-js-manifest-for-longtailpoint-dashboard.md
 ├── src/great_lakes/
 │   ├── batch_run_avg.py             <- batch tool 1: parse -> build .toml -> run hydropattern
-│   ├── batch_run_twl.py             <- batch tool 2: parse -> interpolate ARI curve -> plot
+│   ├── batch_run_swl.py             <- batch tool 2: parse -> interpolate ARI curve -> plot
 │   ├── batch_runner.py              <- shared run_batch loop + RowProcessor strategy + run readme
-│   ├── common_twl.py                <- shared helpers: read <lake>_twl.xlsx / <avg-lake>_avg.csv
-│   ├── fillin_twl.py                 <- batch tool 3: interpolate + extrapolate missing twl scenarios
-│   ├── analyze_known_scenarios.py    <- known-vs-known TWL precip/temp directionality analysis
+│   ├── common_swl.py                <- shared helpers: read <lake>_swl.xlsx / <avg-lake>_avg.csv
+│   ├── fillin_swl.py                 <- batch tool 3: interpolate + extrapolate missing swl scenarios
+│   ├── analyze_known_scenarios.py    <- known-vs-known SWL precip/temp directionality analysis
 │   ├── build_dashboard.py            <- builds a self-contained results dashboard
 │   ├── clean_lake_levels_all_scenarios.py  <- data/raw/ -> data/clean/ AVG cleaning script
-│   ├── clean_still_water_summary.py        <- data/raw/ -> data/clean/ TWL cleaning script
+│   ├── clean_swl_summary.py        <- data/raw/ -> data/clean/ SWL cleaning script
 │   ├── build_avg_template.py        <- regenerates templates/template_avg.xlsx
-│   └── build_twl_template.py        <- regenerates templates/template_twl.xlsx
+│   └── build_swl_template.py        <- regenerates templates/template_swl.xlsx
 ├── templates/
 │   ├── template_avg.xlsx           <- blank resources+config workbook template (batch_run_avg.py)
-│   └── template_twl.xlsx           <- blank resources+config workbook template (batch_run_twl.py)
+│   └── template_swl.xlsx           <- blank resources+config workbook template (batch_run_swl.py)
 ├── data/
 │   ├── raw/                    <- source Excel workbooks (committed, not code)
 │   ├── clean/                  <- cleaned per-lake data (gitignored, regenerable from raw/)
-│   │   ├── superior_avg.csv        <- batch_run_avg.py / fillin_twl.py (timeseries -> AVG)
+│   │   ├── superior_avg.csv        <- batch_run_avg.py / fillin_swl.py (timeseries -> AVG)
 │   │   ├── michiganhuron_avg.csv
 │   │   ├── stclair_avg.csv
 │   │   ├── erie_avg.csv
 │   │   ├── ontario_avg.csv
-│   │   ├── superior_twl.xlsx       <- batch_run_twl.py / fillin_twl.py (ARI frequency curves)
-│   │   ├── michigan_twl.xlsx
-│   │   ├── huron_twl.xlsx
-│   │   └── ontario_twl.xlsx
-│   ├── extrapolated/            <- fillin_twl.py output (--extrapolate, default): 17 scenarios
-│   │   ├── superior_twl.xlsx
-│   │   ├── michigan_twl.xlsx
-│   │   ├── huron_twl.xlsx
-│   │   └── ontario_twl.xlsx
-│   ├── filled/                 <- fillin_twl.py output (--no-extrapolate): 12 scenarios only
-│   │   ├── superior_twl.xlsx
-│   │   ├── michigan_twl.xlsx
-│   │   ├── huron_twl.xlsx
-│   │   └── ontario_twl.xlsx
+│   │   ├── superior_swl.xlsx       <- batch_run_swl.py / fillin_swl.py (ARI frequency curves)
+│   │   ├── michigan_swl.xlsx
+│   │   ├── huron_swl.xlsx
+│   │   └── ontario_swl.xlsx
+│   ├── extrapolated/            <- fillin_swl.py output (--extrapolate, default): 17 scenarios
+│   │   ├── superior_swl.xlsx
+│   │   ├── michigan_swl.xlsx
+│   │   ├── huron_swl.xlsx
+│   │   └── ontario_swl.xlsx
+│   ├── filled/                 <- fillin_swl.py output (--no-extrapolate): 12 scenarios only
+│   │   ├── superior_swl.xlsx
+│   │   ├── michigan_swl.xlsx
+│   │   ├── huron_swl.xlsx
+│   │   └── ontario_swl.xlsx
 │   └── analysis/                <- analyze_known_scenarios.py output (gitignored, regenerable)
 └── longtailpoint/               <- an example project using this tooling (see its own README)
 ```
@@ -82,7 +82,7 @@ You only need to re-run the cleaning scripts if the raw source workbooks in
 
 ```powershell
 uv run python -m great_lakes.clean_lake_levels_all_scenarios
-uv run python -m great_lakes.clean_still_water_summary
+uv run python -m great_lakes.clean_swl_summary
 ```
 
 
@@ -212,11 +212,14 @@ uv run python -m great_lakes.build_avg_template
 uv run pytest tests/test_batch_run_avg.py
 ```
 
-# Batch tool 2: batch_run_twl.py
+# Batch tool 2: batch_run_swl.py
 
-`batch_run_twl.py` evaluates static water-level frequency curves (total water level, or
-**twl**), not timeseries. Each `data/clean/<lake>_twl.xlsx` workbook has one sheet per
-**scenario** (5, not 17 — twl only has climate-scenario variants, no water-year timing
+`batch_run_swl.py` evaluates static water-level frequency curves (storm water level, or
+**SWL**), not timeseries. SWL data include storm surge and wave set-up but exclude
+near-shore processes (run-up, overtopping). USACE sources often call this "still water
+level" (also "SWL"); that name is easy to confuse with average (monthly) water levels,
+which is why this repo says *storm* water level. Each `data/clean/<lake>_swl.xlsx` workbook has one sheet per
+**scenario** (5, not 17 — swl only has climate-scenario variants, no water-year timing
 dimension), and each sheet is a table of **save points** (rows) against **Average Return
 Interval** (ARI, in years — the column headers) with the water level at that save point
 for that ARI as the cell value.
@@ -226,7 +229,7 @@ Because there is no timeseries, this tool is **standalone**: it does not build o
 point's ARI curve, linearly interpolates in ARI-space to find the ARI associated with the
 row's magnitude threshold, converts that ARI to an annual exceedance probability (see
 below), computes a metric exactly the way `hydropattern` does internally, and writes a
-grid CSV + response-surface plot — nothing else. A twl "component" therefore has only a
+grid CSV + response-surface plot — nothing else. A swl "component" therefore has only a
 `magnitude` characteristic (no `duration`, `rate_of_change`, or `timing` — those all
 require a timeseries).
 
@@ -282,11 +285,11 @@ Going from a row's `magnitude_value` threshold to a probability is a two-step pr
 
 ## 1. Fill in the template workbook
 
-Copy `templates/template_twl.xlsx` to a new file (don't edit the template in place) and
+Copy `templates/template_swl.xlsx` to a new file (don't edit the template in place) and
 fill it in:
 
 ```powershell
-Copy-Item templates\template_twl.xlsx my_twl_run.xlsx
+Copy-Item templates\template_swl.xlsx my_swl_run.xlsx
 ```
 
 The workbook has two sheets:
@@ -296,10 +299,10 @@ The workbook has two sheets:
 | Column | Required? | Notes |
 | --- | --- | --- |
 | `resource_name` | yes | Grouping label (e.g. a harbor/location name). Used in output filenames. |
-| `lake` | yes | One of `superior`, `michigan`, `huron`, `ontario` (no `stclair`/`erie`/combined lake for twl data). |
+| `lake` | yes | One of `superior`, `michigan`, `huron`, `ontario` (no `stclair`/`erie`/combined lake for swl data). |
 | `magnitude_operator` | yes | One of `>`, `>=`, `<`, `<=` only — `=`/`!=` are rejected (no sensible probability against a continuous exceedance curve). |
-| `magnitude_value` | yes | The water-level threshold, in the same units as the twl workbook. |
-| `component_name` | no (default `twl`) | Used in output filenames alongside `resource_name`. |
+| `magnitude_value` | yes | The water-level threshold, in the same units as the swl workbook. |
+| `component_name` | no (default `swl`) | Used in output filenames alongside `resource_name`. |
 | `save_point_id` | no | Selects the save point by exact `ID` match. Wins over `lat`/`lon` if both given. |
 | `lat` / `lon` | no (required together if `save_point_id` omitted) | Selects the nearest save point by simple Euclidean distance in degrees. |
 | `success_pattern` | no (default `false`) | Same meaning as in `hydropattern`: whether the magnitude condition being **true** counts as "success". |
@@ -324,12 +327,12 @@ Leave a cell blank to use its default.
 ## 2. Run it
 
 ```powershell
-uv run python -m great_lakes.batch_run_twl my_twl_run.xlsx data\clean
+uv run python -m great_lakes.batch_run_swl my_swl_run.xlsx data\clean
 ```
 
 Arguments:
 1. Path to your filled-in resources+config workbook.
-2. Path to the directory containing the lake `*_twl.xlsx` files (normally `data/clean`).
+2. Path to the directory containing the lake `*_swl.xlsx` files (normally `data/clean`).
 
 As it runs, you'll see one line per row as it starts and finishes, and a final summary,
 same as `batch_run_avg.py`. A row failing (bad data, an out-of-range threshold that had to
@@ -344,8 +347,8 @@ this disambiguates rows that reuse the same `resource_name`+`component_name` lab
 across multiple save points):
 
 ```
-duluth_harbor_twl_1_grid.csv      <- one exceedance-probability/ARI metric per scenario
-duluth_harbor_twl_1_plot.png      <- climate-canvas response-surface plot
+duluth_harbor_swl_1_grid.csv      <- one exceedance-probability/ARI metric per scenario
+duluth_harbor_swl_1_plot.png      <- climate-canvas response-surface plot
 ```
 
 No `.toml`, no summary/output Excel workbook, and no raw per-scenario CSVs are written —
@@ -362,8 +365,8 @@ If a row's `equivalent_elevation` cell is non-blank (`"baseline_magnitude"` or a
 that row also produces:
 
 ```
-duluth_harbor_twl_1_equivalent_elevation_grid.csv   <- one water level per scenario
-duluth_harbor_twl_1_equivalent_elevation_plot.png   <- climate-canvas response-surface plot
+duluth_harbor_swl_1_equivalent_elevation_grid.csv   <- one water level per scenario
+duluth_harbor_swl_1_equivalent_elevation_plot.png   <- climate-canvas response-surface plot
 ```
 
 This answers: "the row's baseline-ARI lookup value corresponds to some ARI under the
@@ -390,22 +393,22 @@ uses `plot_color_map` as configured with no automatic RdBu-direction reversal an
 ## Regenerating the template
 
 ```powershell
-uv run python -m great_lakes.build_twl_template
+uv run python -m great_lakes.build_swl_template
 ```
 
 ## Running the tests
 
 ```powershell
-uv run pytest tests/test_batch_run_twl.py
+uv run pytest tests/test_batch_run_swl.py
 ```
 
-# Batch tool 3: fillin_twl.py
+# Batch tool 3: fillin_swl.py
 
-Each `data/clean/<lake>_twl.xlsx` workbook only has **5 of 17** possible climate
-scenarios (the **known scenarios**). `fillin_twl.py` estimates the other 12 (**target
+Each `data/clean/<lake>_swl.xlsx` workbook only has **5 of 17** possible climate
+scenarios (the **known scenarios**). `fillin_swl.py` estimates the other 12 (**target
 scenarios**), per save point and per ARI column, and writes a new
-`data/filled/<lake>_twl.xlsx` workbook with all 17 scenario sheets. Nothing else reads
-`data/filled/` yet — `batch_run_twl.py` still points at `data/clean/` — so this is a
+`data/filled/<lake>_swl.xlsx` workbook with all 17 scenario sheets. Nothing else reads
+`data/filled/` yet — `batch_run_swl.py` still points at `data/clean/` — so this is a
 standalone enrichment step for now.
 
 Every one of the 17 scenarios is a point on a fixed (`precip_delta`, `temp_delta`) grid.
@@ -424,8 +427,8 @@ need two different methods:
 `Delaunay`). Each in-hull target point falls inside exactly one triangle. Its
 **barycentric weights** relative to that triangle's 3 vertices are 3 non-negative numbers
 that sum to 1.0 and reconstruct the point's coordinates as a weighted sum of the vertices'
-coordinates. Because the same 3 points and weights also work directly on the *known TWL
-values* (not just the coordinates), the target scenario's TWL at any save point/ARI cell
+coordinates. Because the same 3 points and weights also work directly on the *known SWL
+values* (not just the coordinates), the target scenario's SWL at any save point/ARI cell
 is just that same weighted sum of the 3 known scenarios' values at that cell. This is
 mathematically equivalent to fitting one flat plane through the 3 known z-values above
 that triangle and reading the target point's height off that plane.
@@ -434,11 +437,11 @@ that triangle and reading the target point's height off that plane.
 `(wA, wB, wC)` (`wA + wB + wC = 1`, all `>= 0`):
 
 ```
-TWL(l, T, p, r) = wA * TWL(l, A, p, r) + wB * TWL(l, B, p, r) + wC * TWL(l, C, p, r)
+SWL(l, T, p, r) = wA * SWL(l, A, p, r) + wB * SWL(l, B, p, r) + wC * SWL(l, C, p, r)
 ```
 
 **Worked example** (a simple hand-computable triangle, not real lake data — see
-`SIMPLE_TRIANGLE_*` fixtures in `tests/test_fillin_twl.py`): vertices `A=(0,0)->100`,
+`SIMPLE_TRIANGLE_*` fixtures in `tests/test_fillin_swl.py`): vertices `A=(0,0)->100`,
 `B=(10,0)->110`, `C=(0,10)->130` describe the plane `z = 100 + x + 3y`. Target point
 `(2, 2)` gets barycentric weights `(wA, wB, wC) = (0.6, 0.2, 0.2)`:
 
@@ -448,7 +451,7 @@ z(2,2) = 0.6*100 + 0.2*110 + 0.2*130 = 108.0
 
 ...which matches the plane formula directly (`100 + 2 + 3*2 = 108`).
 
-**Assumptions/limitations.** Delaunay-linear only assumes the TWL response surface is
+**Assumptions/limitations.** Delaunay-linear only assumes the SWL response surface is
 *locally* flat within each individual triangle — it makes no claim about linearity
 anywhere else on the grid, and different triangles can (and do) have different slopes.
 Its one hard limitation is exactly the reason this tool needs a Stage 2 at all: it
@@ -458,20 +461,20 @@ Its one hard limitation is exactly the reason this tool needs a Stage 2 at all: 
 
 **Theory.** See
 [`docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md`](docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md)
-for the full rationale. In short: a save point's TWL is treated as `AVG(l, s)` (the mean
+for the full rationale. In short: a save point's SWL is treated as `AVG(l, s)` (the mean
 lake level under scenario `s`, from `data/clean/<avg-lake>_avg.csv`) plus a "waves" term
 that captures storm-driven water level above/below the mean. The assumption is that the
 waves term stays constant across scenarios on the same **warming row** (same
 `temp_delta`) — i.e. a given amount of warming doesn't change storminess, only the mean
-lake level does. Under that assumption, an out-of-hull target scenario's TWL equals a
-resolved **anchor scenario**'s TWL (nearest known-or-already-filled scenario on the same
+lake level does. Under that assumption, an out-of-hull target scenario's SWL equals a
+resolved **anchor scenario**'s SWL (nearest known-or-already-filled scenario on the same
 warming row, by `|precip_delta|` distance) plus the difference in average lake level
 between the two.
 
 **Math.** For target `s` with anchor `a` (`a` and `s` share `temp_delta`):
 
 ```
-~TWL(l, s, p, r) = TWL(l, a, p, r) + [AVG(l, s) - AVG(l, a)]
+~SWL(l, s, p, r) = SWL(l, a, p, r) + [AVG(l, s) - AVG(l, a)]
 ```
 
 Because `AVG(l, s) - AVG(l, a)` doesn't depend on save point `p` or return interval `r`,
@@ -479,13 +482,13 @@ this collapses to one additive scalar shift applied uniformly to every cell of t
 anchor's sheet — no per-cell computation is needed at runtime.
 
 **Worked example** (see `test_extrapolate_scenarios_shifts_anchor_values_by_avg_delta` in
-`tests/test_fillin_twl.py`): anchor `_0_7` has TWL values `100.0`/`200.0` at two save
+`tests/test_fillin_swl.py`): anchor `_0_7` has SWL values `100.0`/`200.0` at two save
 points for one ARI column. `AVG(l, "_0_7") = 180.0` and `AVG(l, "_10_7") = 185.0`, a
 `+5.0` delta:
 
 ```
-~TWL(l, "_10_7", p, r) = 100.0 + (185.0 - 180.0) = 105.0
-~TWL(l, "_10_7", p2, r) = 200.0 + (185.0 - 180.0) = 205.0
+~SWL(l, "_10_7", p, r) = 100.0 + (185.0 - 180.0) = 105.0
+~SWL(l, "_10_7", p2, r) = 200.0 + (185.0 - 180.0) = 205.0
 ```
 
 **Anchor selection.** `select_anchor_scenario()` looks for the nearest *resolved*
@@ -506,19 +509,19 @@ prefix, instead of Stage 1's `filled-` prefix.
 
 ```powershell
 # extrapolation on (default) -> defaults to data\extrapolated
-uv run python -m great_lakes.fillin_twl data\clean
+uv run python -m great_lakes.fillin_swl data\clean
 
 # extrapolation off -> defaults to data\filled
-uv run python -m great_lakes.fillin_twl data\clean --no-extrapolate
+uv run python -m great_lakes.fillin_swl data\clean --no-extrapolate
 
 # explicit output_dir always overrides the default, either way
-uv run python -m great_lakes.fillin_twl data\clean data\filled
+uv run python -m great_lakes.fillin_swl data\clean data\filled
 ```
 
 Arguments:
-1. `data_dir` — directory containing the known `<lake>_twl.xlsx` and `<avg-lake>_avg.csv`
+1. `data_dir` — directory containing the known `<lake>_swl.xlsx` and `<avg-lake>_avg.csv`
    files (normally `data/clean`).
-2. `output_dir` *(optional)* — directory to write the filled `<lake>_twl.xlsx` workbooks
+2. `output_dir` *(optional)* — directory to write the filled `<lake>_swl.xlsx` workbooks
    to. When omitted, defaults to a sibling of `data_dir`: `data/extrapolated` when
    `--extrapolate` (the default), or `data/filled` with `--no-extrapolate` — since the two
    modes produce workbooks with a different number of sheets, they default to different
@@ -538,5 +541,5 @@ across all 4 lakes, while the tool runs.
 ## Running the tests
 
 ```powershell
-uv run pytest tests/test_fillin_twl.py tests/test_common_twl.py
+uv run pytest tests/test_fillin_swl.py tests/test_common_swl.py
 ```

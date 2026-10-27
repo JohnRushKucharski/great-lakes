@@ -1,7 +1,7 @@
 """Split still_water_summary workbook into one file per Great Lake.
 
 Reads `still_water_summary__22may2026.xlsm` from data/raw/ and writes one workbook per
-lake (superior_twl.xlsx, michigan_twl.xlsx, huron_twl.xlsx, ontario_twl.xlsx) into
+lake (superior_swl.xlsx, michigan_swl.xlsx, huron_swl.xlsx, ontario_swl.xlsx) into
 data/clean/. Each output workbook has 5 sheets (one per scenario), with a single header
 row: ID, lat, lon, followed by the numeric annual recurrence interval (ARI) values
 (0.1 .. 1000).
@@ -11,7 +11,7 @@ engine for reading (Rust-based, much faster than openpyxl for large
 sheets) and "xlsxwriter" for writing. Requires the "dev" dependency
 group: `uv sync --group dev`.
 
-Run with: uv run python -m great_lakes.clean_still_water_summary
+Run with: uv run python -m great_lakes.clean_swl_summary
 """
 
 from pathlib import Path
@@ -23,10 +23,10 @@ SOURCE_FILE = "still_water_summary__22may2026.xlsm"
 
 # lake tag (as it appears in source sheet names) -> output filename
 LAKES = {
-    "sup": "superior_twl.xlsx",
-    "mich": "michigan_twl.xlsx",
-    "hur": "huron_twl.xlsx",
-    "ont": "ontario_twl.xlsx",
+    "sup": "superior_swl.xlsx",
+    "mich": "michigan_swl.xlsx",
+    "hur": "huron_swl.xlsx",
+    "ont": "ontario_swl.xlsx",
 }
 
 # source scenario tag, in output sheet order -> new sheet name
@@ -51,7 +51,7 @@ NEW_HEADER = ["ID", "lat", "lon", 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 
 
 
 def source_sheet_name(scenario: str, lake_tag: str) -> str:
-    """Build source sheet name, e.g. "baseline (sup TWL BE)"."""
+    """Build source sheet name, e.g. "baseline (sup TWL BE)" (raw data keeps the old "TWL" name)."""
     return f"{scenario} ({lake_tag} TWL BE)"
 
 

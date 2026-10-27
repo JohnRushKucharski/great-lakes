@@ -1,9 +1,9 @@
-"""Batch-generate twl (total water level) response-surface plots for Great Lakes resources.
+"""Batch-generate SWL (storm water level) response-surface plots for Great Lakes resources.
 
 Reads a resources.xlsx template (config sheet + resources sheet) and, for each row of the
 resources sheet, evaluates a magnitude-only characteristic against a water-level/ARI
 (Average Return Interval) frequency curve -- one curve per save point, per scenario sheet,
-in the corresponding lake's `<lake>_twl.xlsx` data file (see data/clean/).
+in the corresponding lake's `<lake>_swl.xlsx` data file (see data/clean/).
 
 Unlike batch_run_avg.py, this script does NOT generate a hydropattern .toml or invoke
 hydropattern.cli: there is no timeseries here (each scenario sheet holds one static
@@ -30,7 +30,7 @@ from hydropattern.scenario_grid import (  # type: ignore[import-untyped]
     require_scenario_grid,
 )
 
-from great_lakes import batch_runner, common_twl
+from great_lakes import batch_runner, common_swl
 from great_lakes.batch_runner import (  # noqa: F401 -- re-exported for backward compat
     BatchSummary,
     RowResult,
@@ -44,19 +44,19 @@ from great_lakes.batch_runner import (  # noqa: F401 -- re-exported for backward
     format_summary,
 )
 
-LAKE_TWL_FILENAMES = common_twl.LAKE_TWL_FILENAMES
-resolve_lake_twl_path = common_twl.resolve_lake_twl_path
-parse_scenario_sheet_name = common_twl.parse_scenario_sheet_name
-_NON_ARI_COLUMNS = common_twl.NON_ARI_COLUMNS
-_load_lake_sheets = common_twl.load_lake_sheets
-_m_igld85_to_ft_NAVD88 = common_twl.m_igld85_to_ft_NAVD88
+LAKE_SWL_FILENAMES = common_swl.LAKE_SWL_FILENAMES
+resolve_lake_swl_path = common_swl.resolve_lake_swl_path
+parse_scenario_sheet_name = common_swl.parse_scenario_sheet_name
+_NON_ARI_COLUMNS = common_swl.NON_ARI_COLUMNS
+_load_lake_sheets = common_swl.load_lake_sheets
+_m_igld85_to_ft_NAVD88 = common_swl.m_igld85_to_ft_NAVD88
 
 
 def interpolate_ari(levels: Sequence[float], aris: Sequence[float], threshold: float) -> float:
     """Linearly interpolate the ARI (Average Return Interval) at a water-level threshold.
 
     levels/aris are one save point's water-level-vs-ARI curve (levels ascending with
-    ARI, per the twl data files -- one value per ARI column D:P). Interpolates linearly
+    ARI, per the swl data files -- one value per ARI column D:P). Interpolates linearly
     across ARI (per the fixed-space convention used throughout this script), i.e.
     ARI is treated as linear in water level between the two bracketing curve points.
 
@@ -91,7 +91,7 @@ def interpolate_level(aris: Sequence[float], levels: Sequence[float], target_ari
     """Linearly interpolate the water level at a target ARI (reverse of interpolate_ari).
 
     aris/levels are one save point's water-level-vs-ARI curve (levels ascending with
-    ARI, per the twl data files -- one value per ARI column D:P). Interpolates linearly
+    ARI, per the swl data files -- one value per ARI column D:P). Interpolates linearly
     across ARI (per the fixed-space convention used throughout this script), i.e. water
     level is treated as linear in ARI between the two bracketing curve points.
 
@@ -189,7 +189,7 @@ def select_save_point(
     lat: float | None = None,
     lon: float | None = None,
 ) -> pd.Series:
-    """Select one save-point row from a twl sheet's DataFrame (columns ID, lat, lon, ...).
+    """Select one save-point row from a swl sheet's DataFrame (columns ID, lat, lon, ...).
 
     save_point_id, if given, always wins (even when lat/lon are also given). Otherwise
     lat and lon must both be given, and the nearest save point is picked by simple
@@ -221,7 +221,7 @@ def select_save_point(
 
 # ---- resources sheet: row parsing ------------------------------------------------------
 
-_DEFAULT_COMPONENT_NAME = "twl"
+_DEFAULT_COMPONENT_NAME = "swl"
 
 
 @dataclass(frozen=True)
@@ -272,9 +272,9 @@ class ResourceSpec:
 
 
 def _validate_lake(lake: str, errors: list[str]) -> None:
-    if lake and lake not in LAKE_TWL_FILENAMES:
+    if lake and lake not in LAKE_SWL_FILENAMES:
         errors.append(
-            f"Unknown lake {lake!r}; must be one of {sorted(LAKE_TWL_FILENAMES)}."
+            f"Unknown lake {lake!r}; must be one of {sorted(LAKE_SWL_FILENAMES)}."
         )
 
 
@@ -412,7 +412,7 @@ class BatchConfig:
     metric_mode: str = "return_period"  # portion | percentage | return_period
     # "qualified_name" -> <resource_name>_<component_name>[_<save_point_id>] (default,
     # generic). "elevation_runup_savepoint" -> longtailpoint-specific
-    # <elev>ft_plus<runup>ft-runup_savepoint<id> (see common_twl.output_file_stem).
+    # <elev>ft_plus<runup>ft-runup_savepoint<id> (see common_swl.output_file_stem).
     filename_style: str = "qualified_name"
     overwrite: bool = False
     plot_interpolate: bool = True
@@ -462,7 +462,7 @@ def resolve_output_stem(resource: ResourceSpec, config: BatchConfig) -> str:
     "elevation_runup_savepoint" -> longtailpoint-specific ft-based naming
     "<elevation>ft_plus<runup>ft-runup_savepoint<id>"; requires resource.magnitude_value
     to be an IGLD85-meters elevation and resource.component_name to be one of
-    common_twl.RUNUP_FT_BY_COMPONENT's keys (raises ValueError otherwise).
+    common_swl.RUNUP_FT_BY_COMPONENT's keys (raises ValueError otherwise).
     "savepoint_elevation_runup" -> longtailpoint-specific naming
     "<save point>_<elevation>_<runup>", elevation = magnitude + runup combined; same
     resource requirements as "elevation_runup_savepoint".
@@ -470,13 +470,13 @@ def resolve_output_stem(resource: ResourceSpec, config: BatchConfig) -> str:
     if config.filename_style == "qualified_name":
         return resource.qualified_name
     if config.filename_style == "elevation_runup_savepoint":
-        magnitude_ft = common_twl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
-        return common_twl.output_file_stem(
+        magnitude_ft = common_swl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
+        return common_swl.output_file_stem(
             magnitude_ft, resource.component_name, resource.save_point_id
         )
     if config.filename_style == "savepoint_elevation_runup":
-        magnitude_ft = common_twl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
-        return common_twl.output_file_stem_savepoint_elevation_runup(
+        magnitude_ft = common_swl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
+        return common_swl.output_file_stem_savepoint_elevation_runup(
             magnitude_ft, resource.component_name, resource.save_point_id
         )
     raise ValueError(
@@ -501,8 +501,8 @@ def resolve_plot_title(
     Only longtailpoint-style runs (config.filename_style in
     _LONGTAILPOINT_FILENAME_STYLES, the same gate resolve_output_stem uses) get the
     "Longtail Point <type>/elevation.../save point..." title from
-    common_twl.build_plot_title -- resource.component_name is only guaranteed to be a
-    known runup-allowance code (common_twl.RUNUP_FT_BY_COMPONENT) for those runs.
+    common_swl.build_plot_title -- resource.component_name is only guaranteed to be a
+    known runup-allowance code (common_swl.RUNUP_FT_BY_COMPONENT) for those runs.
     Every other filename_style keeps the original, generic
     "<resource>_<component>[_<save point>]" title (resource.qualified_name), optionally
     suffixed with the plot kind for the equivalent-elevation/elevation-delta plots so
@@ -516,8 +516,8 @@ def resolve_plot_title(
         if plot_kind == "primary":
             return resource.qualified_name
         return f"{resource.qualified_name}_{plot_kind}"
-    magnitude_ft = common_twl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
-    return common_twl.build_plot_title(
+    magnitude_ft = common_swl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
+    return common_swl.build_plot_title(
         plot_kind, magnitude_ft, resource.component_name, resource.save_point_id,
         baseline_ari=baseline_ari,
     )
@@ -549,7 +549,8 @@ def resolve_save_point_ari_elevation_output_paths(
         "resolve_save_point_ari_elevation_output_paths requires resource.threshold"
     )
     folder = Path(config.output_directory)
-    stem = f"savepoint{resource.save_point_id}_ari{_format_ari_component(resource.threshold)}_elevation"
+    ari_stem = f"savepoint{resource.save_point_id}_ari{_format_ari_component(resource.threshold)}"
+    stem = f"{ari_stem}_elevation"
     return folder / f"{stem}_grid.csv", folder / f"{stem}_plot.png"
 
 
@@ -733,17 +734,17 @@ def read_config_sheet(path: Path, sheet_name: str = "config") -> BatchConfig:
 # ---- per-resource grid + plot building --------------------------------------------
 
 
-def compute_scenario_metrics(resource: ResourceSpec, twl_path: Path, metric_mode: str
+def compute_scenario_metrics(resource: ResourceSpec, swl_path: Path, metric_mode: str
                              ) -> dict[str, float]:
     """Compute one metric value per scenario sheet for one resource's save point.
 
-    Reads every sheet of the lake's twl workbook, selects the resource's save point in
+    Reads every sheet of the lake's swl workbook, selects the resource's save point in
     each, interpolates its magnitude condition's exceedance probability, and converts
     to metric_mode's units. Keys are the bare `_<precip>_<temp>` scenario-grid suffix
     (see parse_scenario_sheet_name) -- sheets that don't match that naming convention
     are skipped.
     """
-    sheets = _load_lake_sheets(twl_path)
+    sheets = _load_lake_sheets(swl_path)
     metric_values: dict[str, float] = {}
     for sheet_name, df in sheets.items():
         suffix = parse_scenario_sheet_name(sheet_name)
@@ -761,7 +762,7 @@ def compute_scenario_metrics(resource: ResourceSpec, twl_path: Path, metric_mode
 
 
 # The known/filled/extrapolated scenario-grid suffix for the (0% precip delta, 0C temp
-# delta) baseline scenario -- always present in every lake's twl workbook (see
+# delta) baseline scenario -- always present in every lake's swl workbook (see
 # CONTEXT.md's "Known scenario" entry).
 _BASELINE_SCENARIO_SUFFIX = "_0_0"
 
@@ -777,7 +778,7 @@ def _save_point_ari_columns_levels(
 
 
 def _compute_baseline_ari_from_sheets(
-    resource: ResourceSpec, sheets: dict[str, pd.DataFrame], twl_path: Path
+    resource: ResourceSpec, sheets: dict[str, pd.DataFrame], swl_path: Path
 ) -> float:
     baseline_aris: list[float] | None = None
     baseline_levels: list[float] | None = None
@@ -788,34 +789,35 @@ def _compute_baseline_ari_from_sheets(
     if baseline_aris is None or baseline_levels is None:
         raise ValueError(
             f"No baseline ({_BASELINE_SCENARIO_SUFFIX!r}) scenario sheet found in "
-            f"{twl_path}; cannot compute equivalent elevation."
+            f"{swl_path}; cannot compute equivalent elevation."
         )
+    assert resource.equivalent_elevation is not None
     return interpolate_ari(baseline_levels, baseline_aris, resource.equivalent_elevation)
 
 
-def compute_baseline_ari(resource: ResourceSpec, twl_path: Path) -> float:
+def compute_baseline_ari(resource: ResourceSpec, swl_path: Path) -> float:
     """Compute the baseline (_0_0) scenario's ARI at resource.equivalent_elevation.
 
     resource.equivalent_elevation is either resource.magnitude_value itself (resources
     sheet's 'equivalent_elevation' cell = "baseline_magnitude") or an explicit numeric
     override, resolved at parse time by parse_resource_row. This is the shared "baseline
     ARI" surfaced in equivalent_elevation/elevation_delta plot titles (see
-    common_twl.build_plot_title's baseline_ari param) and used internally by
+    common_swl.build_plot_title's baseline_ari param) and used internally by
     compute_equivalent_elevation_metrics.
 
     Callers should only invoke this when resource.equivalent_elevation is not None --
     interpolate_ari requires a numeric threshold.
 
-    Raises ValueError if the lake's twl workbook has no baseline (_0_0) scenario sheet.
+    Raises ValueError if the lake's swl workbook has no baseline (_0_0) scenario sheet.
     """
     assert resource.equivalent_elevation is not None, (
         "compute_baseline_ari requires resource.equivalent_elevation"
     )
-    sheets = _load_lake_sheets(twl_path)
-    return _compute_baseline_ari_from_sheets(resource, sheets, twl_path)
+    sheets = _load_lake_sheets(swl_path)
+    return _compute_baseline_ari_from_sheets(resource, sheets, swl_path)
 
 
-def compute_equivalent_elevation_metrics(resource: ResourceSpec, twl_path: Path
+def compute_equivalent_elevation_metrics(resource: ResourceSpec, swl_path: Path
                                           ) -> dict[str, float]:
     """Compute one equivalent-elevation value per scenario sheet for one resource.
 
@@ -831,13 +833,13 @@ def compute_equivalent_elevation_metrics(resource: ResourceSpec, twl_path: Path
     Callers should only invoke this when resource.equivalent_elevation is not None
     (see build_resource_outputs) -- interpolate_ari requires a numeric threshold.
 
-    Raises ValueError if the lake's twl workbook has no baseline (_0_0) scenario sheet.
+    Raises ValueError if the lake's swl workbook has no baseline (_0_0) scenario sheet.
     """
     assert resource.equivalent_elevation is not None, (
         "compute_equivalent_elevation_metrics requires resource.equivalent_elevation"
     )
-    sheets = _load_lake_sheets(twl_path)
-    baseline_ari = _compute_baseline_ari_from_sheets(resource, sheets, twl_path)
+    sheets = _load_lake_sheets(swl_path)
+    baseline_ari = _compute_baseline_ari_from_sheets(resource, sheets, swl_path)
 
     equivalent_elevations: dict[str, float] = {}
     for sheet_name, df in sheets.items():
@@ -849,7 +851,7 @@ def compute_equivalent_elevation_metrics(resource: ResourceSpec, twl_path: Path
     return equivalent_elevations
 
 
-def compute_threshold_ari_elevation_metrics(resource: ResourceSpec, twl_path: Path
+def compute_threshold_ari_elevation_metrics(resource: ResourceSpec, swl_path: Path
                                              ) -> dict[str, float]:
     """Compute one threshold-ARI elevation value per scenario sheet for one resource.
 
@@ -865,7 +867,7 @@ def compute_threshold_ari_elevation_metrics(resource: ResourceSpec, twl_path: Pa
     See CONTEXT.md's "Threshold-ARI elevation" entry: this powers a fourth grid/plot
     written once per unique save point (not per resource row) -- callers are
     responsible for that per-save-point dedup (see build_save_point_ari_elevation_
-    output/_TwlRowProcessor), since this function itself is a pure per-resource-row
+    output/_SwlRowProcessor), since this function itself is a pure per-resource-row
     computation.
 
     Callers should only invoke this when resource.threshold is not None --
@@ -874,7 +876,7 @@ def compute_threshold_ari_elevation_metrics(resource: ResourceSpec, twl_path: Pa
     assert resource.threshold is not None, (
         "compute_threshold_ari_elevation_metrics requires resource.threshold"
     )
-    sheets = _load_lake_sheets(twl_path)
+    sheets = _load_lake_sheets(swl_path)
     elevations: dict[str, float] = {}
     for sheet_name, df in sheets.items():
         suffix = parse_scenario_sheet_name(sheet_name)
@@ -915,9 +917,9 @@ def build_resource_outputs(
       elevation plot's own threshold.
 
     compute_equivalent_elevation_metrics works entirely in meters, IGLD85 datum (the
-    unit of magnitude_value/equivalent_elevation and the twl workbooks' level curves);
+    unit of magnitude_value/equivalent_elevation and the swl workbooks' level curves);
     the equivalent_elevation and elevation_delta grids/plots are the only places that
-    convert to feet, NAVD88 datum (via common_twl.m_igld85_to_ft_NAVD88), since they are
+    convert to feet, NAVD88 datum (via common_swl.m_igld85_to_ft_NAVD88), since they are
     the only outputs of this script that represent a water level rather than a
     metric_mode value (portion/percentage/return_period), which has no elevation units
     to convert.
@@ -929,8 +931,8 @@ def build_resource_outputs(
     config.overwrite is False. Raises HydropatternError (via require_scenario_grid) if
     the lake's sheet names don't form a valid scenario grid.
     """
-    twl_path = resolve_lake_twl_path(resource.lake, data_dir)
-    metric_values = compute_scenario_metrics(resource, twl_path, config.metric_mode)
+    swl_path = resolve_lake_swl_path(resource.lake, data_dir)
+    metric_values = compute_scenario_metrics(resource, swl_path, config.metric_mode)
     scenario_names = list(metric_values.keys())
     require_scenario_grid(scenario_names)
     xs, ys, zs = build_grid(scenario_names, metric_values)
@@ -964,7 +966,7 @@ def build_resource_outputs(
     primary_extra: dict[str, Any] = {}
     if resource.threshold is not None:
         primary_z_range = (float(np.nanmin(zs)), float(np.nanmax(zs)))
-        primary_style = common_twl.one_sided_color_style(primary_z_range, resource.threshold)
+        primary_style = common_swl.one_sided_color_style(primary_z_range, resource.threshold)
         if primary_style is not None:
             color_map = primary_style[0]
             primary_extra = dict(
@@ -988,18 +990,18 @@ def build_resource_outputs(
 
     if compute_elevation:
         assert resource.equivalent_elevation is not None
-        elev_values_m = compute_equivalent_elevation_metrics(resource, twl_path)
+        elev_values_m = compute_equivalent_elevation_metrics(resource, swl_path)
         elev_values_ft = {
             suffix: _m_igld85_to_ft_NAVD88(value) for suffix, value in elev_values_m.items()
         }
         comparison_ft = _m_igld85_to_ft_NAVD88(resource.equivalent_elevation)
-        baseline_ari = compute_baseline_ari(resource, twl_path)
+        baseline_ari = compute_baseline_ari(resource, swl_path)
 
         elev_xs, elev_ys, elev_zs = build_grid(list(elev_values_ft.keys()), elev_values_ft)
         write_grid_csv(elev_xs, elev_ys, elev_zs, elev_grid_path)
         elev_z_range = (float(np.nanmin(elev_zs)), float(np.nanmax(elev_zs)))
-        elev_levels, elev_widths = common_twl.rounded_levels(elev_z_range, comparison_ft)
-        elev_style = common_twl.one_sided_color_style(elev_z_range, comparison_ft)
+        elev_levels, elev_widths = common_swl.rounded_levels(elev_z_range, comparison_ft)
+        elev_style = common_swl.one_sided_color_style(elev_z_range, comparison_ft)
         elev_color_map = elev_style[0] if elev_style is not None else config.plot_color_map
         elev_norm = elev_style[1] if elev_style is not None else None
         plot_fn(
@@ -1029,9 +1031,9 @@ def build_resource_outputs(
         delta_xs, delta_ys, delta_zs = build_grid(list(delta_values_ft.keys()), delta_values_ft)
         write_grid_csv(delta_xs, delta_ys, delta_zs, delta_grid_path)
         delta_z_range = (float(np.nanmin(delta_zs)), float(np.nanmax(delta_zs)))
-        delta_levels, delta_widths = common_twl.symmetric_delta_levels(delta_z_range)
-        delta_ticks = common_twl.colorbar_ticks_within_range(delta_levels, delta_z_range)
-        delta_style = common_twl.one_sided_color_style(delta_z_range, 0.0)
+        delta_levels, delta_widths = common_swl.symmetric_delta_levels(delta_z_range)
+        delta_ticks = common_swl.colorbar_ticks_within_range(delta_levels, delta_z_range)
+        delta_style = common_swl.one_sided_color_style(delta_z_range, 0.0)
         delta_color_map = delta_style[0] if delta_style is not None else config.plot_color_map
         delta_norm = delta_style[1] if delta_style is not None else None
         plot_fn(
@@ -1060,7 +1062,7 @@ def build_resource_outputs(
 
 def build_save_point_ari_elevation_output(
     resource: ResourceSpec,
-    twl_path: Path,
+    swl_path: Path,
     config: BatchConfig,
     plot_fn: Callable[..., None] = plot_response_surface,
 ) -> tuple[Path, Path]:
@@ -1068,13 +1070,13 @@ def build_save_point_ari_elevation_output(
     plot png (see CONTEXT.md's "Threshold-ARI elevation" entry).
 
     Depends only on resource.save_point_id + resource.threshold (not
-    magnitude/component/runup) -- callers (see _TwlRowProcessor) are responsible for
+    magnitude/component/runup) -- callers (see _SwlRowProcessor) are responsible for
     only invoking this once per unique save point per run, since every resource row
     sharing a save point would otherwise recompute and rewrite the identical output.
 
     The z-axis is labeled "Elevation (ft, NAVD88)"; the colorbar is centered on the
     baseline (_0_0) scenario's own value at resource.threshold's ARI (white at
-    baseline), via common_twl.one_sided_color_style -- unlike elevation_delta's fixed
+    baseline), via common_swl.one_sided_color_style -- unlike elevation_delta's fixed
     0 center, since this plot reports raw elevations rather than a delta.
 
     Raises FileExistsError if either target output file already exists and
@@ -1092,7 +1094,7 @@ def build_save_point_ari_elevation_output(
                 f"{', '.join(str(p) for p in existing)}."
             )
 
-    values_m = compute_threshold_ari_elevation_metrics(resource, twl_path)
+    values_m = compute_threshold_ari_elevation_metrics(resource, swl_path)
     values_ft = {suffix: _m_igld85_to_ft_NAVD88(value) for suffix, value in values_m.items()}
     baseline_ft = values_ft[_BASELINE_SCENARIO_SUFFIX]
 
@@ -1100,15 +1102,15 @@ def build_save_point_ari_elevation_output(
     grid_path.parent.mkdir(parents=True, exist_ok=True)
     write_grid_csv(xs, ys, zs, grid_path)
     z_range = (float(np.nanmin(zs)), float(np.nanmax(zs)))
-    levels, widths = common_twl.rounded_levels(z_range, baseline_ft)
-    style = common_twl.one_sided_color_style(z_range, baseline_ft)
+    levels, widths = common_swl.rounded_levels(z_range, baseline_ft)
+    style = common_swl.one_sided_color_style(z_range, baseline_ft)
     color_map = style[0] if style is not None else config.plot_color_map
     norm = style[1] if style is not None else None
     plot_fn(
         xs, ys, zs,
         interpolate=config.plot_interpolate,
         labels=("Precipitation Delta (%)", "Temperature Delta (C)", "Elevation (ft, NAVD88)"),
-        title=common_twl.build_threshold_ari_title(resource.threshold, resource.save_point_id),
+        title=common_swl.build_threshold_ari_title(resource.threshold, resource.save_point_id),
         save_path=plot_path,
         show=False,
         threshold=baseline_ft,
@@ -1126,9 +1128,9 @@ def build_save_point_ari_elevation_output(
 
 # ---- run_batch orchestration -----------------------------------------------------------
 
-class _TwlRowProcessor:
+class _SwlRowProcessor:
     """batch_runner.RowProcessor adapter wrapping this module's existing per-row
-    functions -- the only twl-specific piece of run_batch's Strategy pattern. See
+    functions -- the only swl-specific piece of run_batch's Strategy pattern. See
     batch_runner.py's module docstring for why this exists.
 
     Also owns the save-point threshold-ARI elevation output's per-run dedup: unlike
@@ -1164,7 +1166,7 @@ class _TwlRowProcessor:
         )
 
     def check_overwrite(self, resource: ResourceSpec, config: BatchConfig) -> str | None:
-        # Unlike avg's processor, twl's pre-existing-output check happens inside
+        # Unlike avg's processor, swl's pre-existing-output check happens inside
         # build_outputs itself (raises FileExistsError, caught generically by
         # batch_runner.run_batch's try/except around build()) -- nothing to check here.
         return None
@@ -1175,18 +1177,18 @@ class _TwlRowProcessor:
         self._build_outputs(resource, data_dir, config)
         if resource.threshold is not None and resource.save_point_id is not None:
             if resource.save_point_id not in self._ari_written_save_points:
-                twl_path = resolve_lake_twl_path(resource.lake, data_dir)
-                self._build_save_point_ari_output(resource, twl_path, config)
+                swl_path = resolve_lake_swl_path(resource.lake, data_dir)
+                self._build_save_point_ari_output(resource, swl_path, config)
                 self._ari_written_save_points.add(resource.save_point_id)
         return tuple(resolve_all_output_paths(resource, config))
 
 
 def _naming_scheme_text(config: BatchConfig) -> str:
     """Naming-scheme blurb for config.filename_style: the longtailpoint-specific
-    dedicated write-up (see common_twl.naming_scheme_readme_text) when one exists,
+    dedicated write-up (see common_swl.naming_scheme_readme_text) when one exists,
     else a generic description of the "qualified_name" default."""
     try:
-        return common_twl.naming_scheme_readme_text(config.filename_style)
+        return common_swl.naming_scheme_readme_text(config.filename_style)
     except ValueError:
         header = "Output filename naming scheme for this directory\n" + "=" * 50 + "\n\n"
         return header + (
@@ -1218,19 +1220,19 @@ def run_batch(
     build_outputs is injectable so tests can mock the actual grid/plot generation
     without touching the filesystem or matplotlib. build_save_point_ari_output is
     injectable the same way, for the save-point threshold-ARI elevation output (see
-    _TwlRowProcessor -- built at most once per unique save_point_id in this run).
+    _SwlRowProcessor -- built at most once per unique save_point_id in this run).
     progress is injectable for the same reason (and to let callers redirect/silence
     the real-time per-row status output).
 
     Always writes a run readme (see CONTEXT.md's "Run readme" entry) to
     config.output_directory, even if every row fails or the sheet has zero rows.
 
-    Thin wrapper over batch_runner.run_batch's shared loop; see _TwlRowProcessor for
-    the twl-specific per-row behavior.
+    Thin wrapper over batch_runner.run_batch's shared loop; see _SwlRowProcessor for
+    the swl-specific per-row behavior.
     """
     summary = batch_runner.run_batch(
         resources_path, data_dir, config,
-        _TwlRowProcessor(build_outputs, build_save_point_ari_output), progress,
+        _SwlRowProcessor(build_outputs, build_save_point_ari_output), progress,
     )
     batch_runner.write_run_readme(
         resources_path, data_dir, Path(config.output_directory), summary,
@@ -1300,18 +1302,18 @@ def main(argv: list[str] | None = None) -> int:
     summary. Returns a process exit code (0 if every row succeeded, 1 otherwise).
 
     Usage:
-        uv run python -m great_lakes.batch_run_twl <resources.xlsx> <data_dir>
+        uv run python -m great_lakes.batch_run_swl <resources.xlsx> <data_dir>
     """
     import argparse
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "resources_path", type=Path,
-        help="Path to the resources+config .xlsx workbook (see templates/template_twl.xlsx).",
+        help="Path to the resources+config .xlsx workbook (see templates/template_swl.xlsx).",
     )
     parser.add_argument(
         "data_dir", type=Path,
-        help="Directory containing the lake twl xlsx files (see LAKE_TWL_FILENAMES).",
+        help="Directory containing the lake swl xlsx files (see LAKE_SWL_FILENAMES).",
     )
     args = parser.parse_args(argv)
 

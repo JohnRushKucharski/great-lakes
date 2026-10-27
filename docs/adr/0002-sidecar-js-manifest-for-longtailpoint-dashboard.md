@@ -1,7 +1,7 @@
 # Sidecar `.js` manifest for the longtailpoint results dashboard, not live JSON/CSV fetch
 
 The longtailpoint results dashboard (`longtailpoint/dashboard.html`) must let a user
-filter/compare `batch_run_twl.py` outputs with zero install and zero local server —
+filter/compare `batch_run_swl.py` outputs with zero install and zero local server —
 just double-clicking the html file, opened via a `file://` URL. Browsers block
 `fetch()`/`XMLHttpRequest` reads of local files under `file://` (a same-origin/CORS
 restriction), so the dashboard cannot load a real `.json` or `.csv` manifest at

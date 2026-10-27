@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from great_lakes import analyze_known_scenarios, common_twl
+from great_lakes import analyze_known_scenarios, common_swl
 
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 
@@ -50,12 +50,12 @@ def test_summarize_computes_expected_stats_and_sign_shares():
         "lat": [46.0, 46.1],
         "lon": [-84.0, -84.1],
         "ari": [10, 10],
-        "twl_p10_dt5": [100.0, 100.0],
-        "twl_p20_dt5": [90.0, 110.0],
+        "swl_p10_dt5": [100.0, 100.0],
+        "swl_p20_dt5": [90.0, 110.0],
         "precip_delta": [-10.0, 10.0],
         "precip_pct": [-10.0, 10.0],
-        "twl_dt0_p0": [100.0, 100.0],
-        "twl_dt7_p0": [110.0, 90.0],
+        "swl_dt0_p0": [100.0, 100.0],
+        "swl_dt7_p0": [110.0, 90.0],
         "temp_delta": [10.0, -10.0],
         "temp_pct": [10.0, -10.0],
     })
@@ -79,7 +79,7 @@ def test_summarize_computes_expected_stats_and_sign_shares():
 # ---- analyze_lake ---------------------------------------------------------------------
 
 def _write_known_scenario_workbook(path: Path) -> None:
-    """Minimal <lake>_twl.xlsx with the 4 sheets analyze_lake actually reads."""
+    """Minimal <lake>_swl.xlsx with the 4 sheets analyze_lake actually reads."""
     sheets = {
         "baseline-_0_0": pd.DataFrame({"ID": [1], "lat": [46.0], "lon": [-84.0], 10: [100.0]}),
         "extreme_low-_0_7": pd.DataFrame({"ID": [1], "lat": [46.0], "lon": [-84.0], 10: [110.0]}),
@@ -92,7 +92,7 @@ def _write_known_scenario_workbook(path: Path) -> None:
 
 
 def test_analyze_lake_computes_precip_and_temp_directionality(tmp_path):
-    workbook_path = tmp_path / common_twl.LAKE_TWL_FILENAMES["superior"]
+    workbook_path = tmp_path / common_swl.LAKE_SWL_FILENAMES["superior"]
     _write_known_scenario_workbook(workbook_path)
 
     result = analyze_known_scenarios.analyze_lake("superior", tmp_path)
@@ -101,9 +101,9 @@ def test_analyze_lake_computes_precip_and_temp_directionality(tmp_path):
     row = result.iloc[0]
     assert row["lake"] == "superior"
     assert row["ari"] == 10
-    # precip_delta = twl_p20_dt5 (95.0) - twl_p10_dt5 (100.0) = -5.0
+    # precip_delta = swl_p20_dt5 (95.0) - swl_p10_dt5 (100.0) = -5.0
     assert row["precip_delta"] == pytest.approx(-5.0)
     assert row["precip_pct"] == pytest.approx(-5.0)
-    # temp_delta = twl_dt7_p0 (110.0) - twl_dt0_p0 (100.0) = 10.0
+    # temp_delta = swl_dt7_p0 (110.0) - swl_dt0_p0 (100.0) = 10.0
     assert row["temp_delta"] == pytest.approx(10.0)
     assert row["temp_pct"] == pytest.approx(10.0)

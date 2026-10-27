@@ -1,9 +1,9 @@
 """Tests for the shared batch_runner.py infrastructure (RowProcessor Strategy loop),
-extracted out of batch_run_avg.py/batch_run_twl.py's near-identical duplicated code.
+extracted out of batch_run_avg.py/batch_run_swl.py's near-identical duplicated code.
 
 These tests use a minimal fake ResourceSpec/BatchConfig/RowProcessor rather than the
-real avg/twl types, so they exercise run_batch's shared shape in isolation. The
-existing test_batch_run_avg.py/test_batch_run_twl.py test suites continue to exercise
+real avg/swl types, so they exercise run_batch's shared shape in isolation. The
+existing test_batch_run_avg.py/test_batch_run_swl.py test suites continue to exercise
 the real per-script behavior end to end and must keep passing unmodified.
 """
 from dataclasses import dataclass
