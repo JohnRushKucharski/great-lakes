@@ -234,6 +234,56 @@ def test_build_plot_title_unknown_component_name_raises():
         )
 
 
+def test_build_plot_title_equivalent_elevation_adds_baseline_ari_as_fourth_line():
+    title = common_twl.build_plot_title(
+        "equivalent_elevation", magnitude_ft=583.0, component_name="run25",
+        save_point_id=1968, baseline_ari=12.4,
+    )
+    assert title.count("\n") == 3
+    lines = title.split("\n")
+    assert lines[2] == "baseline ARI: 12.4 yr"
+    assert lines[3] == "save point: 1968"
+
+
+def test_build_plot_title_elevation_delta_adds_baseline_ari_as_fourth_line():
+    title = common_twl.build_plot_title(
+        "elevation_delta", magnitude_ft=583.0, component_name="run25",
+        save_point_id=1968, baseline_ari=0.5,
+    )
+    assert title.count("\n") == 3
+    lines = title.split("\n")
+    assert lines[2] == "baseline ARI: 0.5 yr"
+    assert lines[3] == "save point: 1968"
+
+
+def test_build_plot_title_primary_ignores_baseline_ari_kwarg():
+    # primary has no equivalent_elevation lookup -- stays 3 lines even if a caller
+    # (mistakenly) passes baseline_ari.
+    title = common_twl.build_plot_title(
+        "primary", magnitude_ft=583.0, component_name="run25", save_point_id=1968,
+        baseline_ari=12.4,
+    )
+    assert title.count("\n") == 2
+    assert "baseline ARI" not in title
+
+
+# ---- build_threshold_ari_title -----------------------------------------------------------
+
+def test_build_threshold_ari_title_is_three_lines():
+    title = common_twl.build_threshold_ari_title(threshold_ari=15.0, save_point_id=1968)
+    assert title.count("\n") == 2
+    lines = title.split("\n")
+    assert lines[0] == "Longtail Point Threshold ARI Elevation"
+    assert lines[1] == "ARI: 15 yr"
+    assert lines[2] == "save point: 1968"
+
+
+def test_build_threshold_ari_title_formats_non_integer_ari():
+    title = common_twl.build_threshold_ari_title(threshold_ari=12.5, save_point_id=4997)
+    assert "ARI: 12.5 yr" in title
+    assert "save point: 4997" in title
+
+
 # ---- one_sided_color_style --------------------------------------------------------------
 
 
@@ -318,6 +368,21 @@ def test_symmetric_delta_levels_always_centered_on_zero():
     assert 0.0 in levels
     mid = len(levels) // 2
     assert levels[mid] == pytest.approx(0.0)
+
+
+# ---- colorbar_ticks_within_range --------------------------------------------------------
+
+
+def test_colorbar_ticks_within_range_filters_out_of_range_levels():
+    levels = (-7.0, -6.91, -3.0, 0.0, 2.24, 7.0)
+    result = common_twl.colorbar_ticks_within_range(levels, (-6.91, 2.24))
+    assert result == (-6.91, -3.0, 0.0, 2.24)
+
+
+def test_colorbar_ticks_within_range_keeps_all_when_already_in_range():
+    levels = (-1.0, 0.0, 1.0)
+    result = common_twl.colorbar_ticks_within_range(levels, (-2.0, 2.0))
+    assert result == levels
 
 
 # ---- naming_scheme_readme_text ---------------------------------------------------------

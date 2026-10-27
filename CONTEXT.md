@@ -84,11 +84,30 @@ equivalent elevation plot's own threshold.
 _Avoid_: Elevation change, elevation difference (delta is the established short form
 used elsewhere in this codebase's math write-ups; keep consistent).
 
+**Threshold-ARI elevation**:
+A fourth grid csv + plot png (`savepoint<ID>_ari15_elevation_grid.csv` /
+`_ari15_elevation_plot.png`, named for this batch's `threshold=15`; the file name isn't
+generic since only one per-run target ARI exists at a time), written once per unique
+**save point** (not per resource row) whenever a row's `equivalent_elevation` column is
+not blank. Reuses `resource.threshold` (already a per-row ARI in years for
+`metric_mode="return_period"` runs) as the target ARI: the baseline scenario's water
+level at that ARI, and every other scenario's equivalent water level at that same ARI
+(same reverse-interpolation as **equivalent elevation**, parameterized by a target ARI
+directly instead of a magnitude threshold first converted to an ARI). Colorbar is
+centered on the baseline scenario's own value (white at baseline), unlike **elevation
+delta**'s fixed `0` center. Depends only on save point + `resource.threshold`, not
+magnitude/runup, so all rows sharing a save point produce (and reuse) the same one
+grid/plot rather than one per row.
+_Avoid_: ARI-15 elevation, fixed-ARI elevation (the ARI is `resource.threshold`, not a
+hardcoded 15, even though 15 is this batch's value).
+
 **Runup allowance**:
 The `longtailpoint`-specific meaning of `component_name` in a twl resources sheet: an
 assumed wave-runup amount, in feet, added on top of still-water level to obtain the
 total water level being evaluated. Values used so far: `base` (0 ft), `run2` (2 ft),
-`run25` (2.5 ft), `run3` (3 ft).
+`run25` (2.5 ft), `run3` (3 ft). The dashboard's "Runup (ft)" picker filters/displays
+the numeric ft value (`RUNUP_FT_BY_COMPONENT`'s value), not the raw `component_name`
+code, since the code itself is an internal label with no meaning to a dashboard user.
 _Avoid_: Runup scenario (collides with **scenario**, which always means precip/temp
 climate scenario in this codebase — runup allowance varies independently of that grid).
 

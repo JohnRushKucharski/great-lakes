@@ -1,0 +1,8 @@
+
+[timeseries]
+path = "data/clean/michiganhuron_avg.csv"
+date_format = "%Y-%m-%d"        # datetime format code.
+
+[components.low_cycle]
+magnitude = ['<',176.22]    # 0.3m (upto 0.6m) below mean of 176.53
+duration = [">", 36]        # 3 (up to 5) years.

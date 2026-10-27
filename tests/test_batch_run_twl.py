@@ -671,6 +671,36 @@ def test_read_config_sheet_fillin_defaults_false(tmp_path):
     assert config.fillin is False
 
 
+def test_read_config_sheet_show_values_defaults_false(tmp_path):
+    path = make_workbook(tmp_path, config_pairs=[("output_directory", "out")])
+    config = twl_batch_run.read_config_sheet(path)
+    assert config.show_values is False
+
+
+def test_read_config_sheet_show_values_true(tmp_path):
+    path = make_workbook(
+        tmp_path,
+        config_pairs=[("output_directory", "out"), ("show_values", True)],
+    )
+    config = twl_batch_run.read_config_sheet(path)
+    assert config.show_values is True
+
+
+def test_read_config_sheet_value_decimals_defaults_two(tmp_path):
+    path = make_workbook(tmp_path, config_pairs=[("output_directory", "out")])
+    config = twl_batch_run.read_config_sheet(path)
+    assert config.value_decimals == 2
+
+
+def test_read_config_sheet_value_decimals_override(tmp_path):
+    path = make_workbook(
+        tmp_path,
+        config_pairs=[("output_directory", "out"), ("value_decimals", 1)],
+    )
+    config = twl_batch_run.read_config_sheet(path)
+    assert config.value_decimals == 1
+
+
 def test_read_config_sheet_blank_optional_rows_use_defaults(tmp_path):
     path = make_workbook(
         tmp_path,
@@ -775,6 +805,24 @@ def test_resolve_plot_title_savepoint_elevation_runup_style():
     title = twl_batch_run.resolve_plot_title("primary", resource, config)
     expected_ft = common_twl.m_igld85_to_ft_NAVD88(178.774764)
     assert title == common_twl.build_plot_title("primary", expected_ft, "run25", 1968)
+
+
+def test_resolve_plot_title_passes_baseline_ari_through_to_build_plot_title():
+    resource = twl_batch_run.parse_resource_row(base_row(
+        resource_name="longtail_17877", component_name="run25", save_point_id=1968,
+        magnitude_operator=">=", magnitude_value=178.774764,
+    ))
+    config = default_config(
+        output_directory="out", filename_style="elevation_runup_savepoint",
+    )
+    title = twl_batch_run.resolve_plot_title(
+        "elevation_delta", resource, config, baseline_ari=5.0
+    )
+    expected_ft = common_twl.m_igld85_to_ft_NAVD88(178.774764)
+    assert title == common_twl.build_plot_title(
+        "elevation_delta", expected_ft, "run25", 1968, baseline_ari=5.0
+    )
+    assert "baseline ARI: 5" in title
 
 
 # ---- compute_scenario_metrics / build_resource_outputs ---------------------------------
@@ -934,6 +982,89 @@ def test_compute_equivalent_elevation_metrics_skips_non_grid_sheets(tmp_path):
     assert set(values.keys()) == {"_0_0"}
 
 
+# ---- compute_baseline_ari ---------------------------------------------------------------
+
+def test_compute_baseline_ari_matches_equivalent_elevation_metrics_internal_lookup(tmp_path):
+    path = make_twl_workbook(
+        tmp_path / "lake_twl.xlsx",
+        {
+            "baseline-_0_0": _twl_sheet_frame(levels=(100.0, 110.0, 115.0, 120.0)),
+            "other-_5_0": _twl_sheet_frame(levels=(105.0, 116.0, 121.0, 126.0)),
+        },
+    )
+    resource = twl_batch_run.parse_resource_row(
+        base_row(magnitude_operator=">", magnitude_value=110.0,
+                  equivalent_elevation="baseline_magnitude")
+    )
+    baseline_ari = twl_batch_run.compute_baseline_ari(resource, path)
+    # Baseline curve hits level=110.0 exactly at ARI=5 (see _twl_sheet_frame's default
+    # ARI columns, matching test_compute_equivalent_elevation_metrics_uses_baseline_ari_
+    # across_scenarios' equivalent assertion).
+    assert baseline_ari == pytest.approx(5.0)
+
+
+def test_compute_baseline_ari_uses_override_value_not_magnitude_value(tmp_path):
+    path = make_twl_workbook(
+        tmp_path / "lake_twl.xlsx",
+        {"baseline-_0_0": _twl_sheet_frame(levels=(100.0, 110.0, 115.0, 120.0))},
+    )
+    resource = twl_batch_run.parse_resource_row(
+        base_row(magnitude_operator=">", magnitude_value=110.0, equivalent_elevation=115.0)
+    )
+    baseline_ari = twl_batch_run.compute_baseline_ari(resource, path)
+    assert baseline_ari == pytest.approx(10.0)
+
+
+def test_compute_baseline_ari_missing_baseline_sheet_raises(tmp_path):
+    path = make_twl_workbook(
+        tmp_path / "lake_twl.xlsx",
+        {"a-_0_1.5": _twl_sheet_frame(), "b-_5_0": _twl_sheet_frame()},
+    )
+    resource = twl_batch_run.parse_resource_row(
+        base_row(equivalent_elevation="baseline_magnitude")
+    )
+    with pytest.raises(ValueError, match="baseline"):
+        twl_batch_run.compute_baseline_ari(resource, path)
+
+
+# ---- compute_threshold_ari_elevation_metrics --------------------------------------------
+
+def test_compute_threshold_ari_elevation_metrics_baseline_maps_to_own_curve(tmp_path):
+    path = make_twl_workbook(
+        tmp_path / "lake_twl.xlsx",
+        {
+            "baseline-_0_0": _twl_sheet_frame(levels=(100.0, 110.0, 115.0, 120.0)),
+            "other-_5_0": _twl_sheet_frame(levels=(105.0, 116.0, 121.0, 126.0)),
+        },
+    )
+    resource = twl_batch_run.parse_resource_row(base_row(threshold=5.0))
+    values = twl_batch_run.compute_threshold_ari_elevation_metrics(resource, path)
+    # ARI=5 is an exact hit on both curves' own ARI columns (see _twl_sheet_frame's
+    # default ARI columns) -- baseline maps to its own level at ARI=5, "_5_0" maps to
+    # its own level at ARI=5, with no reference to baseline's curve at all (unlike
+    # compute_equivalent_elevation_metrics, which always looks up an ARI on baseline's
+    # curve first).
+    assert values["_0_0"] == pytest.approx(110.0)
+    assert values["_5_0"] == pytest.approx(116.0)
+
+
+def test_compute_threshold_ari_elevation_metrics_skips_non_grid_sheets(tmp_path):
+    path = make_twl_workbook(
+        tmp_path / "lake_twl.xlsx",
+        {"not_a_grid_sheet": _twl_sheet_frame(), "baseline-_0_0": _twl_sheet_frame()},
+    )
+    resource = twl_batch_run.parse_resource_row(base_row(threshold=5.0))
+    values = twl_batch_run.compute_threshold_ari_elevation_metrics(resource, path)
+    assert set(values.keys()) == {"_0_0"}
+
+
+def test_compute_threshold_ari_elevation_metrics_requires_threshold():
+    resource = twl_batch_run.parse_resource_row(base_row())
+    with pytest.raises(AssertionError):
+        twl_batch_run.compute_threshold_ari_elevation_metrics(resource, Path("."))
+
+
+
 def _recording_plot_fn(calls):
     def plot_fn(xs, ys, zs, **kwargs):
         calls.append({"xs": xs, "ys": ys, "zs": zs, **kwargs})
@@ -961,6 +1092,8 @@ def test_build_resource_outputs_writes_grid_csv_and_calls_plot_fn(tmp_path):
     assert calls[0]["save_path"] == plot_path
     assert calls[0]["show"] is False
     assert calls[0]["fillin"] is False
+    assert calls[0]["show_values"] is False
+    assert calls[0]["value_decimals"] == 2
 
 
 def test_build_resource_outputs_primary_one_sided_style_when_threshold_outside_range(tmp_path):
@@ -1114,6 +1247,8 @@ def test_build_resource_outputs_equivalent_elevation_writes_second_grid_and_plot
     assert calls[0]["fillin"] is True
     elev_call = calls[1]
     assert elev_call["labels"][2] == "Equivalent Elevation (ft, NAVD88)"
+    assert elev_call["show_values"] == config.show_values
+    assert elev_call["value_decimals"] == config.value_decimals
     # threshold/zs are converted from meters (IGLD85) to feet (NAVD88) at output time --
     # the underlying analysis (compute_equivalent_elevation_metrics) still works in
     # meters; build_resource_outputs converts only when writing the grid/plot.
@@ -1234,6 +1369,8 @@ def test_build_resource_outputs_elevation_delta_writes_third_grid_and_plot(tmp_p
     delta_call = calls[2]
     assert delta_call["labels"][2] == "Elevation Delta (ft, NAVD88)"
     assert delta_call["save_path"] == delta_plot
+    assert delta_call["show_values"] == config.show_values
+    assert delta_call["value_decimals"] == config.value_decimals
     # Fixed colorbar center of 0 (no delta), regardless of resource.threshold or the
     # equivalent_elevation plot's own threshold.
     assert delta_call["threshold"] == pytest.approx(0.0)
@@ -1250,14 +1387,55 @@ def test_build_resource_outputs_elevation_delta_writes_third_grid_and_plot(tmp_p
     assert other_delta_ft == pytest.approx(common_twl.m_igld85_to_ft_NAVD88(116.0) - lookup_ft)
     assert min(np.ravel(delta_call["zs"])) <= other_delta_ft + 1e-9
     assert any(v == pytest.approx(0.0, abs=1e-9) for v in np.ravel(delta_call["zs"]))
-    # levels/widths/color_map_ticks come from common_twl.symmetric_delta_levels,
-    # centered on 0, independent of whether this particular range is one-sided.
+    # levels/widths come from common_twl.symmetric_delta_levels, centered on 0,
+    # independent of whether this particular range is one-sided. color_map_ticks is
+    # the *filtered* (in-range) subset -- see colorbar_ticks_within_range: passing an
+    # out-of-range tick to matplotlib's colorbar blanks it entirely, which was the
+    # root cause of the previously-diagnosed "blank elevation-delta colorbar" bug.
     delta_z_range = (float(np.nanmin(delta_call["zs"])), float(np.nanmax(delta_call["zs"])))
     expected_levels, expected_widths = common_twl.symmetric_delta_levels(delta_z_range)
+    expected_ticks = common_twl.colorbar_ticks_within_range(expected_levels, delta_z_range)
     assert delta_call["levels"] == expected_levels
     assert delta_call["widths"] == expected_widths
-    assert delta_call["color_map_ticks"] == expected_levels
+    assert delta_call["color_map_ticks"] == expected_ticks
+    assert all(delta_z_range[0] <= t <= delta_z_range[1] for t in delta_call["color_map_ticks"])
     assert 0.0 in expected_levels
+
+
+def test_build_resource_outputs_elevation_delta_color_map_ticks_never_exceed_z_range(tmp_path):
+    # Regression test for the diagnosed "blank elevation-delta colorbar" bug:
+    # symmetric_delta_levels' symmetric +-N ladder can extend beyond the actual data's
+    # z_range (e.g. an asymmetric delta range like -6.91..2.24), and passing an
+    # out-of-range tick to matplotlib's colorbar blanks the whole bar. This fixture's
+    # asymmetric, wide-spanning levels (baseline vs. an extreme scenario) reproduces a
+    # ladder wide enough to include out-of-range values before filtering.
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    make_twl_workbook(
+        data_dir / "superior_twl.xlsx",
+        {
+            "baseline-_0_0": _twl_sheet_frame(levels=(100.0, 110.0, 115.0, 120.0)),
+            "other-_5_0": _twl_sheet_frame(levels=(100.0, 110.0, 130.0, 150.0)),
+            "other2-_0_1.5": _twl_sheet_frame(levels=(100.0, 110.0, 115.0, 120.0)),
+            "other3-_5_1.5": _twl_sheet_frame(levels=(100.0, 110.0, 130.0, 150.0)),
+        },
+    )
+    resource = twl_batch_run.parse_resource_row(base_row(
+        magnitude_operator=">", magnitude_value=110.0,
+        equivalent_elevation="baseline_magnitude",
+    ))
+    config = default_config(output_directory=str(tmp_path / "out"))
+    calls = []
+    twl_batch_run.build_resource_outputs(
+        resource, data_dir, config, plot_fn=_recording_plot_fn(calls)
+    )
+    delta_call = calls[2]
+    delta_z_range = (float(np.nanmin(delta_call["zs"])), float(np.nanmax(delta_call["zs"])))
+    for tick in delta_call["color_map_ticks"]:
+        assert delta_z_range[0] <= tick <= delta_z_range[1]
+    # The un-filtered contour levels are allowed (expected) to extend past the data's
+    # own z_range -- only the colorbar-tick set must be clipped.
+    assert len(delta_call["levels"]) >= len(delta_call["color_map_ticks"])
 
 
 def test_build_resource_outputs_elevation_delta_off_when_equivalent_elevation_blank(tmp_path):
@@ -1380,6 +1558,91 @@ def test_resolve_all_output_paths_includes_elevation_plots_when_set(tmp_path):
     ]
 
 
+def test_resolve_all_output_paths_includes_threshold_ari_elevation_when_threshold_set(tmp_path):
+    resource = twl_batch_run.parse_resource_row(base_row(save_point_id=1968, threshold=15.0))
+    config = default_config(output_directory=str(tmp_path / "out"))
+    paths = twl_batch_run.resolve_all_output_paths(resource, config)
+    assert paths[-2:] == [
+        tmp_path / "out" / "savepoint1968_ari15_elevation_grid.csv",
+        tmp_path / "out" / "savepoint1968_ari15_elevation_plot.png",
+    ]
+
+
+def test_resolve_all_output_paths_omits_threshold_ari_elevation_without_threshold(tmp_path):
+    resource = twl_batch_run.parse_resource_row(base_row(save_point_id=1968))
+    config = default_config(output_directory=str(tmp_path / "out"))
+    paths = twl_batch_run.resolve_all_output_paths(resource, config)
+    assert not any("ari" in str(p) for p in paths)
+
+
+# ---- save-point threshold-ARI elevation output (dedup'd per save point) -----------------
+
+def test_resolve_save_point_ari_elevation_output_paths():
+    resource = twl_batch_run.parse_resource_row(base_row(save_point_id=1968, threshold=15.0))
+    config = default_config(output_directory="out")
+    grid_path, plot_path = twl_batch_run.resolve_save_point_ari_elevation_output_paths(
+        resource, config
+    )
+    assert grid_path == Path("out") / "savepoint1968_ari15_elevation_grid.csv"
+    assert plot_path == Path("out") / "savepoint1968_ari15_elevation_plot.png"
+
+
+def test_resolve_save_point_ari_elevation_output_paths_formats_non_integer_ari():
+    resource = twl_batch_run.parse_resource_row(base_row(save_point_id=1968, threshold=12.5))
+    config = default_config(output_directory="out")
+    grid_path, _ = twl_batch_run.resolve_save_point_ari_elevation_output_paths(
+        resource, config
+    )
+    assert grid_path.name == "savepoint1968_ari12.5_elevation_grid.csv"
+
+
+def test_build_save_point_ari_elevation_output_writes_grid_and_calls_plot_fn(tmp_path):
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    make_twl_workbook(
+        data_dir / "superior_twl.xlsx",
+        {name: _twl_sheet_frame() for name in GRID_SHEET_NAMES},
+    )
+    resource = twl_batch_run.parse_resource_row(
+        base_row(save_point_id=1, threshold=5.0)
+    )
+    config = default_config(output_directory=str(tmp_path / "out"))
+    calls = []
+    twl_path = twl_batch_run.resolve_lake_twl_path(resource.lake, data_dir)
+    grid_path, plot_path = twl_batch_run.build_save_point_ari_elevation_output(
+        resource, twl_path, config, plot_fn=_recording_plot_fn(calls)
+    )
+    assert grid_path == tmp_path / "out" / "savepoint1_ari5_elevation_grid.csv"
+    assert plot_path == tmp_path / "out" / "savepoint1_ari5_elevation_plot.png"
+    assert grid_path.exists()
+    assert len(calls) == 1
+    assert calls[0]["title"] == common_twl.build_threshold_ari_title(5.0, 1)
+    assert calls[0]["save_path"] == plot_path
+    assert calls[0]["show_values"] == config.show_values
+    assert calls[0]["value_decimals"] == config.value_decimals
+
+
+def test_build_save_point_ari_elevation_output_raises_if_exists_and_no_overwrite(tmp_path):
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    make_twl_workbook(
+        data_dir / "superior_twl.xlsx",
+        {name: _twl_sheet_frame() for name in GRID_SHEET_NAMES},
+    )
+    resource = twl_batch_run.parse_resource_row(base_row(save_point_id=1, threshold=5.0))
+    config = default_config(output_directory=str(tmp_path / "out"), overwrite=False)
+    twl_path = twl_batch_run.resolve_lake_twl_path(resource.lake, data_dir)
+    grid_path, plot_path = twl_batch_run.resolve_save_point_ari_elevation_output_paths(
+        resource, config
+    )
+    grid_path.parent.mkdir(parents=True, exist_ok=True)
+    plot_path.touch()
+    with pytest.raises(FileExistsError):
+        twl_batch_run.build_save_point_ari_elevation_output(
+            resource, twl_path, config, plot_fn=_recording_plot_fn([])
+        )
+
+
 def test_run_batch_populates_row_result_output_paths(tmp_path):
     resources_path = make_workbook(
         tmp_path,
@@ -1417,6 +1680,61 @@ def test_run_batch_failed_row_has_empty_output_paths(tmp_path):
         progress=lambda *a: None,
     )
     assert summary.results[0].output_paths == ()
+
+
+def test_run_batch_dedups_save_point_ari_output_across_rows_sharing_save_point(tmp_path):
+    resources_path = make_workbook(
+        tmp_path,
+        resources_header=["resource_name", "component_name", "lake", "magnitude_operator",
+                          "magnitude_value", "save_point_id", "threshold"],
+        resources_rows=[
+            ("duluth_harbor", "base", "superior", ">", 110.0, 1, 15.0),
+            ("duluth_harbor", "run2", "superior", ">", 110.0, 1, 15.0),
+            ("green_bay", "base", "superior", ">", 110.0, 2, 15.0),
+        ],
+    )
+    config = twl_batch_run.BatchConfig(output_directory=str(tmp_path / "out"))
+    ari_calls = []
+
+    def fake_ari_build(resource, twl_path, cfg):
+        ari_calls.append(resource.save_point_id)
+        return (Path("ari_g.csv"), Path("ari_p.png"))
+
+    summary = twl_batch_run.run_batch(
+        resources_path, tmp_path, config,
+        build_outputs=lambda r, d, c: (Path("g.csv"), Path("p.png")),
+        progress=lambda *a: None,
+        build_save_point_ari_output=fake_ari_build,
+    )
+    assert len(summary.succeeded) == 3
+    # Save point 1 appears twice (rows 1-2) but its ari output is built only once;
+    # save point 2 (row 3) gets its own, separate build.
+    assert ari_calls == [1, 2]
+
+
+def test_run_batch_skips_save_point_ari_output_when_threshold_blank(tmp_path):
+    resources_path = make_workbook(
+        tmp_path,
+        resources_header=["resource_name", "lake", "magnitude_operator", "magnitude_value",
+                          "save_point_id"],
+        resources_rows=[
+            ("duluth_harbor", "superior", ">", 110.0, 1),
+        ],
+    )
+    config = twl_batch_run.BatchConfig(output_directory=str(tmp_path / "out"))
+    ari_calls = []
+
+    def fake_ari_build(resource, twl_path, cfg):
+        ari_calls.append(resource.save_point_id)
+        return (Path("ari_g.csv"), Path("ari_p.png"))
+
+    twl_batch_run.run_batch(
+        resources_path, tmp_path, config,
+        build_outputs=lambda r, d, c: (Path("g.csv"), Path("p.png")),
+        progress=lambda *a: None,
+        build_save_point_ari_output=fake_ari_build,
+    )
+    assert ari_calls == []
 
 
 def test_run_batch_continues_past_row_validation_failure(tmp_path):

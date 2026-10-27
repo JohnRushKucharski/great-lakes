@@ -82,7 +82,7 @@ wheels = [
 [[package]]
 name = "climate-canvas"
 version = "0.1.0"
-source = { git = "https://github.com/JohnRushKucharski/climate-canvas.git#5dc51257aeef5f16e2bfc2ab3d97916b6aa4b727" }
+source = { git = "https://github.com/JohnRushKucharski/climate-canvas.git#00e9555e69c3bbb3f8090bf4253acf7e5a5d6c4c" }
 dependencies = [
     { name = "matplotlib" },
     { name = "numpy" },

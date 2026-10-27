@@ -160,6 +160,46 @@ def test_build_entries_elevation_ft_is_magnitude_plus_runup(tmp_path):
     assert entries[0].elevation_ft == pytest.approx(magnitude_ft + 2.5)
 
 
+def test_build_entries_threshold_none_when_blank(tmp_path):
+    out_dir = tmp_path / "out"
+    wb_path = _write_workbook(
+        tmp_path, out_dir,
+        [["longtail_17877", "base", "michigan", ">=", 178.7747637915269, 1968, None]],
+    )
+    entries = dash.build_entries(wb_path)
+    assert entries[0].threshold is None
+    assert entries[0].threshold_ari_grid_path is None
+    assert entries[0].threshold_ari_plot_path is None
+
+
+def test_build_entries_threshold_ari_paths_resolved_when_threshold_set(tmp_path):
+    from great_lakes import batch_run_twl as twl
+
+    out_dir = tmp_path / "out"
+    wb_path = _write_workbook(
+        tmp_path, out_dir,
+        [["longtail_17877", "base", "michigan", ">=", 178.7747637915269, 1968, None, 15.0]],
+        resources_header=[
+            "resource_name", "component_name", "lake", "magnitude_operator",
+            "magnitude_value", "save_point_id", "equivalent_elevation", "threshold",
+        ],
+    )
+    entries = dash.build_entries(wb_path)
+    entry = entries[0]
+    assert entry.threshold == pytest.approx(15.0)
+    resource = twl.parse_resource_row({
+        "resource_name": "longtail_17877", "component_name": "base", "lake": "michigan",
+        "magnitude_operator": ">=", "magnitude_value": 178.7747637915269,
+        "save_point_id": 1968, "threshold": 15.0,
+    })
+    config = twl.read_config_sheet(wb_path)
+    expected_grid, expected_plot = twl.resolve_save_point_ari_elevation_output_paths(
+        resource, config
+    )
+    assert entry.threshold_ari_grid_path == expected_grid
+    assert entry.threshold_ari_plot_path == expected_plot
+
+
 def test_build_avg_entries_elevation_ft_equals_magnitude_ft():
     # avg entries have no runup allowance concept -- elevation_ft mirrors magnitude_ft.
     entry = dash.ManifestEntry(
@@ -177,6 +217,9 @@ def _make_entry(
     output_dir,
     qualified_name="longtail_17877_base_1968",
     basis="baseline_magnitude",
+    threshold=None,
+    threshold_ari_grid_path=None,
+    threshold_ari_plot_path=None,
     **overrides,
 ):
     fields = dict(
@@ -191,6 +234,9 @@ def _make_entry(
         output_dir=output_dir,
         file_stem=qualified_name,
         elevation_ft=586.44,
+        threshold=threshold,
+        threshold_ari_grid_path=threshold_ari_grid_path,
+        threshold_ari_plot_path=threshold_ari_plot_path,
     )
     fields.update(overrides)
     return dash.ManifestEntry(**fields)
@@ -206,8 +252,45 @@ def test_resolve_files_returns_all_six_when_basis_set(tmp_path):
     entry = _make_entry(tmp_path)
     _touch_all_six(tmp_path, entry.qualified_name)
     files = dash.resolve_files(entry)
-    assert set(files.keys()) == set(dash._FILE_SUFFIXES.keys())
-    assert all(v is not None for v in files.values())
+    assert set(files.keys()) == set(dash._FILE_SUFFIXES.keys()) | {
+        "threshold_ari_elevation_grid", "threshold_ari_elevation_plot",
+    }
+    assert files["threshold_ari_elevation_grid"] is None  # entry.threshold not set
+    assert files["threshold_ari_elevation_plot"] is None
+    non_ari_files = {k: v for k, v in files.items() if k in dash._FILE_SUFFIXES}
+    assert all(v is not None for v in non_ari_files.values())
+
+
+def test_resolve_files_threshold_ari_kinds_resolved_when_threshold_set(tmp_path):
+    grid_path = tmp_path / "savepoint1968_ari15_elevation_grid.csv"
+    plot_path = tmp_path / "savepoint1968_ari15_elevation_plot.png"
+    grid_path.write_text("x", encoding="utf-8")
+    plot_path.write_text("x", encoding="utf-8")
+    entry = _make_entry(
+        tmp_path, basis=None, threshold=15.0,
+        threshold_ari_grid_path=grid_path, threshold_ari_plot_path=plot_path,
+    )
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    (tmp_path / f"{entry.qualified_name}_grid.csv").write_text("x", encoding="utf-8")
+    (tmp_path / f"{entry.qualified_name}_plot.png").write_text("x", encoding="utf-8")
+    files = dash.resolve_files(entry)
+    assert files["threshold_ari_elevation_grid"] == grid_path
+    assert files["threshold_ari_elevation_plot"] == plot_path
+
+
+def test_resolve_files_raises_on_missing_threshold_ari_file(tmp_path):
+    grid_path = tmp_path / "savepoint1968_ari15_elevation_grid.csv"
+    plot_path = tmp_path / "savepoint1968_ari15_elevation_plot.png"  # never written
+    grid_path.write_text("x", encoding="utf-8")
+    entry = _make_entry(
+        tmp_path, basis=None, threshold=15.0,
+        threshold_ari_grid_path=grid_path, threshold_ari_plot_path=plot_path,
+    )
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    (tmp_path / f"{entry.qualified_name}_grid.csv").write_text("x", encoding="utf-8")
+    (tmp_path / f"{entry.qualified_name}_plot.png").write_text("x", encoding="utf-8")
+    with pytest.raises(FileNotFoundError):
+        dash.resolve_files(entry)
 
 
 def test_resolve_files_equivalent_and_delta_kinds_none_when_basis_blank(tmp_path):
@@ -275,6 +358,22 @@ def test_merge_and_validate_raises_on_duplicate_filter_combination(tmp_path):
         dash.merge_and_validate([[a], [b]])
 
 
+def test_merge_and_validate_raises_on_duplicate_differing_only_by_basis(tmp_path):
+    # equivalent_elevation_basis is no longer part of the dashboard's uniqueness key
+    # (the basis picker was removed) -- two rows differing only by basis must now
+    # raise, since there's no longer a filter to disambiguate them.
+    a = _make_entry(
+        tmp_path, qualified_name="a", save_point_id=1, magnitude_ft=586.44,
+        basis="baseline_magnitude",
+    )
+    b = _make_entry(
+        tmp_path, qualified_name="b", save_point_id=1, magnitude_ft=586.44,
+        basis="500.00 ft override",
+    )
+    with pytest.raises(ValueError, match="[Nn]on-unique"):
+        dash.merge_and_validate([[a], [b]])
+
+
 # ---- read_grid_csv -----------------------------------------------------------------------
 
 def test_read_grid_csv_parses_labels_and_sparse_values(tmp_path):
@@ -312,6 +411,26 @@ def test_build_manifest_embeds_grid_data_and_relative_image_paths(tmp_path):
     assert entry_data["files"]["grid"]["path"] == f"out/{entry.qualified_name}_grid.csv"
     assert entry_data["files"]["plot"]["type"] == "image"
     assert entry_data["files"]["plot"]["path"] == f"out/{entry.qualified_name}_plot.png"
+    assert entry_data["files"]["threshold_ari_elevation_grid"] is None
+    assert entry_data["files"]["threshold_ari_elevation_plot"] is None
+
+
+def test_build_manifest_embeds_threshold_ari_elevation_files(tmp_path):
+    out_dir = tmp_path / "out"
+    grid_path = out_dir / "savepoint1968_ari15_elevation_grid.csv"
+    plot_path = out_dir / "savepoint1968_ari15_elevation_plot.png"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    grid_path.write_text("temp_delta\\precip_delta,0.0\n0.0,586.0\n", encoding="utf-8")
+    plot_path.write_text("x", encoding="utf-8")
+    entry = _make_entry(
+        out_dir, basis=None, threshold=15.0,
+        threshold_ari_grid_path=grid_path, threshold_ari_plot_path=plot_path,
+    )
+    manifest = dash.build_manifest([entry], dashboard_dir=tmp_path)
+    files = manifest["entries"][0]["files"]
+    assert files["threshold_ari_elevation_grid"]["type"] == "grid"
+    assert files["threshold_ari_elevation_grid"]["data"]["values"][0][0] == pytest.approx(586.0)
+    assert files["threshold_ari_elevation_plot"]["type"] == "image"
 
 
 # ---- write_manifest_js ------------------------------------------------------------------
@@ -338,10 +457,30 @@ def test_render_dashboard_html_references_manifest_js(tmp_path):
     assert "id=\"save-point-select\"" in text
     assert "id=\"magnitude-select\"" in text
     assert "id=\"runup-select\"" in text
-    assert "id=\"basis-select\"" in text
     assert "id=\"form-select\"" in text
     assert "id=\"metric-select\"" in text
     assert "id=\"compare-toggle\"" in text
+
+
+def test_render_dashboard_html_omits_equivalent_elevation_basis_picker(tmp_path):
+    # The equivalent-elevation basis picker was removed as a dashboard filter -- this
+    # batch (and most runs) only ever has one basis per row, so it added a
+    # non-narrowing, confusing extra dropdown with no real filtering value.
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert "basis-select" not in text
+    assert "basis-wrap" not in text
+    assert "Equivalent-elevation basis" not in text
+
+
+def test_render_dashboard_html_includes_threshold_ari_elevation_metric_option(tmp_path):
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert 'value="threshold_ari_elevation"' in text
+    assert "threshold_ari_elevation_plot" in text
+    assert "threshold_ari_elevation_grid" in text
 
 
 # ---- CLI main / build_dashboard integration ----------------------------------------------
@@ -476,6 +615,39 @@ def test_render_dashboard_html_facet_narrowing_does_not_require_prior_selection(
     assert "options.length" in text
 
 
+def test_render_dashboard_html_facet_narrowing_ignores_stale_impossible_selection(tmp_path):
+    # Regression: narrowing one facet (e.g. Save point) must not be constrained by
+    # another facet's (e.g. Elevation) *stale* selected value once that value is no
+    # longer achievable at all under the current scope (e.g. right after the top
+    # initial-filter narrows entries so the previously-selected elevation no longer
+    # exists) -- otherwise the stale value zeroes out every other facet's options
+    # (a user reported Save point going blank after changing the Baseline ARI filter).
+    # currentFieldValues must degrade such a stale value to null (no constraint)
+    # rather than passing it straight through to matchesFilters.
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert "stillPossible" in text
+
+
+def test_render_dashboard_html_facet_narrowing_uses_joint_consistency_pass(tmp_path):
+    # Regression: Elevation and Runup (and Save point) are only independent BEFORE
+    # the top Baseline ARI initial-filter narrows the entry pool -- afterwards, each
+    # elevation may be jointly compatible with only a subset of runup values (and
+    # vice versa), and the full held (save point, elevation, runup) triple may become
+    # jointly inconsistent even though each value individually still exists
+    # somewhere in scoped. currentFieldValues must resolve this by trying to null out
+    # the smallest/most-preferred subset of stale fields (preferring to keep Save
+    # point, then Elevation, before ever giving up Runup) rather than always
+    # sacrificing whichever field happens to come first in a fixed iteration order --
+    # a naive single fixed-order pass could wrongly blank a still-valid Save point
+    # just to resolve an Elevation/Runup conflict.
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert "PRIORITY_NULL_SETS" in text
+
+
 def test_render_dashboard_html_resets_facets_on_analysis_type_switch(tmp_path):
     # Switching analysis type must clear stale facet <option>s from the other
     # analysis type before recomputing -- otherwise a leftover selected value (e.g. an
@@ -494,7 +666,7 @@ def test_render_dashboard_html_includes_second_picker_set_for_compare(tmp_path):
     dash.render_dashboard_html(path)
     text = path.read_text(encoding="utf-8")
     for select_id in (
-        "save-point-select-b", "magnitude-select-b", "runup-select-b", "basis-select-b",
+        "save-point-select-b", "magnitude-select-b", "runup-select-b",
     ):
         assert f'id="{select_id}"' in text
 
@@ -517,7 +689,89 @@ def test_render_dashboard_html_shows_relative_file_path_caption(tmp_path):
     assert "file-path-caption" in text
 
 
-# ---- CLI: separate --twl-workbooks / --avg-workbooks -----------------------------------
+# ---- Initial filter (Elevation / baseline ARI, top of page) ----------------------------
+
+def test_render_dashboard_html_includes_initial_filter_criterion_toggle(tmp_path):
+    # Rule (1): a user can filter by EITHER Elevation OR Baseline ARI, never both at
+    # once -- a radio toggle picks the active criterion; the inactive one is disabled.
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert 'name="initial-filter-criterion"' in text
+    assert 'value="elevation"' in text
+    assert 'value="baseline_ari"' in text
+
+
+def test_render_dashboard_html_initial_filter_elevation_is_select_not_number_input(tmp_path):
+    # Rule (2): Elevation min/max must be dropdowns populated with the same discrete
+    # values as the later Elevation picker (derived from the manifest), not free-typed
+    # number inputs.
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert '<select id="initial-elev-min">' in text
+    assert '<select id="initial-elev-max">' in text
+    assert "populateInitialElevationSelects" in text
+
+
+def test_render_dashboard_html_initial_filter_ari_inputs_are_numeric_no_spinner(tmp_path):
+    # Rule (3): Baseline ARI min/max (1-1000) must be typeable numbers with the native
+    # up/down spinner UI hidden via CSS.
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert 'id="initial-ari-min"' in text
+    assert 'id="initial-ari-max"' in text
+    assert "::-webkit-inner-spin-button" in text
+    assert "appearance: textfield" in text
+
+
+def test_render_dashboard_html_initial_filter_shows_error_when_max_less_than_min(tmp_path):
+    # Rule (4): max < min shows an inline error and treats the filter as unconstrained
+    # until fixed.
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert "initial-filter-error" in text
+    assert "max" in text.lower() and "min" in text.lower()
+
+
+def test_render_dashboard_html_initial_filter_has_reset_button(tmp_path):
+    # Rule (5): a dedicated reset control for just the initial-filter section.
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert 'id="initial-filter-reset"' in text
+    assert "resetInitialFilter" in text
+
+
+def test_render_dashboard_html_initial_filter_shows_row_count(tmp_path):
+    # Rule (6): the "N design scenarios available" count must actually be present.
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert 'id="initial-filter-count"' in text
+    assert "updateInitialFilterCount" in text
+
+
+def test_render_dashboard_html_elevation_picker_label_includes_ft(tmp_path):
+    # Rule (7): the later Elevation picker's label was missing ", ft".
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert "Elevation (NAVD88, ft)" in text
+
+
+def test_render_dashboard_html_hides_elevation_runup_for_threshold_ari_metric(tmp_path):
+    # Rule (8): Elevation/Runup pickers are irrelevant (and hidden) when "Threshold
+    # ARI Elevation" is the selected Analysis metric, since that output is shared per
+    # save point regardless of elevation/runup.
+    path = tmp_path / "dashboard.html"
+    dash.render_dashboard_html(path)
+    text = path.read_text(encoding="utf-8")
+    assert "updateVisibilityForMetric" in text
+    assert "threshold_ari_elevation" in text
+
 
 def test_main_cli_accepts_twl_and_avg_workbooks(tmp_path):
     twl_out = tmp_path / "twl_out"

@@ -185,13 +185,26 @@ PLOT_TITLE_TYPE_LABELS: dict[str, str] = {
 
 
 def build_plot_title(
-    plot_kind: str, magnitude_ft: float, component_name: str, save_point_id: object
+    plot_kind: str, magnitude_ft: float, component_name: str, save_point_id: object,
+    baseline_ari: float | None = None,
 ) -> str:
-    """Build a 3-line plot title for one longtailpoint twl resource's response-surface
-    plot:
+    """Build a plot title for one longtailpoint twl resource's response-surface plot.
+
+    3-line default:
 
         Longtail Point <type>
         elevation: <elevation> ft (NAVD88), runup: <runup> ft
+        save point: <save_point_id>
+
+    4-line when plot_kind is "equivalent_elevation" or "elevation_delta" and
+    baseline_ari is given (a "baseline ARI: <value> yr" line is inserted between the
+    elevation/runup line and the save point line -- the baseline scenario's
+    interpolated ARI at the resource's equivalent_elevation lookup value, i.e. what
+    every scenario's equivalent elevation/elevation delta is computed relative to):
+
+        Longtail Point <type>
+        elevation: <elevation> ft (NAVD88), runup: <runup> ft
+        baseline ARI: <baseline_ari> yr
         save point: <save_point_id>
 
     plot_kind selects the "<type>" label via PLOT_TITLE_TYPE_LABELS -- one of
@@ -205,7 +218,11 @@ def build_plot_title(
     actual crest elevation being evaluated, not the raw magnitude alone). Raises
     ValueError for any component_name not in RUNUP_FT_BY_COMPONENT.
 
-    All 3 lines render at Axes.set_title's one implicit font size: matplotlib
+    baseline_ari has no effect for plot_kind="primary" (the primary plot has no
+    equivalent_elevation lookup to report an ARI for) -- it always stays 3 lines,
+    even if a caller passes baseline_ari anyway.
+
+    All lines render at Axes.set_title's one implicit font size: matplotlib
     mathtext (unlike real LaTeX) has no \\Large/\\small size macros to vary size
     per-line within a single title string, so a uniform size is used instead.
     """
@@ -224,8 +241,33 @@ def build_plot_title(
     type_label = PLOT_TITLE_TYPE_LABELS[plot_kind]
     line1 = f"Longtail Point {type_label}"
     line2 = f"elevation: {elevation_ft:g} ft (NAVD88), runup: {runup_ft:g} ft"
-    line3 = f"save point: {save_point_id}"
-    return f"{line1}\n{line2}\n{line3}"
+    save_point_line = f"save point: {save_point_id}"
+    if plot_kind in ("equivalent_elevation", "elevation_delta") and baseline_ari is not None:
+        baseline_ari_line = f"baseline ARI: {baseline_ari:g} yr"
+        return f"{line1}\n{line2}\n{baseline_ari_line}\n{save_point_line}"
+    return f"{line1}\n{line2}\n{save_point_line}"
+
+
+def build_threshold_ari_title(threshold_ari: float, save_point_id: object) -> str:
+    """Build a plot title for one save point's threshold-ARI elevation plot (see
+    CONTEXT.md's "Threshold-ARI elevation" entry).
+
+    3-line title:
+
+        Longtail Point Threshold ARI Elevation
+        ARI: <threshold_ari> yr
+        save point: <save_point_id>
+
+    Unlike build_plot_title, this plot has no single magnitude/runup component to
+    describe (it's computed once per save point, shared across every resource row
+    sharing that save point), so there's no elevation/runup line -- just the target
+    ARI itself.
+    """
+    return (
+        "Longtail Point Threshold ARI Elevation\n"
+        f"ARI: {threshold_ari:g} yr\n"
+        f"save point: {save_point_id}"
+    )
 
 
 # ---- shared response-surface contour/color-style helpers ---------------------------
@@ -313,6 +355,27 @@ def symmetric_delta_levels(
     levels = tuple(round(i * step, 10) for i in range(-n, n + 1))
     widths = tuple(2.0 if level == 0.0 else 1.0 for level in levels)
     return levels, widths
+
+
+def colorbar_ticks_within_range(
+    levels: tuple[float, ...], z_range: tuple[float, float]
+) -> tuple[float, ...]:
+    """Filter `levels` down to only those that fall within `z_range` (inclusive), for
+    safe use as climate_canvas's plot_response_surface(color_map_ticks=...).
+
+    symmetric_delta_levels() (and, in principle, any other level-generating function
+    not itself bounded by z_range) can return levels well outside the plotted data's
+    actual z_range -- e.g. a symmetric +-7 ladder when the data only spans -6.91 to
+    2.24. Passing an out-of-range tick to matplotlib's colorbar (via cbar.set_ticks)
+    breaks the colorbar's rendering entirely (a blank/white bar, not just a missing
+    tick) -- this was the root cause of the "blank elevation-delta colorbar" defect.
+    Contour *levels* (drawn via ax.contour) are unaffected by out-of-range values (the
+    contour simply never appears), so only the color_map_ticks use needs filtering --
+    callers should keep passing the unfiltered levels for the `levels`/`widths`
+    contour-drawing arguments.
+    """
+    z_min, z_max = z_range
+    return tuple(lvl for lvl in levels if z_min <= lvl <= z_max)
 
 
 # Human-readable per-style description used by naming_scheme_readme_text -- one section
