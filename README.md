@@ -27,6 +27,7 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 │   ├── fillin_swl.py                 <- batch tool 3: interpolate + extrapolate missing swl scenarios
 │   ├── analyze_known_scenarios.py    <- known-vs-known SWL precip/temp directionality analysis
 │   ├── build_dashboard.py            <- builds a self-contained results dashboard
+│   ├── longtailpoint_report.py        <- generates memo figures/tables and validation analyses
 │   ├── clean_lake_levels_all_scenarios.py  <- data/raw/ -> data/clean/ AVG cleaning script
 │   ├── clean_swl_summary.py        <- data/raw/ -> data/clean/ SWL cleaning script
 │   ├── build_avg_template.py        <- regenerates templates/template_avg.xlsx
@@ -84,6 +85,19 @@ You only need to re-run the cleaning scripts if the raw source workbooks in
 uv run python -m great_lakes.clean_lake_levels_all_scenarios
 uv run python -m great_lakes.clean_swl_summary
 ```
+
+## Long Tail Point memo analyses
+
+After cleaning AVG/SWL inputs and generating the 17-scenario workbook with
+`uv run python -m great_lakes.fillin_swl data\clean`, run:
+
+```powershell
+uv run python -m great_lakes.longtailpoint_report
+```
+
+This regenerates F2-F4, T1-T2, the SWL~AVG regression, and leave-one-out tables under
+`longtailpoint/presentation/`. The source inputs are `data/clean/michiganhuron_avg.csv`
+and `data/extrapolated/michigan_swl.xlsx`; the report files are derived outputs.
 
 
 # Batch tool 1: batch_run_avg.py

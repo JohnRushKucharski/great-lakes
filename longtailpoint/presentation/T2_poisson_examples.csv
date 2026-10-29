@@ -1,0 +1,4 @@
+label,probability,probability_pct,model,event_name
+At least 1,P(N > 0),63.212055882855765,Poisson(lambda=1 over 15 years),threshold-exceedance / overtopping-proxy years
+At least 3,P(N > 2),8.030139707139416,Poisson(lambda=1 over 15 years),threshold-exceedance / overtopping-proxy years
+At least 4,P(N > 3),1.898815687615374,Poisson(lambda=1 over 15 years),threshold-exceedance / overtopping-proxy years

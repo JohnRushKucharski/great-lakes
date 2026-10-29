@@ -139,7 +139,7 @@ per-row *label/basis* with the **equivalent elevation** output it produces).
 **Known scenario**:
 One of the 5 (of 17 total) precip/temp scenarios a `<lake>_swl.xlsx` workbook already has
 a sheet for, per save point (`baseline-_0_0`, `nearterm-_5_1.5`, `moderate_low-_10_5`,
-`extreme_low-_20_5`, `extreme_high-_0_7`) — identical set across all 4 lake swl workbooks.
+`extreme_low-_0_7`, `extreme_high-_20_5`) — identical set across all 4 lake swl workbooks.
 _Avoid_: Source scenario, observed scenario.
 
 **Target scenario**:
