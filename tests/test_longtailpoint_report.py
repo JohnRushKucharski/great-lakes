@@ -81,3 +81,9 @@ def test_regression_prediction_reports_line_and_residual_spread():
     assert result.prediction == pytest.approx(4.6)
     assert result.residual_sd > 0
     assert result.lower_95 < result.prediction < result.upper_95
+
+def test_presentation_note_names_runup_allowance_only_when_added():
+    assert longtailpoint_report.presentation_note(0.0).endswith("SWL excludes runup.")
+    note = longtailpoint_report.presentation_note(2.0)
+    assert note.endswith("SWL plus 2 ft runup allowance.")
+    assert "excludes runup" not in note

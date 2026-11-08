@@ -23,6 +23,21 @@ longtailpoint/*_output/
 longtailpoint/results_*.xlsx
 longtailpoint/~$*
 
+# untracked working drafts, plans, and habitat-memo work in progress
+docs/longtailpoint_memo_draft.md
+docs/report_plan.md
+longtailpoint/habitat/JK/
+longtailpoint/habitat/JO/
+longtailpoint/habitat/report/
+longtailpoint/longtailpoint_memo.docx
+longtailpoint/longtailpoint_memo_261030.docx
+longtailpoint/MEMORANDUM.docx
+src/great_lakes/build_memo_docx.py
+src/great_lakes/longtailpoint_report.py
+tests/test_build_memo_docx.py
+tests/test_build_habitat_report.py
+tests/test_longtailpoint_report.py
+
 # scratch space for ad hoc manual smoke tests, not part of the automated suite
 manual_tests/
 

@@ -812,14 +812,23 @@ def write_presentation_figure(
     )
     runup_text = f" - +{elevation_offset_ft:g} ft runup" if elevation_offset_ft else ""
     ax.set_title(f"Save point {save_point_id} - {ari:g}-year ARI{runup_text}")
-    fig.text(
-        0.01, 0.01,
-        "Solid: 586 ft; dashed: 584 ft. Black outline: modeled; * interpolated; "
-        "** extrapolated. SWL excludes runup.",
-    )
+    fig.text(0.01, 0.01, presentation_note(elevation_offset_ft))
     fig.savefig(output_path, dpi=180)
     plt.close(fig)
     return output_path
+
+
+def presentation_note(elevation_offset_ft: float) -> str:
+    """In-figure footnote; says whether values include a runup allowance."""
+    runup = (
+        f"SWL plus {elevation_offset_ft:g} ft runup allowance."
+        if elevation_offset_ft
+        else "SWL excludes runup."
+    )
+    return (
+        "Solid: 586 ft; dashed: 584 ft. Black outline: modeled; * interpolated; "
+        f"** extrapolated. {runup}"
+    )
 
 
 def main() -> None:

@@ -28,6 +28,7 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 │   ├── analyze_known_scenarios.py    <- known-vs-known SWL precip/temp directionality analysis
 │   ├── build_dashboard.py            <- builds a self-contained results dashboard
 │   ├── longtailpoint_report.py        <- generates memo figures/tables and validation analyses
+│   ├── build_memo_docx.py             <- builds the LTP memo .docx from its Markdown draft
 │   ├── clean_lake_levels_all_scenarios.py  <- data/raw/ -> data/clean/ AVG cleaning script
 │   ├── clean_swl_summary.py        <- data/raw/ -> data/clean/ SWL cleaning script
 │   ├── build_avg_template.py        <- regenerates templates/template_avg.xlsx
@@ -99,6 +100,15 @@ This regenerates F2-F4, T1-T2, the SWL~AVG regression, and leave-one-out tables 
 `longtailpoint/presentation/`. The source inputs are `data/clean/michiganhuron_avg.csv`
 and `data/extrapolated/michigan_swl.xlsx`; the report files are derived outputs.
 
+To build the memo Word document from its Markdown draft
+(`docs/longtailpoint_memo_draft.md`, the source of truth; edit text there, not in Word):
+
+```powershell
+uv run python -m great_lakes.build_memo_docx
+```
+
+This writes `longtailpoint/longtailpoint_memo.docx` (Letter, 1-in margins, 11 pt Calibri)
+with the figures above embedded. Run `longtailpoint_report` first if figures are missing.
 
 # Batch tool 1: batch_run_avg.py
 

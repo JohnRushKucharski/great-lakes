@@ -1,8 +1,13 @@
 # Plan: Long Tail Point (LTP) storm water level memo
 
-Status: phases 1-6 complete (numbers frozen; main memo and Appendices A-B drafted in
-`docs/longtailpoint_memo_draft.md`, concision pass and captions applied with user direction).
-Next: phase 7 (assembly). This file is the source
+Status: phases 1-6 complete; phase 7 in progress (`.docx` built, awaiting user page/layout
+review in Word). PDF dropped (user: .docx only). Header filled (TO: Longtail Point Project
+Delivery Team; FROM: Great Lakes Coastal Resiliency Study Team; PREPARED BY: John Kucharski,
+Senior Expert Advisor, Deltares; DATE: 30 October 2026). Builder:
+`python -m great_lakes.build_memo_docx` (draft -> `longtailpoint/longtailpoint_memo.docx`).
+Main memo and Appendices A-B drafted in
+`docs/longtailpoint_memo_draft.md`, concision pass and captions applied with user direction.
+This file is the source
 of truth for the report. Terms follow `CONTEXT.md` exactly. Prose may rest only on facts
 recorded here or in the approved draft.
 
@@ -211,8 +216,11 @@ Appendix quantitative, main memo qualitative. Indicative ranges, no guarantees.
    ~0.5 ft of a design (e.g. 3 C/+10% at 584.2 ft vs 584 ft at 0 runup; 586.2 vs 586 ft at
    +2 ft runup). Also checked, not in prose: all regression target AVGs lie inside the known
    AVG range (no leverage concern).
-7. Assemble .docx + PDF; check length and consistency; fill placeholders. Fix F4 in-image note
-   "SWL excludes runup" (misleading on the +2 ft runup version; e.g. "SWL plus 2 ft runup").
+7. Assemble .docx (no PDF); check length and consistency; fill placeholders. F4 in-image note
+   fixed ("SWL plus 2 ft runup allowance" on the runup version; `presentation_note`). Added:
+   References section (GLISA 2024; Framework Study and ERDC CHL placeholders), Figure 1 and
+   A-1 placeholders with captions, Table 1 caption, Figure B-1 (regression) under caveat 5.
+   Remaining: user layout/length review in Word.
 8. Update README / `docs/`; tidy repo.
 
 Phase 3 outputs are in `longtailpoint/presentation/`: `F2_scenario_avg_change`,
@@ -231,8 +239,8 @@ modeled cells (F2 has no teal highlight); F3 timeline x-axis is synthetic year
 
 ## 8. Open placeholders
 
-- Memo header and author.
-- Two dataset citations (Framework Study AVG; ERDC SWL).
+- Memo header and author: filled (phase 7).
+- Two dataset citations (Framework Study AVG; ERDC SWL): placeholders in References.
 - Locator map (F1).
 - Dashboard screenshots (A-A).
 - Primary-literature citations for warmer/wetter trend (GLISA only so far).

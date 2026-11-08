@@ -1,5 +1,8 @@
-**TO:** [placeholder] **FROM:** [placeholder] **DATE:** [placeholder]
-**SUBJECT:** Long Tail Point (LTP) dune elevation under future lake-level scenarios
+**TO:** Longtail Point Project Delivery Team
+**FROM:** Great Lakes Coastal Resiliency Study Team
+**PREPARED BY:** John Kucharski, Senior Expert Advisor, Deltares
+**DATE:** 30 October 2026
+**SUBJECT:** Robustness of Long Tail Point (LTP) dune crest elevations (584 and 586 ft NAVD88) to future lake-level scenarios
 
 ## 1. Purpose and bottom line
 
@@ -15,21 +18,26 @@ This memo offers limited conditional guidance about the design of a dune. It doe
 
 LTP is a sand spit on the Lake Michigan shoreline near Green Bay (Figure 1). The spit provides habitat and protects habitat in Dead Horse Bay that is degraded when dunes on the spit are breached during overtopping events. The team is evaluating beach nourishment plans and dune designs, using material from local dredged sites to reduce the frequency of breaching events. This case study asks how design elevations fare under lake-level scenarios driven by temperature and precipitation change.
 
+[Figure 1 placeholder: locator map]
+
+**Figure 1.** Location of Long Tail Point and save points 1968, 4997, and 4999 [placeholder].
 Eliminating breaches is neither possible nor natural. This case study uses a 1-in-15 year overtopping event frequency as a target benchmark for design elevations. The 15-year period roughly matches dredging cycles, typical nourishment design lifetimes, and natural storm and high-water cycles in the Great Lakes; however, it is a general benchmark, not an exact figure. A 15-year ARI corresponds to roughly a 1-in-15 chance of exceedance each year. It is not a guaranteed interval and not a breach rate.
 
-The observed climate, in the Great Lakes, has trended warmer and wetter in recent decades: regional average annual air temperature rose about 2.6 F (1.4 C) and annual precipitation increased by about 14% from 1951 to 2023 (GLISA, 2024). Long-term lake levels are the result of a delicate balance between evaporative losses, which increase in a warmer climate, and precipitation driven gains. Increases in average annual precipitation can raise, lower, or leave lake levels unchanged, depending on how they balance with evaporation.
+The observed climate, in the Great Lakes, has trended warmer and wetter in recent decades: regional average annual air temperature rose about 2.6 F (1.4 C) and annual precipitation increased by about 14% from 1951 to 2023 (GLISA 2024). Long-term lake levels are the result of a delicate balance between evaporative losses, which increase in a warmer climate, and precipitation driven gains. Increases in average annual precipitation can raise, lower, or leave lake levels unchanged, depending on how they balance with evaporation.
 
 ## 3. Inputs
 
-This analysis relies on two datasets, both produced under the EPA-funded Great Lakes Framework Study [citation placeholder]:
+This analysis relies on two datasets, both produced under the EPA-funded Great Lakes Framework Study (Framework Study [year placeholder]):
 
 - **Average lake levels (AVG).** Timeseries of 1,030 years of monthly average lake levels, for 17 lake level scenarios. These timeseries are the output of synthetic temperature and precipitation records (1,030 years of daily input per scenario) run through NOAA Net Basin Supply, Large Lake Thermodynamic, and Great Lakes operations models. The AVG dataset describes average (monthly) lake level only. It does not include storm surge or waves.
 
-- **Storm water level (SWL).** Water levels including storm surge and wave setup, expressed as ARI frequency curves, produced by USACE ERDC Coastal and Hydraulics Laboratory [citation placeholder] for a subset of the AVG water level scenarios. (Note USACE often calls this data containing wind wave surge and setup as "still water level" data.) SWL was evaluated under only 5 of the 17 scenarios: baseline, a nearer-term moderate case (+1.5 C, +5% precipitation), a moderate-low case (+5 C, +10% precipitation), and the extreme high (+5 C, +20% precipitation) and extreme low (+7C, +0% precipitation) lake-level cases. SWL excludes runup and overtopping, so runup allowances of +2, +2.5, and +3 ft (assumed) are added to the analysis presented in the memo.
+- **Storm water level (SWL).** Water levels including storm surge and wave setup, expressed as ARI frequency curves, produced by USACE ERDC Coastal and Hydraulics Laboratory (ERDC CHL [year placeholder]) for a subset of the AVG water level scenarios. (Note USACE often calls this data containing wind wave surge and setup as "still water level" data.) SWL was evaluated under only 5 of the 17 scenarios: baseline, a nearer-term moderate case (+1.5 C, +5% precipitation), a moderate-low case (+5 C, +10% precipitation), and the extreme high (+5 C, +20% precipitation) and extreme low (+7C, +0% precipitation) lake-level cases. SWL excludes runup and overtopping, so runup allowances of +2, +2.5, and +3 ft (assumed) are added to the analysis presented in the memo.
 
 The main text focuses on the baseline scenario, the two 1.5 C scenarios (0% and +5% precipitation), and the four 3 C scenarios (0%, +5%, +10%, and +15% precipitation). Because nourishment cycles generally span only 10 to 20 years, these nearer-term scenarios are assumed to be more relevant; scenarios with 5 C and 7 C warming are provided as longer-term context. Scenarios are written below as warming/precipitation change (e.g., 3 C/+15%).
 
 SWL values for the 12 scenarios that were not modeled were interpolated or extrapolated from the 5 modeled ones (Figure 2); the 3 C row has no modeled scenario. Source units (m, IGLD85) are converted to ft NAVD88. The SWLs at save point (SP) 4999 are used throughout, as it is nearest the focus area; SPs 1968 and 4997, which are also in the vicinity of Longtail Point, were also analyzed and give very similar results.
+
+![Figure 2](../longtailpoint/presentation/F2_scenario_avg_change.png)
 
 **Figure 2.** Change in average lake level (AVG, ft) from the baseline scenario for all 17 scenarios. Columns are precipitation change (%); rows are warming (C). Blue is higher than the baseline and red lower. Black outline: modeled SWL; `*`: interpolated; `**`: extrapolated.
 
@@ -38,10 +46,14 @@ SWL values for the 12 scenarios that were not modeled were interpolated or extra
 **Elevation surface (Figure 4).** At SP 4999, the 15-year ARI elevation is 583.7 ft in the baseline scenario, 583.8 ft for 1.5 C/+5% (modeled), and 582.2 ft for 1.5 C/0% (interpolated). At 3 C it ranges from 580.8 ft (3 C/0%) to 586.0 ft (3 C/+15%).
 
 The 3 C/+15% scenario is an upper-end stress case within the project scenario set. Its relatively large precipitation increase gives it the highest 15-year ARI elevation among the 3 C scenarios, but it is extrapolated and therefore carries lower confidence (caveat 5).
+
+![Figure 4](../longtailpoint/presentation/4999_ari15_p2d00runup.png)
 
 **Figure 4.** 15-year ARI SWL elevation at SP 4999 plus a 2 ft runup allowance (ft NAVD88); values are 2 ft above those quoted in the text. Columns are precipitation change (%); rows are warming (C). The color scale is centered on the baseline value: blue is higher and red lower. Solid line: 586 ft; dashed line: 584 ft. Black outline: modeled; `*`: interpolated; `**`: extrapolated. Numbers are indicative ranges, not guarantees. The dashboard (Appendix A) shows other save points and runup values.
 
 **Design coverage (Table 1).** Coverage is the share of scenarios at a warming level whose 15-year ARI elevation, plus runup, stays at or below the design elevation.
+
+**Table 1.** Design coverage and worst-case margin at SP 4999, 15-year ARI (ft NAVD88). Negative margin: the 15-year ARI elevation plus runup exceeds the design.
 
 | Design | Runup | 1.5 C (2 scenarios) | 3 C (4 scenarios) | Worst-case margin, 1.5 C / 3 C |
 |---|---|---|---|---|
@@ -55,6 +67,8 @@ The 3 C/+15% scenario is an upper-end stress case within the project scenario se
 The worst case at both warming levels is the highest-threshold scenario (1.5 C/+5% and 3 C/+15%). The 586 ft design therefore adds about 2 ft of margin over 584 ft, but whether that margin suffices depends heavily on the runup allowance.
 
 **Repeat exceedances (Figure 3).** If threshold-exceedance (overtopping-proxy) years occurred independently at a constant rate of one per 15 years, the chance of at least one such year in any given 15-year period would be 63.2%, the chance of exactly two would be 18.4%, and the chance of three or more would be 8.0%. However, the AVG data show year-to-year persistence: high (and low) water level years tend to cluster together (lag-1 autocorrelation of the annual maximum monthly level is about 0.85 in every scenario examined). Here a high year is one in the top 1-in-15 of the scenario's record. In the AVG timeseries, 63 to 65% of 15-year windows have no high year (versus 36.8% if years were independent) and 18 to 20% have three or more (versus 8.0%). Persistence therefore shifts probability toward windows with no high years or with several. SWL exceedances would presumably also cluster, though the SWL dataset cannot test this.
+
+![Figure 3](../longtailpoint/presentation/F3_avg_persistence.png)
 
 **Figure 3.** Year-to-year persistence in average lake level (AVG), shown for the baseline and for the lowest- and highest-AVG scenarios at 1.5 C (0% and +5% precipitation) and 3 C (0% and +15%). A high year is one whose maximum monthly level is in the top 1-in-15 of that scenario's record. Panel A: high years over the first 100 synthetic years (not calendar years), in their actual order (teal) and randomly shuffled to remove persistence (gray). Panel B: share of overlapping 15-year windows with 0, 1, 2, or 3+ high years, actual (teal) versus independent years (Poisson, orange); r is the lag-1 autocorrelation (0.84 to 0.86). AVG is a proxy; SWL persistence is not shown.
 
@@ -75,6 +89,14 @@ The worst case at both warming levels is the highest-threshold scenario (1.5 C/+
 
 Details are in Appendix B.
 
+## References
+
+ERDC CHL ([year placeholder]). [Citation placeholder: USACE ERDC Coastal and Hydraulics Laboratory storm water level dataset for the Great Lakes Framework Study.]
+
+Framework Study ([year placeholder]). [Citation placeholder: EPA-funded Great Lakes Framework Study average lake level scenario dataset.]
+
+GLISA (2024). *Summary of Climate Change in the Great Lakes Region*. Great Lakes Integrated Sciences and Assessments, October 2024. Based on NOAA NCEI Global Historical Climatology Network-Daily (GHCN-D) data.
+
 ---
 
 ## Appendix A. Using the results dashboard
@@ -82,6 +104,8 @@ Details are in Appendix B.
 The dashboard shows the SWL results behind this memo for save points 1968, 4997, and 4999; top-of-dune elevations from 582 to 587 ft NAVD88 in 0.5-ft steps; and runup allowances of 0, 2, 2.5, and 3 ft. It needs no installation or internet connection.
 
 [Figure A-1 placeholder: annotated dashboard screenshot]
+
+**Figure A-1.** Results dashboard with controls labeled [placeholder].
 
 **Opening it.** Keep `dashboard.html`, `manifest.js`, and the `batch_swl_output` folder together in the `longtailpoint` folder. Double-click `dashboard.html` to open it in a web browser.
 
@@ -137,6 +161,9 @@ Each caveat gives (a) what it means, (b) why the approach is still useful, and (
 (b) Across the 5 modeled scenarios, 15-year SWL tracks AVG almost one-for-one (regression slope 0.95, residual SD 0.12 ft), consistent with the method. A leave-one-out test (5 C/+10% vs 5 C/+20%, the only modeled same-warming pair) has an error of 0.001 ft, but it is not independent confirmation because it relies on the same assumption.
 (c) 3 C/+15% sets the 3 C worst case in Table 1. The regression gives 585.6 ft rather than 586.0 ft, with a 95% prediction interval about 0.9 ft wide. Treat 3 C/+15% as a stress case, not the sole basis for a decision.
 
+![Figure B-1](../longtailpoint/presentation/B1_swl_avg_regression.png)
+
+**Figure B-1.** 15-year ARI SWL versus full-record average lake level (AVG) at SP 4999 (ft NAVD88). Line: least-squares fit to the 5 modeled scenarios (circles); band: 95% prediction interval. Triangles and squares are the interpolated and extrapolated scenarios, plotted at their regression predictions for illustration.
 **6. Interpolation across a sparse scenario set.**
 (a) Only 5 of 17 scenarios were modeled, and none at 3 C, so the whole 3 C row is estimated. Seven scenarios are weighted averages of nearby modeled scenarios.
 (b) Leave-one-out tests are possible for only two scenarios (1.5 C/+5% and 5 C/+10%); errors were 0.11 and 0.21 ft, small next to the 2-ft difference between designs and the prediction interval in caveat 5.
