@@ -18,15 +18,16 @@ data-products/*/outputs/
 # analysis workflow outputs (regenerate via each workflow's scripts)
 analyses/*/outputs/
 
-# longtailpoint: track input workbooks + dashboard.html/manifest.js viewer files
-# (small, needed to browse results without re-running anything). Bulky generated
-# batch outputs stay untracked/regenerable.
-longtailpoint/*_output/
-longtailpoint/results_*.xlsx
-longtailpoint/~$*
+# case studies: outputs are regenerable. Tracked: figures embedded in the memo, and the
+# dashboard viewer files (small; browse results without re-running anything).
+case-studies/*/*/outputs/*
+!case-studies/long-tail-point/overtopping/outputs/figures/
+!case-studies/long-tail-point/overtopping/outputs/dashboard.html
+!case-studies/long-tail-point/overtopping/outputs/manifest.js
 
 # generated zip and superseded/retired memos and habitat files (retired in the case-studies phase)
 longtailpoint.zip
+longtailpoint/~$*
 longtailpoint/longtailpoint_memo.docx
 longtailpoint/MEMORANDUM.docx
 longtailpoint/habitat/JK/*.pptx

@@ -774,7 +774,7 @@ def test_render_dashboard_html_hides_elevation_runup_for_threshold_ari_metric(tm
     assert "threshold_ari_elevation" in text
 
 
-def test_main_cli_accepts_swl_and_avg_workbooks(tmp_path):
+def test_build_dashboard_accepts_swl_and_avg_workbooks(tmp_path):
     swl_out = tmp_path / "swl_out"
     swl_wb = _write_workbook(
         tmp_path, swl_out,
@@ -797,31 +797,11 @@ def test_main_cli_accepts_swl_and_avg_workbooks(tmp_path):
     (avg_out / "longtail_2_mo_avg_plot.png").write_text("x", encoding="utf-8")
 
     dashboard_dir = tmp_path / "dashboard"
-    exit_code = dash.main([
-        "--swl-workbooks", str(swl_wb),
-        "--avg-workbooks", str(avg_wb),
-        "--output-dir", str(dashboard_dir),
-    ])
-    assert exit_code == 0
+    dash.build_dashboard([swl_wb], [avg_wb], dashboard_dir)
     import json
     text = (dashboard_dir / "manifest.js").read_text(encoding="utf-8")
     payload = text[len("window.MANIFEST = "):].rstrip().rstrip(";")
     manifest = json.loads(payload)
     analysis_types = {e["analysis_type"] for e in manifest["entries"]}
     assert analysis_types == {"swl", "avg"}
-
-
-def test_main_cli_invokes_build_dashboard(tmp_path, monkeypatch):
-    out_dir = tmp_path / "results"
-    wb_path = _write_workbook(
-        tmp_path, out_dir,
-        [["longtail_1", "base", "michigan", ">=", 178.0, 1, "baseline_magnitude"]],
-    )
-    _touch_all_six(out_dir, "longtail_1_base_1")
-    (out_dir / "longtail_1_base_1_grid.csv").write_text(
-        "temp_delta\\precip_delta,0.0\n0.0,1.0\n", encoding="utf-8"
-    )
-    dashboard_dir = tmp_path / "dashboard"
-    exit_code = dash.main(["--swl-workbooks", str(wb_path), "--output-dir", str(dashboard_dir)])
-    assert exit_code == 0
     assert (dashboard_dir / "dashboard.html").exists()

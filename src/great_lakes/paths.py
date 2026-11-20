@@ -79,6 +79,14 @@ class Layout:
     def avg_statistics_outputs(self) -> Path:
         return self.root / "analyses" / "avg-statistics" / "outputs"
 
+    @property
+    def overtopping(self) -> Path:
+        return self.root / "case-studies" / "long-tail-point" / "overtopping"
+
+    @property
+    def habitat(self) -> Path:
+        return self.root / "case-studies" / "long-tail-point" / "habitat"
+
     def assess_product(self, kind: str) -> Path:
         """Folder of the assess-<kind>-resources workflow (kind is "avg" or "swl")."""
         return self.root / "analyses" / f"assess-{kind}-resources"

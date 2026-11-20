@@ -6,7 +6,8 @@ Great Lakes Coastal Resiliency Study. It has three layers:
 - **Data products** (`data-products/`): cleaning, scenario completion, figures and
   gates for the avg (average monthly lake level) and swl (storm water level) data.
 - **Analyses** (`analyses/`): workflows that run on those data. Each has its own README.
-- **Case studies** (`longtailpoint/`): a worked example using the tooling.
+- **Case studies** (`case-studies/`): worked examples using the tooling (Long Tail Point
+  overtopping; habitat is the next to move in).
 
 See [`GLOSSARY.md`](./GLOSSARY.md) for the domain vocabulary (**resource**, **resources
 sheet**, **config sheet**, **subdirectory structure**) used throughout this document.
@@ -32,12 +33,16 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 │   ├── avg_ari.py                   <- avg ARI response surfaces (Poisson method)
 │   ├── avg_figures.py               <- avg mean-level figures (all 5 lakes)
 │   ├── avg_stats.py                 <- generic avg statistics (annual maxima, window shares, ...)
-│   ├── swl_method_quality.py        <- swl~avg regression used to judge swl methods
+│   ├── swl_method_quality.py        <- swl~avg regression and leave-one-out checks
+│   ├── avg_scenario_stats.py        <- scenario avg change, persistence, Poisson examples
+│   ├── scenario_grid.py             <- shared scenario-grid helpers and drawing
 │   ├── swl/                         <- sheets.py, naming.py, contours.py, complete.py (fill +
 │   │                                   extrapolate), figures.py, gates.py, effects.py
-│   ├── build_dashboard.py            <- builds a self-contained results dashboard
-│   ├── overtopping.py                 <- overtopping-specific memo figures/tables (F4, runup)
-│   └── memo/                          <- to_docx.py (Markdown -> .docx), from_docx.py (.docx -> Markdown)
+│   ├── build_dashboard.py            <- builds a self-contained results dashboard (import-only)
+│   ├── dashboard_package.py          <- zips the dashboard and the files it links
+│   ├── overtopping.py                 <- overtopping-specific memo figures/tables (T1, F4, runup)
+│   └── memo/                          <- to_docx.py (Markdown -> .docx), from_docx.py (.docx ->
+│                                         Markdown), sync.py (draft vs recovered-draft diff)
 ├── data/                       <- tracked data (inputs to everything else)
 │   ├── raw/                    <- source Excel workbooks (read-only, never edited)
 │   ├── avg/                    <- cleaned avg csvs (5 lakes) + figures/<lake>.png
@@ -55,10 +60,15 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 │   ├── assess-avg-resource/       <- stub
 │   └── assess-swl-resource/       <- stub
 │       (each: {scripts, methods, inputs, outputs}; outputs/ is gitignored)
-└── longtailpoint/               <- an example project using this tooling (see its own README)
+└── case-studies/
+    └── long-tail-point/
+        ├── overtopping/            <- {inputs, scripts, methods, outputs, deliverables}
+        └── habitat/                <- not yet moved (still under longtailpoint/habitat/)
 ```
 
-`data-products/*/outputs/` and `analyses/*/outputs/` are gitignored (regenerable).
+`data-products/*/outputs/`, `analyses/*/outputs/` and `case-studies/*/*/outputs/` are
+gitignored (regenerable), except the memo figures and `dashboard.html`/`manifest.js` of
+the overtopping case study.
 Everything under `data/` is tracked, including the summary figures. Each README says how
 to regenerate its outputs:
 
@@ -69,6 +79,7 @@ to regenerate its outputs:
 | avg statistics | [`analyses/avg-statistics`](analyses/avg-statistics/README.md) |
 | assess avg resources | [`analyses/assess-avg-resources`](analyses/assess-avg-resources/README.md) |
 | assess swl resources | [`analyses/assess-swl-resources`](analyses/assess-swl-resources/README.md) |
+| Long Tail Point overtopping | [`case-studies/long-tail-point/overtopping`](case-studies/long-tail-point/overtopping/README.md) |
 
 ## Installation
 
@@ -104,25 +115,25 @@ uv run python analyses/assess-swl-resources/scripts/assess.py --resources my_swl
 Without `--resources`, the assess scripts run the blank template in the workflow's
 `inputs/templates/`. Copy the template to make your own worksheet; never edit it in place.
 
-## Long Tail Point memo analyses
+## Long Tail Point overtopping
 
-After the data products above are built, run:
-
-```powershell
-uv run python -m great_lakes.overtopping
-```
-
-This regenerates F2-F4, T1-T2, the SWL~AVG regression, and leave-one-out tables under
-`longtailpoint/presentation/`. The source inputs are `data/avg/michiganhuron_avg.csv`
-and `data/swl/complete/michigan_swl.xlsx`; the report files are derived outputs.
-
-To build the memo Word document from its Markdown draft
-(`docs/longtailpoint_memo_draft.md`, the source of truth; edit text there, not in Word):
+After the data products above are built, run from the repository root:
 
 ```powershell
-uv run python -m great_lakes.memo.to_docx --draft docs\longtailpoint_memo_draft.md --out longtailpoint\longtailpoint_memo.docx
+uv run python case-studies/long-tail-point/overtopping/scripts/make_figures.py
+uv run python case-studies/long-tail-point/overtopping/scripts/run_assessments.py
+uv run python case-studies/long-tail-point/overtopping/scripts/build_dashboard.py
+uv run python case-studies/long-tail-point/overtopping/scripts/package_dashboard.py
 ```
 
-This writes `longtailpoint/longtailpoint_memo.docx` (Letter, 1-in margins, 11 pt Calibri)
-with the figures above embedded. Run `great_lakes.overtopping` first if figures are missing.
+`make_figures.py` regenerates F2-F4, T1-T2, the swl~avg regression and leave-one-out tables
+in `outputs/figures/`; `run_assessments.py` runs the two resource worksheets;
+`build_dashboard.py` and `package_dashboard.py` build the results dashboard and its zip. The
+inputs are `data/avg/michiganhuron_avg.csv`, `data/swl/complete/michigan_swl.xlsx` and the
+tracked worksheets in `inputs/`.
+
+The memo is `deliverables/longtailpoint_memo_261030.docx`, edited by hand in Word (the final
+text). `build_memo_docx.py` builds a docx from the Markdown draft into `outputs/`;
+`sync_draft_from_docx.py` brings the draft back in line with the final docx. See the
+[workflow README](case-studies/long-tail-point/overtopping/README.md).
 

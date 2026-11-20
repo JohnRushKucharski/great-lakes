@@ -6,10 +6,9 @@ memo header lines (`**KEY:** value`) before the first `##` heading, `##` heading
 `1. ` numbered items, pipe tables, `![alt](path)` figures, standalone `[... placeholder ...]`
 lines, and inline `**bold**`, `*italic*`, and `` `code` ``.
 
-Usage: python -m great_lakes.memo.to_docx --draft PATH --out PATH
+Library only; the case-study `build_memo_docx.py` scripts are the entry points.
 """
 
-import argparse
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -311,14 +310,3 @@ def _is_block_start(line: str) -> bool:
         or _BULLET.match(line)
     )
 
-
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--draft", type=Path, required=True)
-    parser.add_argument("--out", type=Path, required=True)
-    args = parser.parse_args()
-    print(build_memo(args.draft, args.out))
-
-
-if __name__ == "__main__":
-    main()

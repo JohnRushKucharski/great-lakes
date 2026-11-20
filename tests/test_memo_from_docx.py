@@ -77,6 +77,9 @@ def test_word_style_bullets_and_split_runs(tmp_path: Path) -> None:
     assert docx_to_markdown(path, []).endswith("- **Bold split trailing** text\n")
 
 
-def test_too_few_slots_raises(built: Path) -> None:
-    with pytest.raises(ValueError, match="figure"):
-        docx_to_markdown(built, ["F1"])
+def test_figure_without_slot_becomes_visible_placeholder(built: Path) -> None:
+    """A figure added in Word has no draft slot; flag it instead of failing."""
+    text = docx_to_markdown(built, ["F1"])
+    assert "{{F1}}" in text
+    assert "<!-- figure with no draft slot -->" in text
+    assert "{{F2}}" not in text

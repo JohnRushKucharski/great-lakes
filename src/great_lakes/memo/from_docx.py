@@ -6,13 +6,11 @@ reviewed, diffed, and rebuilt from. Lossy by design -- it handles the constructs
 `to_docx` writes (header fields, `##` headings, paragraphs, bullets, numbered
 items, pipe tables, figures, landscape sections, inline bold/italic/code) and nothing else.
 
-Each embedded picture becomes the next `{{Fn}}` slot id, taken in order from the existing
-draft (`figure_slots`), since the image itself carries no slot name.
-
-Usage: python -m great_lakes.memo.from_docx DOCX [--draft PATH] [--out PATH]
+Each embedded picture becomes the next figure slot (`{{Fn}}` or `![alt](path)` line), taken in
+order from the existing draft (`figure_slots`), since the image itself carries no slot name.
+Library only; the case-study `sync_draft_from_docx.py` script is the entry point.
 """
 
-import argparse
 import re
 from collections.abc import Iterator
 from itertools import groupby
@@ -26,7 +24,7 @@ from docx.table import Table
 from docx.text.paragraph import Paragraph
 from docx.text.run import Run
 
-_SLOT = re.compile(r"^\{\{([^}]+)\}\}$", re.MULTILINE)
+_SLOT = re.compile(r"^(?:\{\{([^}]+)\}\}|(!\[[^\]]*\]\([^)]*\)))$", re.MULTILINE)
 _HEADER = re.compile(r"^([A-Z ]+):\t(.*)$", re.DOTALL)
 _NUMBERED = re.compile(r"^(\d+)\.\t(.*)$", re.DOTALL)
 _BULLET = re.compile(r"^[\u2022\uf0b7\u00b7\u25cf\u25e6\u25aa\u2013-]\t(.*)$", re.DOTALL)
@@ -36,8 +34,12 @@ _LIST_STEP_EMU = 228600
 
 
 def figure_slots(draft_text: str) -> list[str]:
-    """Return the `{{Fn}}` figure slot ids in a Markdown draft, in order."""
-    return _SLOT.findall(draft_text)
+    """Return the figure slots in a Markdown draft, in order.
+
+    A `{{Fn}}` line yields its id; a `![alt](path)` line yields the whole line, which is
+    written back verbatim.
+    """
+    return [brace or image for brace, image in _SLOT.findall(draft_text)]
 
 
 def _format_key(run: Run, bold_ok: bool) -> tuple[bool, bool, bool]:
@@ -112,12 +114,11 @@ def docx_to_markdown(docx_path: Path, slots: list[str]) -> str:
         paragraph = item
         text = paragraph.text.strip()
         if paragraph._p.findall(".//" + qn("w:drawing")):
-            try:
-                blocks.append("{{" + next(slot_iter) + "}}")
-            except StopIteration:
-                raise ValueError(
-                    f"{docx_path.name} has more figures than the {len(slots)} slot ids given"
-                ) from None
+            slot = next(slot_iter, None)
+            if slot is None:
+                blocks.append("<!-- figure with no draft slot -->")
+            else:
+                blocks.append(slot if slot.startswith("![") else "{{" + slot + "}}")
         elif paragraph.style is not None and paragraph.style.name == "Heading 1":
             seen_heading = True
             blocks.append(f"## {text}")
@@ -156,18 +157,3 @@ def _inline_after_tab(paragraph: Paragraph) -> str:
     return stripped.strip()
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("docx", type=Path)
-    parser.add_argument("--draft", type=Path, required=True,
-                        help="existing Markdown draft; supplies the figure slot ids")
-    parser.add_argument("--out", type=Path, help="defaults to overwriting --draft")
-    args = parser.parse_args()
-    markdown = docx_to_markdown(args.docx, figure_slots(args.draft.read_text(encoding="utf-8")))
-    out = args.out or args.draft
-    out.write_text(markdown, encoding="utf-8", newline="\n")
-    print(out)
-
-
-if __name__ == "__main__":
-    main()

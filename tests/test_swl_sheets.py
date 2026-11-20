@@ -63,7 +63,9 @@ def test_build_scenario_ari_grid_honors_units_and_datum():
         coords, _ari_sheets(), to_units="ft", to_datum="NAVD88", **kwargs)
     _, _, m_igld = sheets.build_scenario_ari_grid(
         coords, _ari_sheets(), to_units="m", to_datum="IGLD85", **kwargs)
-    assert ft_navd[0, 0] == pytest.approx(units.m_igld85_to_ft_NAVD88(100.0))
+    # Generic path: exact-foot units plus the datum shift (not the case-study scale).
+    expected = units.convert_datum(units.convert_units(100.0, "m", "ft"), "IGLD85", "NAVD88", "ft")
+    assert ft_navd[0, 0] == pytest.approx(expected)
     assert m_igld[0, 0] == pytest.approx(100.0)
 
 

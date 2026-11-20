@@ -4,9 +4,9 @@ Status: phases 1-6 complete; phase 7 in progress (`.docx` built, awaiting user p
 review in Word). PDF dropped (user: .docx only). Header filled (TO: Longtail Point Project
 Delivery Team; FROM: Great Lakes Coastal Resiliency Study Team; PREPARED BY: John Kucharski,
 Senior Expert Advisor, Deltares; DATE: 30 October 2026). Builder:
-`python -m great_lakes.memo.to_docx --draft PATH --out PATH` (draft -> `longtailpoint/longtailpoint_memo.docx`).
+`case-studies/long-tail-point/overtopping/scripts/build_memo_docx.py` (draft -> `outputs/longtailpoint_memo_draft.docx`).
 Main memo and Appendices A-B drafted in
-`docs/longtailpoint_memo_draft.md`, concision pass and captions applied with user direction.
+`case-studies/long-tail-point/overtopping/inputs/memo_draft.md`, concision pass and captions applied with user direction.
 This file is the source
 of truth for the report. Terms follow `GLOSSARY.md` exactly. Prose may rest only on facts
 recorded here or in the approved draft.
@@ -108,7 +108,7 @@ recorded here or in the approved draft.
 ### Reference values (SP 4999, 15-yr ARI, baseline runup, ft NAVD88)
 `_0_0` 583.7; `_5_1.5` 583.8; `_0_1.5` 582.2; `_0_3` 580.8; `_5_3` 582.4; `_10_3` 584.2;
 `_15_3` 586.0; `_15_5` 584.0; `_20_5` 585.9; `_0_7` 576.9; `_20_7` 584.4. The +2 ft runup version
-adds 2 ft to every cell. Generator: `longtailpoint/presentation/make_presentation_figure.py`
+adds 2 ft to every cell. Generator: `case-studies/long-tail-point/overtopping/scripts/make_figures.py` (F4)
 (args: save_point_id ari out_stem [offset_ft]). Existing figures:
 `longtailpoint/presentation/4999_ari15_elevation.png/.csv`, `4999_ari15_p2d00runup.png/.csv`.
 
@@ -138,7 +138,7 @@ and F4 captions, not a separate section. Prose names scenarios as warming/precip
 | F1 | Locator map | User supplies later (placeholder) |
 | F2 | 17-scenario grid, AVG change vs baseline, modeled/interpolated/extrapolated marks, highlight baseline/1.5 C/3 C | New |
 | F3 | Panel A: ~100-yr timeline strip; dots = "high years" (top 1-in-15 of that scenario's record); row 1 actual (clustered), row 2 shuffled/independent. Panel B: share of 15-yr windows with 0/1/2/3+ high years, actual vs independent (Poisson). Caption gives lag-1 correlation r. Statistic = annual maximum monthly AVG level. Scenarios: baseline + lowest/highest-AVG (relative to baseline whole-record mean) within the 1.5 C and 3 C sets; if persistence differs between high/low show both, else show higher-AVG case per warming level. Caption: AVG proxy, not SWL. | New; inputs `data/clean/michiganhuron_avg.csv` (gitignored, regenerable) |
-| F4 | Main result: 15-yr ARI elevation surface, SP 4999, +2 ft runup, 584/586 overlay, marks | Revise `make_presentation_figure.py` output |
+| F4 | Main result: 15-yr ARI elevation surface, SP 4999, +2 ft runup, 584/586 overlay, marks | Revise `make_figures.py` F4 output |
 | T1 | 584 vs 586 x runup 0/2/2.5/3 x 1.5 C/3 C scenarios (coverage + worst case) | New |
 | T2 | Poisson examples | Dropped from memo; numbers in §4 prose (CSV still generated) |
 | A-A | Annotated dashboard screenshot(s) | User supplies / later |

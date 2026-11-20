@@ -1,6 +1,6 @@
-"""Build a self-contained results dashboard for batch_run_swl.py outputs.
+"""Build a self-contained results dashboard for assess.py outputs.
 
-Reads one or more batch_run_swl.py resources+config workbooks (already run, with
+Reads one or more assess.py resources+config workbooks (already run, with
 outputs already written to disk -- see config sheet's output_directory) and produces:
 
 - manifest.js: a sidecar JS file (`window.MANIFEST = {...};`) embedding per-row
@@ -18,7 +18,6 @@ server: just double-click dashboard.html. See
 docs/adr/0002-sidecar-js-manifest-for-longtailpoint-dashboard.md.
 """
 
-import argparse
 import json
 import os
 from dataclasses import dataclass
@@ -1142,7 +1141,7 @@ def build_dashboard(
     """Build the full dashboard (manifest.js + dashboard.html) into output_dir.
 
     swl_workbook_paths / avg_workbook_paths are explicit lists of already-run
-    batch_run_swl.py / batch_run_avg.py workbooks to include (see GLOSSARY.md: folder
+    assess.py workbooks to include (see GLOSSARY.md: folder
     inclusion is a deliberate per-invocation choice, not auto-scanned, since one-off
     elevation-override variants come and go).
     """
@@ -1153,35 +1152,3 @@ def build_dashboard(
     manifest = build_manifest(entries, dashboard_dir=output_dir)
     write_manifest_js(manifest, output_dir / "manifest.js")
     render_dashboard_html(output_dir / "dashboard.html")
-
-
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
-        description=(
-            "Build a self-contained results dashboard (dashboard.html + manifest.js) "
-            "from one or more already-run batch_run_swl.py / batch_run_avg.py "
-            "resources+config workbooks."
-        )
-    )
-    parser.add_argument(
-        "--swl-workbooks", nargs="+", type=Path, default=[],
-        help="Path(s) to already-run batch_run_swl.py resources+config .xlsx workbook(s).",
-    )
-    parser.add_argument(
-        "--avg-workbooks", nargs="+", type=Path, default=[],
-        help="Path(s) to already-run batch_run_avg.py resources+config .xlsx workbook(s).",
-    )
-    parser.add_argument(
-        "--output-dir", type=Path, required=True,
-        help="Directory to write dashboard.html + manifest.js into.",
-    )
-    args = parser.parse_args(argv)
-    if not args.swl_workbooks and not args.avg_workbooks:
-        parser.error("at least one of --swl-workbooks/--avg-workbooks is required.")
-    build_dashboard(args.swl_workbooks, args.avg_workbooks, args.output_dir)
-    print(f"Dashboard written to {args.output_dir / 'dashboard.html'}")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

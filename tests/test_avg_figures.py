@@ -19,10 +19,12 @@ def test_avg_lakes_are_the_five_cleaned_lakes():
 def test_build_mean_grid_uses_scenario_means_in_requested_units_and_datum():
     columns = {"_0_0": np.array([100.0, 102.0]), "_5_1.5": np.array([103.0, 105.0])}
     xs, ys, zs = avg_figures.build_mean_grid(columns, "ft", "NAVD88")
-    assert zs[list(ys).index(0.0), list(xs).index(0.0)] == pytest.approx(
-        units.m_igld85_to_ft_NAVD88(101.0))
-    assert zs[list(ys).index(1.5), list(xs).index(5.0)] == pytest.approx(
-        units.m_igld85_to_ft_NAVD88(104.0))
+    # Generic path: exact-foot units plus the datum shift (not the case-study scale).
+    def ft_navd88(m):
+        return units.convert_datum(units.convert_units(m, "m", "ft"), "IGLD85", "NAVD88", "ft")
+
+    assert zs[list(ys).index(0.0), list(xs).index(0.0)] == pytest.approx(ft_navd88(101.0))
+    assert zs[list(ys).index(1.5), list(xs).index(5.0)] == pytest.approx(ft_navd88(104.0))
     assert np.isnan(zs[list(ys).index(7.0), list(xs).index(20.0)])  # scenario not in data
 
 

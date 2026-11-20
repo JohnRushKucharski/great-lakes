@@ -27,6 +27,7 @@ uv run python data-products/swl/scripts/plot_figures.py [--units ft] [--datum NA
 uv run python data-products/swl/scripts/compare_fill_to_climate_canvas.py
 uv run python data-products/swl/scripts/check_ari_curves.py
 uv run python data-products/swl/methods/summarize_precip_temp_effects.py
+uv run python data-products/swl/scripts/assess_method_quality.py [--save-point-id 4999] [--ari 15]
 ```
 
 Run `data-products/avg/scripts/clean.py` first (completion needs `data/avg`). Both gates
@@ -45,6 +46,7 @@ NAVD88. Pass `--root` to run against another repository root.
 | `outputs/gates/fill_vs_climate_canvas/` | no | fill comparison csv + README.txt |
 | `outputs/gates/ari_curves/` | no | README.txt; `ari_curve_violations.csv` only on failure |
 | `outputs/methods/` | no | known-scenario directionality csv and xlsx |
+| `outputs/methods/method_quality/` | no | B1 regression and LOO checks (csv, png) + README.txt |
 
 Every script that writes to an `outputs/` folder also writes a `README.txt` there: run
 timestamp, inputs, files written, and a flag for stale files left by earlier runs.
@@ -57,6 +59,8 @@ small dot (see each legend).
 - Fill and extrapolation: `README.md` ("Scenario completion") and
   `docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md`.
 - Fill gate: `methods/compare_fill_to_climate_canvas.md`.
+- `methods/method_quality.md`: swl-on-avg regression and leave-one-out checks
+  (`scripts/assess_method_quality.py`).
 - `methods/summarize_precip_temp_effects.py` summarizes whether higher precip or
   temperature raises or lowers swl across the known scenarios.
 

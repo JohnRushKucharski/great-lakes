@@ -16,8 +16,14 @@ _Num = TypeVar("_Num", float, np.ndarray)
 # International foot, exact by definition.
 METERS_PER_FOOT = 0.3048
 
+# Scale used only by the combined m_igld85 <-> ft_NAVD88 helpers: the long-tail-point
+# worksheets' magnitude_value was populated with 1 m = 3.281 ft, not the exact foot.
+# Differs by ~1.5e-5 per ft (a few hundredths of a ft at these elevations); keep distinct
+# from `convert_units`, which is exact.
+CASE_STUDY_METERS_PER_FOOT = 1.0 / 3.281
+
 # NAVD88_ft = IGLD85_ft + 0.44: the USACE team estimate, not the computed ~0.4093 ft (see
-# longtailpoint/longtail_waterlevel.xlsx, Sheet2 "NAVD88 to IGLD85").
+# Sheet2 "NAVD88 to IGLD85" of the long-tail-point overtopping inputs/longtail_waterlevel.xlsx).
 IGLD85_TO_NAVD88_OFFSET_FT = 0.44
 
 _UNITS = ("m", "ft")
@@ -36,7 +42,7 @@ def convert_units(value: _Num, from_units: Units, to_units: Units) -> _Num:
     if from_units == to_units:
         return value
     if from_units == "m":
-        return value / METERS_PER_FOOT
+        return value * (1.0 / METERS_PER_FOOT)
     return value * METERS_PER_FOOT
 
 
@@ -53,13 +59,22 @@ def convert_datum(value: _Num, from_datum: Datum, to_datum: Datum, units: Units)
 
 
 def m_igld85_to_ft_NAVD88(value_m_igld85: _Num) -> _Num:
-    """Convert an elevation in meters, IGLD85, to feet, NAVD88 (units and datum)."""
-    return convert_datum(convert_units(value_m_igld85, "m", "ft"), "IGLD85", "NAVD88", "ft")
+    """Convert an elevation in meters, IGLD85, to feet, NAVD88 (units and datum).
+
+    Uses the case-study scale (1 m = 3.281 ft), not the exact foot, so results match
+    how the worksheets' magnitude_value column was populated and the original outputs.
+    """
+    return value_m_igld85 / CASE_STUDY_METERS_PER_FOOT + IGLD85_TO_NAVD88_OFFSET_FT
+
+
+def m_delta_to_ft(delta_m: _Num) -> _Num:
+    """Convert a difference of IGLD85 levels in meters to feet (case-study scale, no datum)."""
+    return m_igld85_to_ft_NAVD88(delta_m) - m_igld85_to_ft_NAVD88(0.0)
 
 
 def ft_NAVD88_to_m_igld85(value_ft_NAVD88: _Num) -> _Num:
     """Inverse of `m_igld85_to_ft_NAVD88`."""
-    return convert_units(convert_datum(value_ft_NAVD88, "NAVD88", "IGLD85", "ft"), "ft", "m")
+    return (value_ft_NAVD88 - IGLD85_TO_NAVD88_OFFSET_FT) * CASE_STUDY_METERS_PER_FOOT
 
 
 def water_level_label(units: Units, datum: Datum, quantity: str = "Water level") -> str:

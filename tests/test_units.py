@@ -60,8 +60,30 @@ def test_convert_datum_unknown_datum_raises():
 
 
 def test_m_igld85_to_ft_navd88_known_pairs():
-    assert units.m_igld85_to_ft_NAVD88(586.56 * 0.3048) == pytest.approx(587.0, abs=1e-9)
-    assert units.m_igld85_to_ft_NAVD88(581.56 * 0.3048) == pytest.approx(582.0, abs=1e-9)
+    # Case-study scale: 1 m = 3.281 ft, as the worksheets' magnitude_value was populated.
+    assert units.m_igld85_to_ft_NAVD88(586.56 / 3.281) == pytest.approx(587.0, abs=1e-9)
+    assert units.m_igld85_to_ft_NAVD88(581.56 / 3.281) == pytest.approx(582.0, abs=1e-9)
+
+
+def test_m_igld85_to_ft_navd88_matches_pre_reorg_values():
+    # Pinned to the pre-reorganization code (common_swl): m / (1/3.281) + 0.44, bit-for-bit.
+    assert units.m_igld85_to_ft_NAVD88(177.0) == 177.0 / (1.0 / 3.281) + 0.44
+    assert units.m_igld85_to_ft_NAVD88(176.123456) == 176.123456 / (1.0 / 3.281) + 0.44
+    assert units.ft_NAVD88_to_m_igld85(582.0) == (582.0 - 0.44) * (1.0 / 3.281)
+
+
+def test_convert_units_m_to_ft_matches_pre_reorg_arithmetic():
+    # Original code multiplied by METERS_TO_FEET = 1/0.3048; keep results bit-identical.
+    for value in (0.1, 176.52864724919095, -1.5974717359359543):
+        assert units.convert_units(value, "m", "ft") == value * (1.0 / 0.3048)
+
+
+def test_m_delta_to_ft_uses_case_study_scale_without_datum_offset():
+    delta = 12.3456
+    assert units.m_delta_to_ft(delta) == (
+        units.m_igld85_to_ft_NAVD88(delta) - units.m_igld85_to_ft_NAVD88(0.0)
+    )
+    assert units.m_delta_to_ft(delta) == pytest.approx(delta * 3.281, abs=1e-9)
 
 
 def test_m_igld85_to_ft_navd88_zero_is_offset_only():

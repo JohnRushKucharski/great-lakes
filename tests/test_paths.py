@@ -38,3 +38,10 @@ def test_layout_places_analysis_workflows_under_root():
         assert layout.assess_outputs(kind) == base / "outputs"
     assert layout.assess_data_dir("avg") == layout.avg
     assert layout.assess_data_dir("swl") == layout.swl_complete
+
+
+def test_layout_places_case_studies_under_root():
+    layout = Layout(Path("r"))
+    ltp = Path("r/case-studies/long-tail-point")
+    assert layout.overtopping == ltp / "overtopping"
+    assert layout.habitat == ltp / "habitat"

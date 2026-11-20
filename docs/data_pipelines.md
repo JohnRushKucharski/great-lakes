@@ -52,7 +52,7 @@ job is the end-to-end path and how the stages connect.)
                          |         and their output_directory contents)
                          v
 +------------------------------------------------------+
-| dashboard.html + manifest.js   (e.g. longtailpoint/) |
+| dashboard.html + manifest.js   (e.g. overtopping/outputs/) |
 +------------------------------------------------------+
 ```
 
@@ -148,8 +148,10 @@ run record.
 ### 6. Build the results dashboard
 
 ```powershell
-uv run python -m great_lakes.build_dashboard --swl-workbooks my_swl_run.xlsx --avg-workbooks my_run.xlsx --output-dir longtailpoint
+uv run python case-studies/long-tail-point/overtopping/scripts/build_dashboard.py
 ```
+The library (`great_lakes.build_dashboard.build_dashboard`) is import-only; each case study
+has a script that passes its own workbooks. `package_dashboard.py` zips the result.
 Inputs: one or more **already-run** (step 4 complete) resources+config workbooks — the
 tool reads each workbook's own `output_directory` for the grids/plots it produced.
 Outputs: `dashboard.html` + `manifest.js` in `--output-dir`.
@@ -212,7 +214,7 @@ That was a real reproducibility / operator-expectation defect. The identical bug
 | AVG batch analysis | clean AVG csv + workbook templates | `analyses/assess-avg-resources/scripts/assess.py` (`great_lakes.batch.avg`, `batch.template_avg`) | hydropattern `.toml`, output folders, grid CSVs, PNGs, Excel outputs |
 | SWL batch analysis | clean / extrapolated SWL xlsx + workbook templates | `analyses/assess-swl-resources/scripts/assess.py` (`great_lakes.batch.swl`, `batch.template_swl`) | SWL grid CSVs + PNGs; equivalent-elevation and elevation-delta grids/plots when requested |
 | Known-scenario side analysis | extrapolated SWL xlsx | `analyze_known_scenarios.py` | `data\analysis\known_scenario_directionality.csv` + summary xlsx |
-| Dashboard build | completed SWL/AVG batch outputs | `build_dashboard.py` | `longtailpoint\manifest.js`, `dashboard.html` |
+| Dashboard build | completed SWL/AVG batch outputs | `case-studies/long-tail-point/overtopping/scripts/build_dashboard.py` | `overtopping/outputs/manifest.js`, `dashboard.html` |
 
 ---
 
@@ -385,7 +387,7 @@ The Superior case is especially important because `_10_3` is itself a **filled**
 
 **Unit conversion evidence**
 
-`units.m_igld85_to_ft_NAVD88` documents and implements a flat +0.44 ft offset after converting meters to feet (exact 0.3048 m/ft). I checked the cited workbook directly:
+`units.m_igld85_to_ft_NAVD88` documents and implements a flat +0.44 ft offset after converting meters to feet with the case-study scale (1 m = 3.281 ft, as the worksheets' `magnitude_value` was populated; plain `convert_units` stays exact 0.3048). I checked the cited workbook directly:
 
 | `longtail_waterlevel.xlsx` `Sheet2` | Value |
 |---|---:|

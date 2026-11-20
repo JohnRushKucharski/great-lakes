@@ -37,7 +37,7 @@ The main text focuses on the baseline scenario, the two 1.5 C scenarios (0% and 
 
 SWL values for the 12 scenarios that were not modeled were interpolated or extrapolated from the 5 modeled ones (Figure 2); the 3 C row has no modeled scenario. Source units (m, IGLD85) are converted to ft NAVD88. The SWLs at save point (SP) 4999 are used throughout, as it is nearest the focus area; SPs 1968 and 4997, which are also in the vicinity of Longtail Point, were also analyzed and give very similar results.
 
-![Figure 2](../longtailpoint/presentation/F2_scenario_avg_change.png)
+![Figure 2](../outputs/figures/F2_scenario_avg_change.png)
 
 **Figure 2.** Change in average lake level (AVG, ft) from the baseline scenario for all 17 scenarios. Columns are precipitation change (%); rows are warming (C). Blue is higher than the baseline and red lower. Black outline: modeled SWL; `*`: interpolated; `**`: extrapolated.
 
@@ -47,7 +47,7 @@ SWL values for the 12 scenarios that were not modeled were interpolated or extra
 
 The 3 C/+15% scenario is an upper-end stress case within the project scenario set. Its relatively large precipitation increase gives it the highest 15-year ARI elevation among the 3 C scenarios, but it is extrapolated and therefore carries lower confidence (caveat 5).
 
-![Figure 4](../longtailpoint/presentation/4999_ari15_p2d00runup.png)
+![Figure 4](../outputs/figures/4999_ari15_p2d00runup.png)
 
 **Figure 4.** 15-year ARI SWL elevation at SP 4999 plus a 2 ft runup allowance (ft NAVD88); values are 2 ft above those quoted in the text. Columns are precipitation change (%); rows are warming (C). The color scale is centered on the baseline value: blue is higher and red lower. Solid line: 586 ft; dashed line: 584 ft. Black outline: modeled; `*`: interpolated; `**`: extrapolated. Numbers are indicative ranges, not guarantees. The dashboard (Appendix A) shows other save points and runup values.
 
@@ -68,7 +68,7 @@ The worst case at both warming levels is the highest-threshold scenario (1.5 C/+
 
 **Repeat exceedances (Figure 3).** If threshold-exceedance (overtopping-proxy) years occurred independently at a constant rate of one per 15 years, the chance of at least one such year in any given 15-year period would be 63.2%, the chance of exactly two would be 18.4%, and the chance of three or more would be 8.0%. However, the AVG data show year-to-year persistence: high (and low) water level years tend to cluster together (lag-1 autocorrelation of the annual maximum monthly level is about 0.85 in every scenario examined). Here a high year is one in the top 1-in-15 of the scenario's record. In the AVG timeseries, 63 to 65% of 15-year windows have no high year (versus 36.8% if years were independent) and 18 to 20% have three or more (versus 8.0%). Persistence therefore shifts probability toward windows with no high years or with several. SWL exceedances would presumably also cluster, though the SWL dataset cannot test this.
 
-![Figure 3](../longtailpoint/presentation/F3_avg_persistence.png)
+![Figure 3](../outputs/figures/F3_avg_persistence.png)
 
 **Figure 3.** Year-to-year persistence in average lake level (AVG), shown for the baseline and for the lowest- and highest-AVG scenarios at 1.5 C (0% and +5% precipitation) and 3 C (0% and +15%). A high year is one whose maximum monthly level is in the top 1-in-15 of that scenario's record. Panel A: high years over the first 100 synthetic years (not calendar years), in their actual order (teal) and randomly shuffled to remove persistence (gray). Panel B: share of overlapping 15-year windows with 0, 1, 2, or 3+ high years, actual (teal) versus independent years (Poisson, orange); r is the lag-1 autocorrelation (0.84 to 0.86). AVG is a proxy; SWL persistence is not shown.
 
@@ -107,7 +107,7 @@ The dashboard shows the SWL results behind this memo for save points 1968, 4997,
 
 **Figure A-1.** Results dashboard with controls labeled [placeholder].
 
-**Opening it.** Keep `dashboard.html`, `manifest.js`, and the `batch_swl_output` folder together in the `longtailpoint` folder. Double-click `dashboard.html` to open it in a web browser.
+**Opening it.** Keep `dashboard.html`, `manifest.js`, and the `batch_swl_output` folder together in the unzipped dashboard folder. Double-click `dashboard.html` to open it in a web browser.
 
 **Controls.**
 
@@ -161,7 +161,7 @@ Each caveat gives (a) what it means, (b) why the approach is still useful, and (
 (b) Across the 5 modeled scenarios, 15-year SWL tracks AVG almost one-for-one (regression slope 0.95, residual SD 0.12 ft), consistent with the method. A leave-one-out test (5 C/+10% vs 5 C/+20%, the only modeled same-warming pair) has an error of 0.001 ft, but it is not independent confirmation because it relies on the same assumption.
 (c) 3 C/+15% sets the 3 C worst case in Table 1. The regression gives 585.6 ft rather than 586.0 ft, with a 95% prediction interval about 0.9 ft wide. Treat 3 C/+15% as a stress case, not the sole basis for a decision.
 
-![Figure B-1](../longtailpoint/presentation/B1_swl_avg_regression.png)
+![Figure B-1](../outputs/figures/B1_swl_avg_regression.png)
 
 **Figure B-1.** 15-year ARI SWL versus full-record average lake level (AVG) at SP 4999 (ft NAVD88). Line: least-squares fit to the 5 modeled scenarios (circles); band: 95% prediction interval. Triangles and squares are the interpolated and extrapolated scenarios, plotted at their regression predictions for illustration.
 **6. Interpolation across a sparse scenario set.**

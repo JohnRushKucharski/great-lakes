@@ -107,8 +107,8 @@ water level is equally likely, under this scenario, as the lookup value is under
 baseline scenario?" All swl-workbook levels, `magnitude_value`, and `equivalent_elevation`
 are in meters, IGLD85 datum (the analysis itself never converts units), but the written
 output is converted to feet, NAVD88 datum (see `units.m_igld85_to_ft_NAVD88`, a flat
-+0.44ft offset plus a standard 0.3048 m/ft scale — see
-`longtailpoint/longtail_waterlevel.xlsx` Sheet2's "NAVD88 to IGLD85" table) since a water
++0.44ft offset plus the case-study 3.281 ft/m scale — see
+`case-studies/long-tail-point/overtopping/inputs/longtail_waterlevel.xlsx` Sheet2's "NAVD88 to IGLD85" table) since a water
 level, unlike the primary metric's portion/percentage/return_period units, has physical
 elevation units to convert. Written to its own grid csv + plot png
 (`..._equivalent_elevation_grid.csv` / `_equivalent_elevation_plot.png`), with plot

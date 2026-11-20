@@ -267,7 +267,7 @@ function currentFilters(suffix) {
 // Entries allowed by the top-of-page initial filter -- gated on which criterion radio
 // is active (rule 1: Elevation OR Baseline ARI, never both at once). swl rows only
 // (avg rows have no baseline ARI/grid concept, and are always shown regardless of
-// this filter; see CONTEXT.md's "Save point"/"ARI" entries). A blank min or max field
+// this filter; see GLOSSARY.md's "Save point"/"ARI" entries). A blank min or max field
 // means "no constraint on that side". If max < min for the active criterion, the
 // filter is treated as unconstrained (see initialFilterErrorMessage) rather than
 // excluding every row.
@@ -497,7 +497,7 @@ function findEntry(filters, metric) {
   const pool = initialFilterAllowedEntries();
   if (metric === "threshold_ari_elevation") {
     // Rule 8: threshold-ARI-elevation is shared per save point regardless of
-    // elevation/runup (see CONTEXT.md's "Threshold-ARI elevation" entry) -- match by
+    // elevation/runup (see GLOSSARY.md's "Threshold-ARI elevation" entry) -- match by
     // save_point_id alone, since the Elevation/Runup pickers are hidden for this
     // metric and their stale values must not exclude an otherwise-valid save point.
     return pool.find(
@@ -621,7 +621,7 @@ function updateVisibilityForAnalysisType() {
 
 // Rule 8: the Elevation/Runup pickers are irrelevant for the "Threshold ARI
 // Elevation" metric (that output is shared per save point, not per elevation/runup
-// combo -- see CONTEXT.md's "Threshold-ARI elevation" entry), so hide them while that
+// combo -- see GLOSSARY.md's "Threshold-ARI elevation" entry), so hide them while that
 // metric is selected and restore them for any other metric. Also gated on
 // analysis_type "avg" (which already always hides these -- see
 // updateVisibilityForAnalysisType), so both conditions are checked together here.
