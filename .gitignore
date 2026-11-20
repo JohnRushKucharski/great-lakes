@@ -33,9 +33,7 @@ longtailpoint.zip
 longtailpoint/longtailpoint_memo.docx
 longtailpoint/longtailpoint_memo_261030.docx
 longtailpoint/MEMORANDUM.docx
-src/great_lakes/build_memo_docx.py
 src/great_lakes/longtailpoint_report.py
-tests/test_build_memo_docx.py
 tests/test_build_habitat_report.py
 tests/test_longtailpoint_report.py
 

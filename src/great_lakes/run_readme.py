@@ -3,7 +3,7 @@
 no per-row succeeded/failed summary -- just a flat list of input files and outputs
 written).
 
-See CONTEXT.md's "Run readme" entry: documents the timestamp, inputs used, a
+See GLOSSARY.md's "Run readme" entry: documents the timestamp, inputs used, a
 job-specific results/naming-scheme blurb, every file written this run, and any
 pre-existing file under output_directory this run doesn't recognize as its own
 (flagged as not created by this run).

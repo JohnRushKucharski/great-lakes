@@ -61,7 +61,7 @@ CONFIG_ROWS = [
     ("output_directory", "output",
      "REQUIRED. Base directory for generated .toml files and hydropattern run outputs."),
     ("subdirectory_structure", "flat",
-     'One of "flat", "resource", or "row". See CONTEXT.md for the "Subdirectory '
+     'One of "flat", "resource", or "row". See GLOSSARY.md for the "Subdirectory '
      'structure" definition.'),
     ("first_day_of_water_year", 1, "Day-of-year (1-365) the water year starts on."),
     ("metric_mode", "portion", 'One of "portion", "percentage", or "return_period".'),

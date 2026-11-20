@@ -1838,7 +1838,7 @@ def test_run_batch_writes_naming_readme_for_longtailpoint_filename_style(tmp_pat
 
 def test_run_batch_no_naming_readme_for_qualified_name_filename_style(tmp_path):
     """qualified_name (the default) has no dedicated longtailpoint naming write-up, but
-    the run readme itself is still always written (see CONTEXT.md's "Run readme"
+    the run readme itself is still always written (see GLOSSARY.md's "Run readme"
     entry) -- it falls back to a generic resource_name/component_name description."""
     resources_path = make_workbook(
         tmp_path,

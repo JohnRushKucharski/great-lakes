@@ -115,7 +115,7 @@ def test_read_avg_scenario_means_uses_full_record_not_a_subset(tmp_path):
 
 # ---- RUNUP_FT_BY_COMPONENT / output_file_stem ------------------------------------------
 
-# Per CONTEXT.md's "Runup allowance" definition: base=0ft, run2=2ft, run25=2.5ft, run3=3ft.
+# Per GLOSSARY.md's "Runup allowance" definition: base=0ft, run2=2ft, run25=2.5ft, run3=3ft.
 
 
 def test_runup_ft_by_component_known_values():

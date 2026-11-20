@@ -5,7 +5,7 @@ of the resources sheet, generates one hydropattern .toml file (one component per
 and runs it in-process against the corresponding lake's average lake-level timeseries
 CSV (see clean_lake_levels_all_scenarios.py for how those CSVs are produced).
 
-See CONTEXT.md for the "resource"/"resources sheet"/"config sheet"/"subdirectory
+See GLOSSARY.md for the "resource"/"resources sheet"/"config sheet"/"subdirectory
 structure" vocabulary used throughout this file.
 """
 
@@ -631,7 +631,7 @@ def _naming_scheme_text() -> str:
     return header + (
         "Output filename pattern: <resource_name>_<component_name>...\n\n"
         "  resource_name/component_name - from this row's resources-sheet columns "
-        "(see CONTEXT.md's \"Resource\"/\"Resources sheet\" entries).\n"
+        "(see GLOSSARY.md's \"Resource\"/\"Resources sheet\" entries).\n"
     )
 
 
@@ -654,7 +654,7 @@ def run_batch(
     with status="running" when a row starts, and again with the final status
     ("succeeded"/"failed") when it finishes.
 
-    Always writes a run readme (see CONTEXT.md's "Run readme" entry) to
+    Always writes a run readme (see GLOSSARY.md's "Run readme" entry) to
     config.output_directory, even if every row fails or the sheet has zero rows --
     it documents this run's inputs, failures, and timestamp regardless of outcome.
 

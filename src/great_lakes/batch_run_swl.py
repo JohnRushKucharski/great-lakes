@@ -252,7 +252,7 @@ class ResourceSpec:
     # itself (cell = "baseline_magnitude", case-insensitive) or an explicit numeric
     # override (cell = a number), which replaces magnitude_value for this analysis
     # only. The primary scenario-grid metric always uses magnitude_value, unaffected
-    # by this field. See CONTEXT.md's "Equivalent elevation" definition.
+    # by this field. See GLOSSARY.md's "Equivalent elevation" definition.
     equivalent_elevation: float | None = None
 
     @property
@@ -534,7 +534,7 @@ def resolve_save_point_ari_elevation_output_paths(
     resource: ResourceSpec, config: BatchConfig
 ) -> tuple[Path, Path]:
     """Compute the (grid csv, plot png) paths for one save point's threshold-ARI
-    elevation output (see CONTEXT.md's "Threshold-ARI elevation" entry).
+    elevation output (see GLOSSARY.md's "Threshold-ARI elevation" entry).
 
     Unlike resolve_output_folder/resolve_output_stem, this output is keyed by
     save_point_id + resource.threshold alone (not resource_name/component_name/
@@ -763,7 +763,7 @@ def compute_scenario_metrics(resource: ResourceSpec, swl_path: Path, metric_mode
 
 # The known/filled/extrapolated scenario-grid suffix for the (0% precip delta, 0C temp
 # delta) baseline scenario -- always present in every lake's swl workbook (see
-# CONTEXT.md's "Known scenario" entry).
+# GLOSSARY.md's "Known scenario" entry).
 _BASELINE_SCENARIO_SUFFIX = "_0_0"
 
 
@@ -864,7 +864,7 @@ def compute_threshold_ari_elevation_metrics(resource: ResourceSpec, swl_path: Pa
     bare `_<precip>_<temp>` scenario-grid suffix (see parse_scenario_sheet_name) --
     sheets that don't match that naming convention are skipped.
 
-    See CONTEXT.md's "Threshold-ARI elevation" entry: this powers a fourth grid/plot
+    See GLOSSARY.md's "Threshold-ARI elevation" entry: this powers a fourth grid/plot
     written once per unique save point (not per resource row) -- callers are
     responsible for that per-save-point dedup (see build_save_point_ari_elevation_
     output/_SwlRowProcessor), since this function itself is a pure per-resource-row
@@ -1067,7 +1067,7 @@ def build_save_point_ari_elevation_output(
     plot_fn: Callable[..., None] = plot_response_surface,
 ) -> tuple[Path, Path]:
     """Compute one save point's threshold-ARI elevation grid + write its grid csv +
-    plot png (see CONTEXT.md's "Threshold-ARI elevation" entry).
+    plot png (see GLOSSARY.md's "Threshold-ARI elevation" entry).
 
     Depends only on resource.save_point_id + resource.threshold (not
     magnitude/component/runup) -- callers (see _SwlRowProcessor) are responsible for
@@ -1197,7 +1197,7 @@ def _naming_scheme_text(config: BatchConfig) -> str:
             "  resource_name/component_name - from this row's resources-sheet "
             "columns.\n"
             "  save_point_id - appended only when the row selected its save point "
-            "by ID rather than lat/lon (see CONTEXT.md's \"Save point\" entry).\n"
+            "by ID rather than lat/lon (see GLOSSARY.md's \"Save point\" entry).\n"
         )
 
 
@@ -1224,7 +1224,7 @@ def run_batch(
     progress is injectable for the same reason (and to let callers redirect/silence
     the real-time per-row status output).
 
-    Always writes a run readme (see CONTEXT.md's "Run readme" entry) to
+    Always writes a run readme (see GLOSSARY.md's "Run readme" entry) to
     config.output_directory, even if every row fails or the sheet has zero rows.
 
     Thin wrapper over batch_runner.run_batch's shared loop; see _SwlRowProcessor for

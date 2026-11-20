@@ -128,7 +128,7 @@ Inputs: the workbook from step 3, plus the matching clean/filled/extrapolated da
 directory from step 1/2.
 Outputs, written to the workbook's `output_directory`: per-row `.toml` + grid CSV +
 plot PNG (+ summary/output `.xlsx` for avg), and a `README.txt` **run readme** — see
-CONTEXT.md's "Run readme" entry — documenting exactly what ran, with what inputs, what
+GLOSSARY.md's "Run readme" entry — documenting exactly what ran, with what inputs, what
 succeeded/failed, every file the run wrote, and any pre-existing files in that
 directory tree the run doesn't recognize as its own (a stale-output flag). Read the run
 readme first when checking whether an output tree reflects a specific run.
@@ -436,7 +436,7 @@ That is exactly the +0.44 ft relationship the code uses. The conversion tests in
 **Judgment**
 
 - **Dashboard reads the same grid CSVs that the batch runs produced:** yes, based on direct manifest-to-CSV spot check.
-- **Dashboard labels/units:** consistent with `CONTEXT.md` and the plot-generation code.
+- **Dashboard labels/units:** consistent with `GLOSSARY.md` and the plot-generation code.
 
 ---
 
@@ -609,7 +609,7 @@ behavior-preserving refactor (verified via the full existing test suite plus new
 Both `batch_run_avg.py` and `batch_run_swl.py` now call the shared
 `batch_runner.write_run_readme(...)` at the end of every `run_batch()` call, writing
 `README.txt` to `output_directory` unconditionally -- even if every row fails or the
-resources sheet has zero rows. See CONTEXT.md's "Run readme" glossary entry for the
+resources sheet has zero rows. See GLOSSARY.md's "Run readme" glossary entry for the
 canonical definition. Contents: a timestamp, the inputs used (resources workbook path,
 data directory), the succeeded/failed summary (reusing `format_summary`), a
 naming-scheme explanation for the run's output-filename convention, every file this run

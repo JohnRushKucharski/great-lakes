@@ -95,7 +95,7 @@ def ft_NAVD88_to_m_igld85(value_ft_NAVD88: float) -> float:
 
 
 # longtailpoint-specific wave-runup allowance, in feet, per component_name code (see
-# CONTEXT.md's "Runup allowance" definition). Used by output_file_stem below to render
+# GLOSSARY.md's "Runup allowance" definition). Used by output_file_stem below to render
 # a human-readable output filename instead of the raw code.
 RUNUP_FT_BY_COMPONENT: dict[str, float] = {
     "base": 0.0,
@@ -250,7 +250,7 @@ def build_plot_title(
 
 def build_threshold_ari_title(threshold_ari: float, save_point_id: object) -> str:
     """Build a plot title for one save point's threshold-ARI elevation plot (see
-    CONTEXT.md's "Threshold-ARI elevation" entry).
+    GLOSSARY.md's "Threshold-ARI elevation" entry).
 
     3-line title:
 

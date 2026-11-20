@@ -54,7 +54,7 @@ _EQUIVALENT_ELEVATION_KINDS = frozenset(
 # (not None) rather than a filename suffix under entry.output_dir/file_stem -- their
 # paths are already fully resolved on the entry itself (see build_entries), since
 # they're shared across every entry for the same save point (not per-entry-stem like
-# every other kind here). See CONTEXT.md's "Threshold-ARI elevation" entry.
+# every other kind here). See GLOSSARY.md's "Threshold-ARI elevation" entry.
 _THRESHOLD_ARI_KINDS = ("threshold_ari_elevation_grid", "threshold_ari_elevation_plot")
 _GRID_KINDS = frozenset(
     {"grid", "equivalent_elevation_grid", "elevation_delta_grid", "threshold_ari_elevation_grid"}
@@ -74,7 +74,7 @@ def compute_magnitude_ft(resource: "swl.ResourceSpec") -> float:
 
     Used for dashboard filtering/display, since the raw meters-IGLD85 value (and the
     filename numbers derived from it) aren't a human-friendly/authoritative NAVD88
-    elevation on their own -- see CONTEXT.md's "Equivalent elevation" definition.
+    elevation on their own -- see GLOSSARY.md's "Equivalent elevation" definition.
     """
     return common_swl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
 
@@ -87,7 +87,7 @@ def compute_equivalent_elevation_basis(row: dict[str, Any], resource: "swl.Resou
     (case-insensitive) equal to "baseline_magnitude" -> "baseline_magnitude". Anything
     else (a numeric override) -> an explicit override label in ft, NAVD88 (e.g.
     "586.44 ft override"), converted from resource.equivalent_elevation (meters,
-    IGLD85) -- see CONTEXT.md's "Equivalent-elevation basis" definition.
+    IGLD85) -- see GLOSSARY.md's "Equivalent-elevation basis" definition.
     """
     if resource.equivalent_elevation is None:
         return None
@@ -106,7 +106,7 @@ class ManifestEntry:
     dashboard's 3 identifying filters -- see merge_and_validate, which enforces they
     always resolve to exactly one entry. equivalent_elevation_basis is retained as
     metadata (surfaced in the manifest) but is no longer a dashboard filter -- see
-    CONTEXT.md's "Equivalent-elevation basis" entry.
+    GLOSSARY.md's "Equivalent-elevation basis" entry.
     """
 
     workbook_path: Path
@@ -133,11 +133,11 @@ class ManifestEntry:
     # The numeric runup allowance itself (common_swl.RUNUP_FT_BY_COMPONENT's value for
     # component_name), 0.0 for avg entries. The dashboard's "Runup (ft)" picker filters
     # on this numeric value directly (not the raw component_name code) -- see
-    # CONTEXT.md's "Runup allowance" entry.
+    # GLOSSARY.md's "Runup allowance" entry.
     runup_ft: float = 0.0
     # resource.threshold (the target ARI, in years) -- None for avg entries and for
     # swl rows with a blank threshold cell (no threshold_ari_elevation output). See
-    # CONTEXT.md's "Threshold-ARI elevation" entry.
+    # GLOSSARY.md's "Threshold-ARI elevation" entry.
     threshold: float | None = None
     # The save-point threshold-ARI elevation output's grid csv/plot png paths (see
     # batch_run_swl.resolve_save_point_ari_elevation_output_paths) -- shared across
@@ -283,7 +283,7 @@ def merge_and_validate(entries_lists: list[list[ManifestEntry]]) -> list[Manifes
 
     Raises ValueError (listing every offending group) if any combination is shared by
     more than one entry -- the dashboard's filters must always disambiguate to a
-    single row, per CONTEXT.md.
+    single row, per GLOSSARY.md.
     """
     all_entries = [entry for entries in entries_lists for entry in entries]
     groups: dict[tuple[str, Any, float, str], list[ManifestEntry]] = {}
@@ -662,7 +662,7 @@ function currentFilters(suffix) {
 // Entries allowed by the top-of-page initial filter -- gated on which criterion radio
 // is active (rule 1: Elevation OR Baseline ARI, never both at once). swl rows only
 // (avg rows have no baseline ARI/grid concept, and are always shown regardless of
-// this filter; see CONTEXT.md's "Save point"/"ARI" entries). A blank min or max field
+// this filter; see GLOSSARY.md's "Save point"/"ARI" entries). A blank min or max field
 // means "no constraint on that side". If max < min for the active criterion, the
 // filter is treated as unconstrained (see initialFilterErrorMessage) rather than
 // excluding every row.
@@ -892,7 +892,7 @@ function findEntry(filters, metric) {
   const pool = initialFilterAllowedEntries();
   if (metric === "threshold_ari_elevation") {
     // Rule 8: threshold-ARI-elevation is shared per save point regardless of
-    // elevation/runup (see CONTEXT.md's "Threshold-ARI elevation" entry) -- match by
+    // elevation/runup (see GLOSSARY.md's "Threshold-ARI elevation" entry) -- match by
     // save_point_id alone, since the Elevation/Runup pickers are hidden for this
     // metric and their stale values must not exclude an otherwise-valid save point.
     return pool.find(
@@ -1016,7 +1016,7 @@ function updateVisibilityForAnalysisType() {
 
 // Rule 8: the Elevation/Runup pickers are irrelevant for the "Threshold ARI
 // Elevation" metric (that output is shared per save point, not per elevation/runup
-// combo -- see CONTEXT.md's "Threshold-ARI elevation" entry), so hide them while that
+// combo -- see GLOSSARY.md's "Threshold-ARI elevation" entry), so hide them while that
 // metric is selected and restore them for any other metric. Also gated on
 // analysis_type "avg" (which already always hides these -- see
 // updateVisibilityForAnalysisType), so both conditions are checked together here.
@@ -1142,7 +1142,7 @@ def build_dashboard(
     """Build the full dashboard (manifest.js + dashboard.html) into output_dir.
 
     swl_workbook_paths / avg_workbook_paths are explicit lists of already-run
-    batch_run_swl.py / batch_run_avg.py workbooks to include (see CONTEXT.md: folder
+    batch_run_swl.py / batch_run_avg.py workbooks to include (see GLOSSARY.md: folder
     inclusion is a deliberate per-invocation choice, not auto-scanned, since one-off
     elevation-override variants come and go).
     """

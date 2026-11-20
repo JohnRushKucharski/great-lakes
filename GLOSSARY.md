@@ -16,6 +16,43 @@ name "total water level (twl)"; USACE sources often call it "still water level" 
 _Avoid_: Total water level, twl (old name), still water level (except when mapping
 source/USACE usage to this term), average water level (that's **avg** data).
 
+**Long Tail Point (LTP)**:
+The Green Bay, WI site of two case studies in this repo: a beach-nourishment overtopping
+analysis and a Dead Horse Bay habitat (restoration) analysis. Write "Long Tail Point" in
+prose (first use), "LTP" thereafter.
+_Avoid_: longtail, longtailpoint (in docs, folders, and identifiers).
+
+**Workflow**:
+A folder with `README.md`, `inputs/`, `scripts/`, `methods/`, and `outputs/` that turns
+its inputs into outputs when its scripts are run. The unit a user runs.
+_Avoid_: Pipeline, tool, batch tool.
+
+**Data product**:
+A cleaned or completed dataset, tracked in `data/`, that other workflows consume (avg,
+swl clean, swl complete).
+_Avoid_: Output (alone; ambiguous with any workflow output).
+
+**Analysis**:
+A workflow that reads data products and produces results. It does not produce a data
+product.
+
+**Case study**:
+A project-specific set of workflows and deliverables (Long Tail Point overtopping, Long
+Tail Point habitat). Case studies never share memos, drafts, or scripts.
+
+**Deliverable**:
+A final document or package given to a person (a memo, the dashboard zip). The hand-edited
+`.docx` is the master memo text; scripts never overwrite it.
+_Avoid_: Report (alone), output.
+
+**Gate**:
+A pass/fail check in a workflow's `scripts/`. A failing gate stops the workflow.
+_Avoid_: Validation (alone; fit-quality checks without a verdict are method notes).
+
+**Method note**:
+A document in `methods/` explaining how a result was derived or how well it fits. Not a
+pass/fail check.
+
 ## Language
 
 **Resource**:
@@ -188,6 +225,34 @@ single scalar per lake+scenario, independent of save point or ARI. `michigan` an
 column, since Michigan-Huron is one hydraulically-connected lake with one water level.
 _Avoid_: Mean lake level (AVG is the established short form used in row-shift
 extrapolation's math; keep both docs and code consistent).
+
+**Floor**:
+The bed elevation (ft, IGLD85) at which a planted zone or woody debris structure sits in
+the Dead Horse Bay habitat analysis. Depth is water level minus floor.
+_Avoid_: Base, bottom, elevation (alone; ambiguous with water-level elevation).
+
+**Reliability class**:
+How often a floor supports a habitat across the years of a scenario: reliable (>= 75% of
+years), marginal (50-75%), unreliable (< 50%).
+_Avoid_: Success rate, suitability class.
+
+**Robust set**:
+The six scenarios used to judge robustness: 1.5 C/0, 1.5 C/5, 3 C/0, 3 C/5, 3 C/10,
+3 C/15 (temperature/precipitation). 5 C and 7 C are stress-test context only.
+_Avoid_: Core scenarios, main scenarios.
+
+**Robustness tier**:
+The widest scenario group in which a floor is reliable in every scenario: brittle
+(baseline only) < minimal (both 1.5 C) < robust (all 1.5 C and 3 C) < very robust
+(also some 5 C/7 C). Name the tier whenever "robust" is used as an adjective.
+_Avoid_: Lowest (old name for minimal), unqualified "robust".
+
+**Dry / wet scenario**:
+Within a warming level (+X C), "dry" is the scenario with +0% precipitation and "wet" is
+the one with the largest precipitation increase (e.g. 3 C dry = 3C/0, 3 C wet = 3C/15).
+Scenario codes read warming (C) / precipitation change (%). Prose uses dry/wet; tables and
+figures use the codes.
+_Avoid_: Using dry/wet without the warming level.
 
 ## Example dialogue
 

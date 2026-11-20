@@ -6,14 +6,14 @@ spreadsheet — plus standalone tools for storm water level (SWL) frequency-curv
 analysis, SWL scenario fill-in/extrapolation, known-scenario directionality analysis,
 and a results dashboard.
 
-See [`CONTEXT.md`](./CONTEXT.md) for the domain vocabulary (**resource**, **resources
+See [`GLOSSARY.md`](./GLOSSARY.md) for the domain vocabulary (**resource**, **resources
 sheet**, **config sheet**, **subdirectory structure**) used throughout this document.
 
 ## Directory layout
 
 ```
 ├── README.md                  <- this file
-├── CONTEXT.md                 <- domain glossary
+├── GLOSSARY.md                <- domain glossary
 ├── docs/
 │   ├── data_pipelines.md
 │   └── adr/
@@ -208,7 +208,7 @@ duluth_harbor_high_water_plot.png        <- only if plot_enabled=true
 
 Where these land depends on `subdirectory_structure` (see the config sheet table above).
 
-Every run also writes a `README.txt` in `output_directory` (see CONTEXT.md's "Run
+Every run also writes a `README.txt` in `output_directory` (see GLOSSARY.md's "Run
 readme" entry) — a reproducibility record covering: inputs used, a timestamp, the
 succeeded/failed summary, the naming scheme, every file this run wrote, and any
 pre-existing files in that directory tree the run didn't recognize as its own (useful
@@ -379,7 +379,7 @@ No `.toml`, no summary/output Excel workbook, and no raw per-scenario CSVs are w
 this tool's output is deliberately minimal since there's no hydropattern run to summarize.
 
 Every run also writes a `README.txt` in `output_directory`, same as `batch_run_avg.py`
-(see CONTEXT.md's "Run readme" entry) — inputs, timestamp, succeeded/failed summary,
+(see GLOSSARY.md's "Run readme" entry) — inputs, timestamp, succeeded/failed summary,
 the naming scheme for the row's `filename_style`, files this run wrote, and any
 pre-existing files it didn't recognize as its own.
 

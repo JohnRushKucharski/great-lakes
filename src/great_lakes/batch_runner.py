@@ -8,7 +8,7 @@ This module holds every piece of that shape once; each script supplies only what
 job-specific via the RowProcessor protocol (Strategy pattern: run_batch is the fixed
 algorithm skeleton, RowProcessor is the swapped-in per-job behavior).
 
-See CONTEXT.md for the "resource"/"resources sheet"/"config sheet" vocabulary shared
+See GLOSSARY.md for the "resource"/"resources sheet"/"config sheet" vocabulary shared
 by both batch scripts.
 """
 
@@ -275,7 +275,7 @@ def write_run_readme(
     """Write output_directory/README.txt: a reproducibility record of one batch run.
 
     Thin wrapper around great_lakes.run_readme.write_readme -- the generic core
-    shared with great_lakes.analysis's scripts (see CONTEXT.md's "Run readme"
+    shared with great_lakes.analysis's scripts (see GLOSSARY.md's "Run readme"
     entry). Supplies this job's inputs (resources workbook + data directory), its
     results text (format_summary(summary)), and every succeeded row's output_paths
     as the written-files list.

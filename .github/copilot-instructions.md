@@ -4,8 +4,9 @@ Case-study repo (USACE) built on the `hydropattern` package. Supports the Great 
 Framework Study (incl. longtailpoint) and the Great Lakes Coastal Resiliency Study.
 Owner is the sole primary user; colleagues at USACE also read the user docs.
 
-Read first: `CONTEXT.md` (domain glossary, use its terms exactly), `README.md`,
-`docs/data_pipelines.md`, `docs/adr/` (decisions already made; don't relitigate).
+Read first: `GLOSSARY.md` (domain glossary, use its terms exactly), `README.md`,
+`docs/plans/reorg_plan.md` (active reorganization plan), `docs/data_pipelines.md`,
+`docs/adr/` (decisions already made; don't relitigate).
 
 ## Data concepts
 
@@ -16,7 +17,7 @@ Read first: `CONTEXT.md` (domain glossary, use its terms exactly), `README.md`,
   steps are similar. It excludes near-shore processes (run-up, overtopping).
   USACE often calls this "still water level" (also "SWL") -- confusing because "still"
   can read as "average". Use "storm water level" / `swl` everywhere; mention the USACE
-  term only once where a reader needs the mapping (see `CONTEXT.md`). Never conflate
+  term only once where a reader needs the mapping (see `GLOSSARY.md`). Never conflate
   avg and swl.
 - Docs must state plainly what each dataset does and does not include.
 
@@ -54,7 +55,7 @@ Sandbox note: if `uv run` fails ("Failed to canonicalize script path"), use
 - **Ask before every commit and every push.**
 - Branch for big plans, new features, new workflows. Small changes and bug fixes may go
   on `main`.
-- Update affected docs (`README.md`, `CONTEXT.md`, `docs/`) in the same change.
+- Update affected docs (`README.md`, `GLOSSARY.md`, `docs/`) in the same change.
 
 ## Inputs, outputs, scripts
 
@@ -76,4 +77,6 @@ Sandbox note: if `uv run` fails ("Failed to canonicalize script path"), use
 
 ## Open items
 
-- None.
+- **Reorganization in progress.** Implement `docs/plans/reorg_plan.md` phase by phase (it
+  overrides the old paths named in this file; this file is rewritten in phase 6). Don't
+  relitigate decisions there; ask the owner when something is unclear.

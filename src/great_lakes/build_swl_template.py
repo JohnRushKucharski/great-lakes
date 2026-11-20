@@ -79,7 +79,7 @@ CONFIG_ROWS = [
     ("output_directory", "output",
      "REQUIRED. Base directory for generated grid csv + plot png output files."),
     ("subdirectory_structure", "flat",
-     'One of "flat", "resource", or "row". See CONTEXT.md for the "Subdirectory '
+     'One of "flat", "resource", or "row". See GLOSSARY.md for the "Subdirectory '
      'structure" definition.'),
     ("metric_mode", "return_period", 'One of "portion", "percentage", or "return_period".'),
     ("overwrite", False, "Allow overwriting a resource's grid csv/plot png if they already "
@@ -110,7 +110,7 @@ _THRESHOLD_HEADER_COMMENT = Comment(
 )
 
 # equivalent_elevation column note: per-row toggle for the second "equivalent
-# elevation" grid csv + plot png (see CONTEXT.md's "Equivalent elevation" definition).
+# elevation" grid csv + plot png (see GLOSSARY.md's "Equivalent elevation" definition).
 # Blank skips it. "baseline_magnitude" (case-insensitive) runs it using this row's own
 # magnitude_value as the baseline-ARI lookup value. A number overrides magnitude_value
 # for this analysis only -- the primary grid/plot always evaluates magnitude_value
