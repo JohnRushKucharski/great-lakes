@@ -15,6 +15,8 @@ data/analysis/
 # bulk/intermediate outputs of the data products (regenerate via each product's scripts);
 # the docs-embedded figures and data/ products are tracked instead
 data-products/*/outputs/
+# analysis workflow outputs (regenerate via each workflow's scripts)
+analyses/*/outputs/
 
 # longtailpoint: track input workbooks + dashboard.html/manifest.js viewer files
 # (small, needed to browse results without re-running anything). Bulky generated

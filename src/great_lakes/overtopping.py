@@ -20,7 +20,7 @@ from matplotlib.colors import TwoSlopeNorm
 from matplotlib.patches import Rectangle
 from matplotlib.ticker import FormatStrFormatter
 
-from great_lakes import batch_run_swl, units
+from great_lakes import units
 from great_lakes.avg_stats import (
     WINDOW_CATEGORIES,
     annual_maxima,
@@ -29,6 +29,7 @@ from great_lakes.avg_stats import (
     poisson_window_category_shares,
     rolling_window_category_shares,
 )
+from great_lakes.batch import swl as swl_batch
 from great_lakes.swl import complete as swl_complete
 from great_lakes.swl.sheets import NON_ARI_COLUMNS, parse_scenario_sheet_name
 from great_lakes.swl_method_quality import regression_prediction
@@ -127,7 +128,7 @@ def _scenario_level_ft(
 ) -> float:
     row = _save_point_row(frame, save_point_id)
     columns = _ari_columns(frame)
-    value_m = batch_run_swl.interpolate_level(
+    value_m = swl_batch.interpolate_level(
         [column[0] for column in columns],
         [float(row[column[1]]) for column in columns],
         ari,

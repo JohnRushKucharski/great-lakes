@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from great_lakes import batch_run_swl as swl_batch_run
 from great_lakes import units
+from great_lakes.batch import swl as swl_batch_run
 from great_lakes.swl import contours, naming
 
 # ---- _is_blank ----------------------------------------------------------------------

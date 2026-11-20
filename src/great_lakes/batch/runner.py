@@ -1,6 +1,6 @@
 """Shared batch-run infrastructure for great_lakes's per-row Excel-driven batch scripts.
 
-batch_run_avg.py and batch_run_swl.py both: read a resources-sheet row, validate/parse
+batch/avg.py and batch/swl.py both: read a resources-sheet row, validate/parse
 it into a resource spec, resolve an output target, skip if that target repeats within
 this run, skip/fail if the target already has output on disk and overwrite=False, run
 job-specific work, and record a RowResult per row -- accumulating into a BatchSummary.
@@ -157,7 +157,7 @@ def _default_progress(row_index: int, total_rows: int, resource_name: str | None
 class RowProcessor(Protocol[ResourceT, ConfigT]):
     """Job-specific behavior run_batch delegates to (Strategy pattern).
 
-    One implementation per batch script (see batch_run_avg.py/batch_run_swl.py's
+    One implementation per batch module (see batch/avg.py and batch/swl.py's
     private _AvgRowProcessor/_SwlRowProcessor). run_batch itself only knows this
     protocol -- it has no avg/swl-specific knowledge.
     """
@@ -275,7 +275,7 @@ def write_run_readme(
     """Write output_directory/README.txt: a reproducibility record of one batch run.
 
     Thin wrapper around great_lakes.batch.run_readme.write_readme -- the generic core
-    shared with great_lakes.analysis's scripts (see GLOSSARY.md's "Run readme"
+    shared with the analyses/ scripts (see GLOSSARY.md's "Run readme"
     entry). Supplies this job's inputs (resources workbook + data directory), its
     results text (format_summary(summary)), and every succeeded row's output_paths
     as the written-files list.

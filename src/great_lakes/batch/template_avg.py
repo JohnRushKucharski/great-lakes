@@ -1,11 +1,8 @@
-"""Generate templates/template_avg.xlsx: the blank resources+config
-workbook consumed by batch_run_avg.py.
+"""Build the blank resources+config workbook consumed by great_lakes.batch.avg.
 
-Re-run this script any time the recognized resources-sheet columns or config-sheet
-options in batch_run_avg.py change, so the shipped template stays in sync.
-
-Usage:
-    uv run python -m great_lakes.build_avg_template
+Run `analyses/assess-avg-resources/scripts/build_template.py` any time the recognized
+resources-sheet columns or config-sheet options in batch/avg.py change, so the shipped
+template stays in sync.
 """
 
 from pathlib import Path
@@ -15,10 +12,7 @@ from openpyxl.comments import Comment
 from openpyxl.styles import Font
 from openpyxl.worksheet.worksheet import Worksheet
 
-WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
-TEMPLATE_PATH = WORKSPACE_ROOT / "templates" / "template_avg.xlsx"
-
-# Column order matches the fixed characteristic emission order in batch_run_avg.py's
+# Column order matches the fixed characteristic emission order in batch/avg.py's
 # build_toml_text (timing, magnitude, rate_of_change, duration), required columns first.
 RESOURCES_HEADER = [
     "resource_name",
@@ -55,7 +49,7 @@ EXAMPLE_RESOURCE_ROW = {
 }
 
 # (option, default value, help comment) -- mirrors BatchConfig's own field defaults in
-# batch_run_avg.py. output_directory has no sensible default (required); its value here
+# batch/avg.py. output_directory has no sensible default (required); its value here
 # is a placeholder the user must replace.
 CONFIG_ROWS = [
     ("output_directory", "output",
@@ -79,7 +73,7 @@ CONFIG_ROWS = [
 _HEADER_FONT = Font(bold=True)
 
 
-def build_template(path: Path = TEMPLATE_PATH) -> Path:
+def build_template(path: Path) -> Path:
     """Write the resources+config template workbook to path (overwriting if present)."""
     wb = Workbook()
 
@@ -104,7 +98,3 @@ def build_template(path: Path = TEMPLATE_PATH) -> Path:
     wb.save(path)
     return path
 
-
-if __name__ == "__main__":
-    out_path = build_template()
-    print(f"Wrote template to: {out_path}")

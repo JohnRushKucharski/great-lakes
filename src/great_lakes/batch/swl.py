@@ -5,7 +5,7 @@ resources sheet, evaluates a magnitude-only characteristic against a water-level
 (Average Return Interval) frequency curve -- one curve per save point, per scenario sheet,
 in the corresponding lake's `<lake>_swl.xlsx` data file (see data/swl/complete/).
 
-Unlike batch_run_avg.py, this script does NOT generate a hydropattern .toml or invoke
+Unlike great_lakes.batch.avg, this script does NOT generate a hydropattern .toml or invoke
 hydropattern.cli: there is no timeseries here (each scenario sheet holds one static
 water-level-vs-ARI curve per save point), so hydropattern's Component/Characteristic
 evaluation engine -- which operates on per-timestep pandas series -- does not apply. Instead,
@@ -44,6 +44,7 @@ from great_lakes.batch.runner import (  # noqa: F401 -- re-exported for backward
     _to_bool,
     format_summary,
 )
+from great_lakes.paths import REPO_ROOT
 from great_lakes.swl import contours, naming, sheets
 
 LAKE_SWL_FILENAMES = lakes.LAKE_SWL_FILENAMES
@@ -1212,6 +1213,7 @@ def run_batch(
     progress: Callable[[int, int, str | None, str | None, str], None] = _default_progress,
     build_save_point_ari_output: Callable[[ResourceSpec, Path, BatchConfig], tuple[Path, Path]]
         = build_save_point_ari_elevation_output,
+    workspace_root: Path = REPO_ROOT,
 ) -> BatchSummary:
     """Generate one scenario-grid csv + plot png per hydropattern resources-sheet row.
 
@@ -1238,14 +1240,12 @@ def run_batch(
     )
     batch_runner.write_run_readme(
         resources_path, data_dir, Path(config.output_directory), summary,
-        naming_scheme_text=_naming_scheme_text(config), workspace_root=WORKSPACE_ROOT,
+        naming_scheme_text=_naming_scheme_text(config), workspace_root=workspace_root,
     )
     return summary
 
 
 # ---- results workbook (adds an "output location" column) --------------------------
-
-WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _output_location_cell(output_paths: Sequence[Path], workspace_root: Path) -> str:
@@ -1267,7 +1267,7 @@ def write_results_workbook(
     resources_path: Path,
     summary: BatchSummary,
     out_path: Path,
-    workspace_root: Path = WORKSPACE_ROOT,
+    workspace_root: Path = REPO_ROOT,
 ) -> Path:
     """Write a new workbook (copy of resources_path's 'resources' and 'config' sheets)
     with an extra 'output location' column on the resources sheet: one row per
@@ -1295,36 +1295,3 @@ def write_results_workbook(
         resources_df.to_excel(writer, sheet_name="resources", index=False)
         config_df.to_excel(writer, sheet_name="config", index=False)
     return out_path
-
-
-# ---- CLI entry point --------------------------------------------------------------
-
-def main(argv: list[str] | None = None) -> int:
-    """Command-line entry point: read a resources workbook, run every row, print a
-    summary. Returns a process exit code (0 if every row succeeded, 1 otherwise).
-
-    Usage:
-        uv run python -m great_lakes.batch_run_swl <resources.xlsx> <data_dir>
-    """
-    import argparse
-
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "resources_path", type=Path,
-        help="Path to the resources+config .xlsx workbook (see templates/template_swl.xlsx).",
-    )
-    parser.add_argument(
-        "data_dir", type=Path,
-        help="Directory containing the lake swl xlsx files (see LAKE_SWL_FILENAMES).",
-    )
-    args = parser.parse_args(argv)
-
-    config = read_config_sheet(args.resources_path)
-    summary = run_batch(args.resources_path, args.data_dir, config)
-    print(format_summary(summary))
-    return 0 if not summary.failed else 1
-
-
-if __name__ == "__main__":
-    import sys
-    sys.exit(main())

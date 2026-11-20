@@ -2,9 +2,9 @@
 
 Tooling (dependent on `hydropattern` via a pinned git dependency) for batch-generating
 and running hydropattern `.toml` configs against Great Lakes lake-level timeseries, one
-`.toml`/run per row of a spreadsheet (`batch_run_avg.py`) — plus a second, standalone
-batch tool
-(`batch_run_swl.py`) that evaluates storm water level (SWL) frequency curves instead.
+`.toml`/run per row of a spreadsheet (`analyses/assess-avg-resources`) — plus a second,
+standalone workflow (`analyses/assess-swl-resources`) that evaluates storm water level
+(SWL) frequency curves instead.
 
 ## Language
 
@@ -63,12 +63,12 @@ produces its own independent `.toml` and hydropattern run.
 _Avoid_: Project (too generic — a resource is the Great-Lakes-specific unit of grouping).
 
 **Resources sheet**:
-The `templates/template_avg.xlsx` sheet where each row fully specifies one hydropattern
+The `template_avg.xlsx` sheet (in `analyses/assess-avg-resources/inputs/templates/`) where each row fully specifies one hydropattern
 component (name, lake, characteristics, plot threshold) to generate into its own `.toml`
 file and run independently.
 
 **Config sheet**:
-The `templates/template_avg.xlsx` sheet holding options shared across every row of the
+The `template_avg.xlsx` sheet (same folder) holding options shared across every row of the
 resources sheet (output directory, subdirectory structure, overwrite, first day of water
 year, metric mode, excel/plot output toggles).
 
@@ -80,7 +80,7 @@ output land, relative to the config's base output directory:
 - `"row"`: one subfolder per resource name, nested with one subfolder per component name.
 
 **Save point**:
-A single row in a `batch_run_swl.py` lake workbook sheet — a fixed lat/lon location with an
+A single row in a swl lake workbook sheet (`great_lakes.batch.swl`) — a fixed lat/lon location with an
 `ID`, whose water-level-vs-ARI curve is looked up by a resources-sheet row via
 `save_point_id` (exact match, wins if given) or nearest `lat`/`lon` (Euclidean distance,
 fallback).
@@ -89,7 +89,7 @@ sheet row represents).
 
 **ARI (Average Return Interval)**:
 The swl workbook's column headers (in years) — the inverse of exceedance probability for
-a given water level at a save point. `batch_run_swl.py` linearly interpolates in ARI-space
+a given water level at a save point. `great_lakes.batch.swl` linearly interpolates in ARI-space
 against a save point's (water level, ARI) pairs to find the ARI at a resource row's
 magnitude threshold. Out-of-range thresholds are clamped to the nearest end ARI (`0.1` or
 `1000`) with a warning, never extrapolated.
@@ -205,7 +205,7 @@ _Avoid_: Base scenario, reference scenario (reference scenario collides with the
 `reference_timeseries` vocabulary used elsewhere in hydropattern core).
 
 **Run readme**:
-The `README.txt` a batch run (`batch_run_avg.py` or `batch_run_swl.py`) writes at the
+The `README.txt` an assess run (`assess-avg-resources` or `assess-swl-resources`) writes at the
 root of the config's `output_directory` after every invocation of `run_batch`, whether
 or not any row succeeded. Documents: the resources/config workbook and data directory
 used as inputs, the run's timestamp, a per-row succeeded/failed summary (with failure

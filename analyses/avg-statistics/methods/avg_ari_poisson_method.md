@@ -1,16 +1,15 @@
 # Poisson/Peaks-Over-Threshold method for average-lake-level ARIs
 
-> **Location note:** this doc moved here (from `data/analysis/avg/declustered/METHOD.md`)
-> when the Great Lakes analysis scripts were integrated into the `great_lakes`
-> package (see `docs/data_pipelines.md`). The script it documents is now
-> `great_lakes.analysis.avg.plot_levels` (`src/great_lakes/analysis/avg/plot_levels.py`),
-> and its outputs now live under `<data_dir>/img/avg/` (default
-> `data/clean/img/avg/`) instead of the old `data/analysis/avg/`. All paths/filenames
-> below have been updated to match; the method itself is unchanged.
+> **Location note:** this doc lives with the `avg-statistics` workflow
+> (`analyses/avg-statistics/`). The code it documents is `great_lakes.avg_ari`
+> (`src/great_lakes/avg_ari.py`), run via
+> `analyses/avg-statistics/scripts/plot_ari_surfaces.py`. Outputs are written under
+> `analyses/avg-statistics/outputs/` (gitignored), and the input is `data/avg/*_avg.csv`.
+> The method itself is unchanged from its earlier locations.
 
-This documents the method `great_lakes.analysis.avg.plot_levels` uses to compute
+This documents the method `great_lakes.avg_ari` uses to compute
 the average lake level associated with a given ARI (average recurrence interval,
-in years) from the monthly average-lake-level time series in `data/clean/*_avg.csv`,
+in years) from the monthly average-lake-level time series in `data/avg/*_avg.csv`,
 for both the declustered (`ari/declustered/high/`, `ari/declustered/low/`) and
 non-declustered/"clustered" (`ari/clustered/high/`, `ari/clustered/low/`) plots.
 All example numbers below are computed from Lake Superior's baseline (`_0_0`)
@@ -153,7 +152,7 @@ seasonal peaks/troughs occur roughly once a year, not more often, so nothing
 shorter than about that is estimable from this population at all. The plotted
 `ari/declustered/<tail>/<lake>_<floor>.png` file is that lake+tail's own
 worst-case (highest) floor across all 17 scenarios -- see `min_achievable_ari()`
-in `great_lakes/analysis/avg/plot_levels.py`.
+in `great_lakes/avg_ari.py`.
 
 **Worked example** (Superior baseline, all four populations, in feet; ARI=1
 column shown for reference even though it's no longer a separately plotted
@@ -177,7 +176,7 @@ replaced by the honestly-labeled minimum achievable ARI instead.
 
 ## Summary of what's plotted
 
-- `mean/<lake>.png` (under `<data_dir>/img/avg/`, default `data/clean/img/avg/`):
+- `mean/<lake>.png` (under `outputs/`, see the avg-statistics README):
   plain mean of each scenario's full monthly series -- no Poisson method involved.
 - `ari/clustered/high/<lake>_<ari>.png`, `ari/clustered/low/<lake>_<ari>.png`:
   non-declustered Poisson ARI levels (population = every monthly value), for ARI in

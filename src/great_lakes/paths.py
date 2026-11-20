@@ -74,3 +74,21 @@ class Layout:
     @property
     def swl_methods_outputs(self) -> Path:
         return self.swl_product / "outputs" / "methods"
+
+    @property
+    def avg_statistics_outputs(self) -> Path:
+        return self.root / "analyses" / "avg-statistics" / "outputs"
+
+    def assess_product(self, kind: str) -> Path:
+        """Folder of the assess-<kind>-resources workflow (kind is "avg" or "swl")."""
+        return self.root / "analyses" / f"assess-{kind}-resources"
+
+    def assess_template(self, kind: str) -> Path:
+        return self.assess_product(kind) / "inputs" / "templates" / f"template_{kind}.xlsx"
+
+    def assess_outputs(self, kind: str) -> Path:
+        return self.assess_product(kind) / "outputs"
+
+    def assess_data_dir(self, kind: str) -> Path:
+        """Data product the resource assessment reads: avg, or the complete swl workbooks."""
+        return self.avg if kind == "avg" else self.swl_complete

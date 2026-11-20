@@ -27,9 +27,8 @@ from typing import Any
 
 import pandas as pd
 
-from great_lakes import batch_run_avg as avg
-from great_lakes import batch_run_swl as swl
 from great_lakes import units
+from great_lakes.batch import avg, swl
 from great_lakes.swl import naming
 
 # Resolved equivalent_elevation keyword, mirrored from batch_run_swl.py's

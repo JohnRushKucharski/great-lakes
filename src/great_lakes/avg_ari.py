@@ -1,7 +1,6 @@
 """Plot Poisson-method ARI response surfaces for average lake levels.
 
-(Phase 4 moves this into data-products/avg-statistics/. The mean-level figures now live
-in great_lakes.avg_figures.)
+(The mean-level figures live in great_lakes.avg_figures.)
 
 For each of the 3 distinct average-lake-level datasets in `data/avg/` --
 superior, michiganhuron (Michigan and Huron are one hydraulically-connected lake
@@ -13,7 +12,8 @@ computes the average lake level associated with the SWL workbooks' ARI values th
    here -- see "Why ARI < 1 is dropped" below), for both the high-water tail
    (level exceeded on average once every ARI years) and the low-water tail
    (level undershot on average once every ARI years), using the
-   Poisson/peaks-over-threshold method described in `docs/avg_level_ari_poisson_method.md` --
+   Poisson/peaks-over-threshold method described in
+   `analyses/avg-statistics/methods/avg_ari_poisson_method.md` --
    NOT the annual-maximum-series (block maxima) method. Two variants:
    - non-declustered ("clustered"): every monthly value is treated as a Poisson-
      arrival candidate -> `ari/clustered/high/<lake>_<ari>.png`,
@@ -56,7 +56,7 @@ scenario), that ceiling is at ARI~=1.000006 years -- so close to 1 that it barel
 matters. For the declustered population (roughly one peak/trough per year from
 the lakes' seasonal cycle), that ceiling is much further out, more like
 ARI~=1.7-1.9 years -- so declustered ARI=1 is a real, not just theoretical,
-degenerate case (see `docs/avg_level_ari_poisson_method.md`).
+degenerate case (see `analyses/avg-statistics/methods/avg_ari_poisson_method.md`).
 
 Rather than plot a possibly-meaningless capped ARI=1 result, this instead
 computes, per (lake, tail, declustered-or-not), the single highest (i.e.
@@ -66,19 +66,14 @@ plotted set, applied uniformly to every scenario cell in that response surface
 (so the whole plot stays one consistent, single-ARI comparison instead of each
 cell secretly showing a different return period).
 
-## Usage
-
-    uv run python -m great_lakes.analysis.avg.plot_levels <data_dir> [output_dir]
-
-    output_dir defaults to `<data_dir>/figures/ari` (see resolve_default_output_dir).
+Run it with `analyses/avg-statistics/scripts/plot_ari_surfaces.py`.
 """
 
 from pathlib import Path
-from typing import Optional
+from typing import Sequence
 
 import numpy as np
 import pandas as pd
-import typer
 from climate_canvas.plots_utilities import plot_response_surface  # type: ignore[import-untyped]
 from hydropattern.scenario_grid import parse_scenario_name  # type: ignore[import-untyped]
 
@@ -212,13 +207,6 @@ def one_sided_color_style(zs: np.ndarray, threshold: float, tail: str) -> tuple 
     return contours.one_sided_color_style((z_min, z_max), threshold)
 
 
-def resolve_default_output_dir(data_dir: Path) -> Path:
-    """Default output_dir when the CLI's output_dir argument is omitted: a
-    `figures/ari` subfolder of data_dir (normally data/avg).
-    """
-    return data_dir / "figures" / "ari"
-
-
 def _write_pair(xs: np.ndarray, ys: np.ndarray, zs: np.ndarray, title: str,
                 directory: Path, filename: str, threshold: float,
                 labels: tuple[str, str, str], tail: str) -> tuple[Path, Path]:
@@ -247,17 +235,42 @@ def _write_pair(xs: np.ndarray, ys: np.ndarray, zs: np.ndarray, title: str,
     return raw_path, interpolated_path
 
 
-def run(data_dir: Path, output_dir: Path) -> tuple[Path, ...]:
+LEVELS_COLUMNS = ["lake", "tail", "population", "ari", "ari_is_min_floor", "scenario",
+                  "precip_delta", "temp_delta", "level_ft"]
+
+
+def _grid_rows(lake: str, tail: str, population: str, ari: float, is_floor: bool,
+               zs: np.ndarray) -> list[dict]:
+    """One row per scenario of a (precip x temp) level grid `zs` (see build_grid)."""
+    rows = []
+    for suffix, (precip, temp) in ALL_COORDS.items():
+        rows.append({
+            "lake": lake, "tail": tail, "population": population, "ari": ari,
+            "ari_is_min_floor": is_floor, "scenario": suffix,
+            "precip_delta": precip, "temp_delta": temp,
+            "level_ft": float(zs[ALL_TEMPS.index(temp), ALL_PRECIPS.index(precip)]),
+        })
+    return rows
+
+
+def run(data_dir: Path, output_dir: Path, lakes: Sequence[str] | None = None,
+        aris: Sequence[float] | None = None) -> tuple[Path, ...]:
     """Generate every ARI response-surface plot for every lake in AVG_LAKES, under
     output_dir's ari/<clustered|declustered>/<high|low>/ subfolders
-    (each with a sibling interpolated/ subfolder). Returns every file written.
+    (each with a sibling interpolated/ subfolder), plus `ari/<lake>_ari_levels.csv`
+    holding the plotted levels (feet) as numbers. Returns every file written.
+
+    `lakes` and `aris` restrict the lakes and ARIs plotted (default: AVG_LAKES, AVG_ARIS).
     """
+    lakes = AVG_LAKES if lakes is None else tuple(lakes)
+    plotted_aris = AVG_ARIS if aris is None else tuple(aris)
     written: list[Path] = []
-    for lake in AVG_LAKES:
+    for lake in lakes:
         path = data_dir / f"{lake}_avg.csv"
         df = pd.read_csv(path)
         columns = {col: df[col].to_numpy(dtype=float) for col in df.columns if col != "time"}
         baseline_avg_ft = units.convert_units(columns["_0_0"].mean(), "m", "ft")
+        level_rows: list[dict] = []
 
         # ARI plots: high/low tail x declustered/non-declustered ("clustered").
         for tail in ("high", "low"):
@@ -269,13 +282,15 @@ def run(data_dir: Path, output_dir: Path) -> tuple[Path, ...]:
                 # combination's actual worst-case minimum achievable ARI,
                 # applied uniformly across every scenario in the grid.
                 floor_ari = min_achievable_ari(columns, tail, decluster)
-                aris = sorted({round(floor_ari, 2)} | {a for a in AVG_ARIS if a > 1.0})
+                tail_aris = sorted({round(floor_ari, 2)} | {a for a in plotted_aris if a > 1.0})
 
-                for ari in aris:
+                for ari in tail_aris:
                     xs, ys, zs = build_grid(columns, ari=ari, tail=tail, decluster=decluster)
                     decl_note = " decl" if decluster else ""
                     ari_label = format_ari(ari)
-                    floor_note = " [min]" if ari == round(floor_ari, 2) else ""
+                    is_floor = ari == round(floor_ari, 2)
+                    floor_note = " [min]" if is_floor else ""
+                    level_rows.extend(_grid_rows(lake, tail, cluster_label, ari, is_floor, zs))
                     # Kept short (single line) -- a longer title clips at the
                     # figure edge since plot_response_surface doesn't use a
                     # tight savefig bbox.
@@ -285,10 +300,16 @@ def run(data_dir: Path, output_dir: Path) -> tuple[Path, ...]:
                         xs, ys, zs, title, subdir, f"{lake}_{ari_label}", baseline_avg_ft,
                         ("precip_delta", "temp_delta", "lake level (ft)"), tail=tail,
                     ))
+
+        csv_path = output_dir / "ari" / f"{lake}_ari_levels.csv"
+        pd.DataFrame(level_rows, columns=LEVELS_COLUMNS).to_csv(csv_path, index=False)
+        written.append(csv_path)
     return tuple(written)
 
 
 _NAMING_SCHEME_TEXT = (
+    "ari/<lake>_ari_levels.csv - the plotted levels as numbers (feet): one row per "
+    "tail, population, ARI and scenario.\n"
     "ari/<clustered|declustered>/<high|low>/<lake>_<ari>.png - Poisson-method ARI "
     "response surface (clustered = every monthly value is a candidate event; "
     "declustered = only local peaks/troughs are).\n"
@@ -300,41 +321,21 @@ _NAMING_SCHEME_TEXT = (
     "title) -- see this module's docstring for why."
 )
 
-app = typer.Typer(add_completion=False, no_args_is_help=True)
 
-
-@app.command()
-def main(
-    data_dir: Path = typer.Argument(
-        ..., help="Directory holding the clean <lake>_avg.csv files (data/avg)."),
-    output_dir: Optional[Path] = typer.Argument(
-        None, help="Directory to write plots + README.txt to. Defaults to "
-                    "<data_dir>/figures/ari."),
-) -> None:
-    """Plot Poisson-method ARI response surfaces for every lake in
-    AVG_LAKES, and write a README.txt documenting the run (see run_readme.write_readme).
-    """
-    if output_dir is None:
-        output_dir = resolve_default_output_dir(data_dir)
-
-    written = run(data_dir, output_dir)
-
-    inputs = [(f"{lake} avg csv", data_dir / f"{lake}_avg.csv") for lake in AVG_LAKES]
-    workspace_root = Path(__file__).resolve().parents[4]
+def plot_ari_surfaces(data_dir: Path, output_dir: Path, workspace_root: Path,
+                      lakes: Sequence[str] | None = None,
+                      aris: Sequence[float] | None = None) -> tuple[Path, ...]:
+    """Run `run` and write the README.txt run record in `output_dir`; returns files written."""
+    lakes = AVG_LAKES if lakes is None else tuple(lakes)
+    written = run(data_dir, output_dir, lakes, aris)
     run_readme.write_readme(
         output_directory=output_dir,
-        title="Average lake level analysis report",
-        inputs=inputs,
-        results_text=f"Wrote {len(written)} plot file(s) across {len(AVG_LAKES)} lake(s).",
+        title="Average lake level ARI surfaces report",
+        inputs=[(f"{lake} avg csv", data_dir / f"{lake}_avg.csv") for lake in lakes],
+        results_text=f"Wrote {len(written)} plot file(s) across {len(lakes)} lake(s).",
         naming_scheme_text=_NAMING_SCHEME_TEXT,
         written_paths=written,
         workspace_root=workspace_root,
     )
-    for path in written:
-        print(f"Wrote {path}")
-
-
-if __name__ == "__main__":
-    app()
-
+    return written
 

@@ -1,5 +1,5 @@
-"""Generic reproducibility-record writer, shared by batch_runner.write_run_readme
-(per-row batch scripts) and great_lakes.analysis's scripts (no resources workbook,
+"""Generic reproducibility-record writer, shared by batch.runner.write_run_readme
+(per-row batch scripts) and the analyses/ scripts (no resources workbook,
 no per-row succeeded/failed summary -- just a flat list of input files and outputs
 written).
 

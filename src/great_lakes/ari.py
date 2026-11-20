@@ -1,5 +1,5 @@
 """Shared constants for the ARI response-surface plotting code (swl/figures.py,
-analysis/avg/plot_levels.py) -- the ARI (Average Return Interval) values present in every
+avg_ari.py) -- the ARI (Average Return Interval) values present in every
 swl workbook, and a filename/title formatting helper for them.
 """
 

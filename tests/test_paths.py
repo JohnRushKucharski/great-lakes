@@ -24,3 +24,17 @@ def test_layout_places_data_and_data_product_folders_under_root():
     assert layout.swl_fill_gate_outputs == base / "fill_vs_climate_canvas"
     assert layout.swl_ari_gate_outputs == base / "ari_curves"
     assert layout.swl_methods_outputs == Path("r/data-products/swl/outputs/methods")
+
+
+def test_layout_places_analysis_workflows_under_root():
+    layout = Layout(Path("r"))
+    stats = Path("r/analyses/avg-statistics")
+    assert layout.avg_statistics_outputs == stats / "outputs"
+    for kind, folder in (("avg", "assess-avg-resources"), ("swl", "assess-swl-resources")):
+        base = Path("r/analyses") / folder
+        assert layout.assess_product(kind) == base
+        template = base / "inputs" / "templates" / f"template_{kind}.xlsx"
+        assert layout.assess_template(kind) == template
+        assert layout.assess_outputs(kind) == base / "outputs"
+    assert layout.assess_data_dir("avg") == layout.avg
+    assert layout.assess_data_dir("swl") == layout.swl_complete

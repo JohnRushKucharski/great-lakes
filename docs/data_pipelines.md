@@ -30,14 +30,14 @@ job is the end-to-end path and how the stages connect.)
 | data-products/swl/outputs/filled/ (12 scenarios, gitignored) |
 +--------------------------------------------------------------+
                          |
-                         | STEP 3: fill in a copy of templates/template_*.xlsx by hand
+                         | STEP 3: fill in a copy of analyses/assess-*-resources/inputs/templates/template_*.xlsx by hand
                          |         -> resources+config .xlsx (one row per component)
                          v
 +------------------------+
 | resources+config .xlsx |
 +------------------------+
              |
-             | STEP 4: batch_run_avg.py  /  batch_run_swl.py
+             | STEP 4: analyses/assess-avg-resources  /  analyses/assess-swl-resources (assess.py)
              v
 +------------------------------------------------+
 | output_directory/                              |
@@ -102,27 +102,29 @@ uv run python data-products/swl/scripts/complete.py --overwrite
 Inputs: `data\swl\clean\*_swl.xlsx` + `data\avg\*_avg.csv` (step 1's outputs).
 Outputs: `data\swl\complete\*_swl.xlsx` (17 scenarios) and
 `data-products\swl\outputs\filled\*_swl.xlsx` (12 scenarios, gitignored).
-See `README.md`'s "Scenario completion" section for the interpolation/extrapolation math.
+See `data-products/swl/methods/scenario_completion.md` for the interpolation/extrapolation math.
 
 ### 3. Fill in a resources+config workbook
 
 ```powershell
-Copy-Item templates\template_avg.xlsx my_run.xlsx   # or template_swl.xlsx
+Copy-Item analyses\assess-avg-resources\inputs\templates\template_avg.xlsx my_run.xlsx   # or assess-swl-resources ... template_swl.xlsx
 ```
 This is the one **manual, human-authored input** in the whole pipeline — one row per
 hydropattern component/analysis you want, plus a `config` sheet of shared options
-(`output_directory`, `overwrite`, plot settings, etc.). See `README.md`'s "resources
-sheet" / "config sheet" tables for every column. Regenerate the template with
-`uv run python -m great_lakes.build_avg_template` / `build_swl_template` if the
-script's recognized columns ever change.
+(`output_directory`, `overwrite`, plot settings, etc.). See the "resources
+sheet" / "config sheet" tables in
+[`analyses/assess-avg-resources/README.md`](../analyses/assess-avg-resources/README.md) and
+[`analyses/assess-swl-resources/README.md`](../analyses/assess-swl-resources/README.md) for every column.
+Regenerate a template with that workflow's `scripts/build_template.py` if the
+recognized columns ever change.
 
 ### 4. Run the batch analysis
 
 ```powershell
-uv run python -m great_lakes.batch_run_avg my_run.xlsx data\avg
-uv run python -m great_lakes.batch_run_swl my_swl_run.xlsx data\swl\complete
+uv run python analyses/assess-avg-resources/scripts/assess.py --resources my_run.xlsx
+uv run python analyses/assess-swl-resources/scripts/assess.py --resources my_swl_run.xlsx
 ```
-(`batch_run_swl.py` can instead point at `data\swl\clean` for known scenarios only.)
+(`assess-swl-resources` reads `data\swl\complete` by default; pass `--data-dir data\swl\clean` for known scenarios only.)
 
 Inputs: the workbook from step 3, plus the matching data directory from step 1/2.
 Outputs, written to the workbook's `output_directory`: per-row `.toml` + grid CSV +
@@ -157,7 +159,7 @@ Outputs: `dashboard.html` + `manifest.js` in `--output-dir`.
 Given any output file, walk the diagram backwards: a grid CSV/plot PNG's
 `output_directory` has a run readme naming the resources+config workbook and data
 directory that produced it (step 3/4's inputs); that workbook was filled in from a
-template built by step 3's template-builder from whichever `batch_run_*.py` version
+template built by step 3's template-builder from whichever `great_lakes.batch` version
 was current; that data directory came from step 1/2 acting on the committed
 `data/raw/` workbooks. Nothing in this chain depends on machine-specific state —
 every stage's output is fully determined by its documented inputs.
@@ -207,8 +209,8 @@ That was a real reproducibility / operator-expectation defect. The identical bug
 | Raw AVG cleaning | `data\raw\lake_levels_all_scenarios_9jul2026.xlsx` | `data\raw\clean_lake_levels_all_scenarios.py` | `data\clean\{superior,michiganhuron,stclair,erie,ontario}_avg.csv` |
 | Raw SWL cleaning | `data\raw\still_water_summary__22may2026.xlsm` | `data\raw\clean_swl_summary.py` | `data\clean\{superior,michigan,huron,ontario}_swl.xlsx` |
 | Fill / extrapolate SWL scenarios | clean SWL xlsx + clean AVG csv | `fillin_swl.py`, `lakes.py`, `swl/sheets.py` | `data\filled\*_swl.xlsx`, `data\extrapolated\*_swl.xlsx` |
-| AVG batch analysis | clean AVG csv + workbook templates | `batch_run_avg.py`, `templates\build_avg_template.py` | hydropattern `.toml`, output folders, grid CSVs, PNGs, Excel outputs |
-| SWL batch analysis | clean / extrapolated SWL xlsx + workbook templates | `batch_run_swl.py`, `templates\build_swl_template.py` | SWL grid CSVs + PNGs; equivalent-elevation and elevation-delta grids/plots when requested |
+| AVG batch analysis | clean AVG csv + workbook templates | `analyses/assess-avg-resources/scripts/assess.py` (`great_lakes.batch.avg`, `batch.template_avg`) | hydropattern `.toml`, output folders, grid CSVs, PNGs, Excel outputs |
+| SWL batch analysis | clean / extrapolated SWL xlsx + workbook templates | `analyses/assess-swl-resources/scripts/assess.py` (`great_lakes.batch.swl`, `batch.template_swl`) | SWL grid CSVs + PNGs; equivalent-elevation and elevation-delta grids/plots when requested |
 | Known-scenario side analysis | extrapolated SWL xlsx | `analyze_known_scenarios.py` | `data\analysis\known_scenario_directionality.csv` + summary xlsx |
 | Dashboard build | completed SWL/AVG batch outputs | `build_dashboard.py` | `longtailpoint\manifest.js`, `dashboard.html` |
 

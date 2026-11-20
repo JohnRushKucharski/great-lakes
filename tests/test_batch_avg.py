@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from great_lakes import batch_run_avg as avg_batch_run
+from great_lakes.batch import avg as avg_batch_run
 
 # ---- month_to_doy -----------------------------------------------------------------
 
@@ -1000,48 +1000,3 @@ def test_run_batch_end_to_end_against_real_avg_csvs(tmp_path):
     for qualified_name in ("duluth_harbor_high_water", "buffalo_shore_low_water"):
         assert (out_dir / f"{qualified_name}.toml").exists()
         assert (out_dir / f"{qualified_name}_summary.xlsx").exists()
-
-
-# ---- main() CLI entry point --------------------------------------------------------
-
-def test_main_returns_zero_and_prints_summary_when_all_rows_succeed(tmp_path, capsys, monkeypatch):
-    resources_path = make_workbook(
-        tmp_path,
-        resources_header=[
-            "resource_name", "component_name", "lake", "magnitude_operator", "magnitude_value",
-        ],
-        resources_rows=[("duluth_harbor", "high_water", "superior", ">", 183.0)],
-        config_pairs=[("output_directory", str(tmp_path / "out"))],
-    )
-    monkeypatch.setattr(
-        avg_batch_run, "run_batch",
-        lambda *a, **k: avg_batch_run.BatchSummary(results=[
-            avg_batch_run.RowResult(1, "duluth_harbor", "high_water", "succeeded"),
-        ]),
-    )
-
-    exit_code = avg_batch_run.main([str(resources_path), str(tmp_path)])
-
-    assert exit_code == 0
-    assert "1 succeeded, 0 failed out of 1 row(s)." in capsys.readouterr().out
-
-
-def test_main_returns_one_when_any_row_fails(tmp_path, monkeypatch):
-    resources_path = make_workbook(
-        tmp_path,
-        resources_header=[
-            "resource_name", "component_name", "lake", "magnitude_operator", "magnitude_value",
-        ],
-        resources_rows=[("duluth_harbor", "", "superior", ">", 183.0)],
-        config_pairs=[("output_directory", str(tmp_path / "out"))],
-    )
-    monkeypatch.setattr(
-        avg_batch_run, "run_batch",
-        lambda *a, **k: avg_batch_run.BatchSummary(results=[
-            avg_batch_run.RowResult(1, "duluth_harbor", None, "failed", "boom"),
-        ]),
-    )
-
-    exit_code = avg_batch_run.main([str(resources_path), str(tmp_path)])
-
-    assert exit_code == 1

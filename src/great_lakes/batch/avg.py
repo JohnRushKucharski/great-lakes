@@ -30,6 +30,7 @@ from great_lakes.batch.runner import (  # noqa: F401 -- re-exported for backward
     _to_bool,
     format_summary,
 )
+from great_lakes.paths import REPO_ROOT
 
 # Valid comparison symbols, mirrored from hydropattern.parsers._VALID_SYMBOLS. Kept as
 # a local copy (rather than importing the private name) since this is example tooling,
@@ -620,13 +621,10 @@ class _AvgRowProcessor:
 
 # ---- naming-scheme / run-readme ----------------------------------------------------
 
-WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
-
-
 def _naming_scheme_text() -> str:
     """Generic naming-scheme blurb for this script's one, fixed output naming
     convention (resource_name_component_name -- no per-run configurable
-    filename_style, unlike batch_run_swl.py's longtailpoint-specific styles)."""
+    filename_style, unlike the swl batch's Long Tail Point styles)."""
     header = "Output filename naming scheme for this directory\n" + "=" * 50 + "\n\n"
     return header + (
         "Output filename pattern: <resource_name>_<component_name>...\n\n"
@@ -641,6 +639,7 @@ def run_batch(
     config: BatchConfig,
     run_toml: Callable[[Path], None] = _default_run_toml,
     progress: Callable[[int, int, str | None, str | None, str], None] = _default_progress,
+    workspace_root: Path = REPO_ROOT,
 ) -> BatchSummary:
     """Generate + run one hydropattern .toml per resources-sheet row.
 
@@ -666,39 +665,6 @@ def run_batch(
     )
     batch_runner.write_run_readme(
         resources_path, data_dir, Path(config.output_directory), summary,
-        naming_scheme_text=_naming_scheme_text(), workspace_root=WORKSPACE_ROOT,
+        naming_scheme_text=_naming_scheme_text(), workspace_root=workspace_root,
     )
     return summary
-
-
-# ---- CLI entry point --------------------------------------------------------------
-
-def main(argv: list[str] | None = None) -> int:
-    """Command-line entry point: read a resources workbook, run every row, print a
-    summary. Returns a process exit code (0 if every row succeeded, 1 otherwise).
-
-    Usage:
-        uv run python -m great_lakes.batch_run_avg <resources.xlsx> <data_dir>
-    """
-    import argparse
-
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "resources_path", type=Path,
-        help="Path to the resources+config .xlsx workbook (see templates/template_avg.xlsx).",
-    )
-    parser.add_argument(
-        "data_dir", type=Path,
-        help="Directory containing the lake avg-level CSVs (see LAKE_CSV_NAMES).",
-    )
-    args = parser.parse_args(argv)
-
-    config = read_config_sheet(args.resources_path)
-    summary = run_batch(args.resources_path, args.data_dir, config)
-    print(format_summary(summary))
-    return 0 if not summary.failed else 1
-
-
-if __name__ == "__main__":
-    import sys
-    sys.exit(main())

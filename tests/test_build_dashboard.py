@@ -16,7 +16,7 @@ from great_lakes.swl import naming
 # ---- compute_magnitude_ft -----------------------------------------------------------
 
 def _resource(**overrides):
-    from great_lakes import batch_run_swl as swl
+    from great_lakes.batch import swl
     fields = dict(
         resource_name="longtail_17877",
         component_name="base",
@@ -174,7 +174,7 @@ def test_build_entries_threshold_none_when_blank(tmp_path):
 
 
 def test_build_entries_threshold_ari_paths_resolved_when_threshold_set(tmp_path):
-    from great_lakes import batch_run_swl as swl
+    from great_lakes.batch import swl
 
     out_dir = tmp_path / "out"
     wb_path = _write_workbook(
