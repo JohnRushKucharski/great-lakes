@@ -11,10 +11,11 @@ htmlcov/
 # Data policy: raw/ inputs, code, and small template workbooks are committed.
 # Regenerable analysis outputs (derived from raw/ via scripts) are NOT committed --
 # keep them locally as insurance, regenerate via the batch/clean scripts if lost.
-data/clean/
-data/filled/
-data/extrapolated/
 data/analysis/
+# old figure folders, replaced by the new data/ figures in the data-products phase
+data/clean/img/
+data/filled/img/
+data/extrapolated/img/
 
 # longtailpoint: track input workbooks + dashboard.html/manifest.js viewer files
 # (small, needed to browse results without re-running anything). Bulky generated
@@ -23,19 +24,17 @@ longtailpoint/*_output/
 longtailpoint/results_*.xlsx
 longtailpoint/~$*
 
-# untracked working drafts, plans, and habitat-memo work in progress
-docs/longtailpoint_memo_draft.md
-docs/report_plan.md
-longtailpoint/habitat/JK/
-longtailpoint/habitat/JO/
-longtailpoint/habitat/report/
+# generated zip and superseded/retired memos and habitat files (retired in the case-studies phase)
 longtailpoint.zip
 longtailpoint/longtailpoint_memo.docx
-longtailpoint/longtailpoint_memo_261030.docx
 longtailpoint/MEMORANDUM.docx
-src/great_lakes/longtailpoint_report.py
-tests/test_build_habitat_report.py
-tests/test_longtailpoint_report.py
+longtailpoint/habitat/JK/*.pptx
+longtailpoint/habitat/JK/high-water-handoff.md
+longtailpoint/habitat/JK/michiganhuron_avg*
+longtailpoint/habitat/JO/*.pptx
+longtailpoint/habitat/JO/longtail_habitat_summary_28oct2026.docx
+longtailpoint/habitat/report/LTP_habitat_resilience_memo.docx
+longtailpoint/habitat/report/LTP_habitat_resilience_memo_v2.docx
 
 # scratch space for ad hoc manual smoke tests, not part of the automated suite
 manual_tests/

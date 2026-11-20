@@ -41,6 +41,8 @@ test = [
 [tool.ruff]
 target-version = "py312"
 line-length = 100
+# notebooks are explorations, not scripts; ruff covers workflow scripts only
+extend-exclude = ["*.ipynb"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
