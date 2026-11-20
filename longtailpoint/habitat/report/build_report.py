@@ -3,7 +3,7 @@
 The draft is the source of truth for text. Figure slots `{{F1}}`..`{{F9}}` (no F2: merged into
 F1; F4 also has F4B/F4C, Jenny's maps) become the PNG
 `figures/<id>.png` when it exists, otherwise a grey placeholder line. Styling comes from
-`great_lakes.build_memo_docx` (same look as `longtailpoint\\MEMORANDUM.docx`).
+`great_lakes.memo.to_docx` (same look as `longtailpoint\\MEMORANDUM.docx`).
 
 Usage: python longtailpoint\\habitat\\report\\build_report.py [--out PATH]
 """
@@ -13,7 +13,7 @@ import re
 import tempfile
 from pathlib import Path
 
-from great_lakes.build_memo_docx import build_memo
+from great_lakes.memo.to_docx import build_memo
 
 REPORT_DIR = Path(__file__).resolve().parent
 DRAFT = REPORT_DIR / "report_draft.md"

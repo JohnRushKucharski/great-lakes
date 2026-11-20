@@ -22,14 +22,18 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 ├── src/great_lakes/
 │   ├── batch_run_avg.py             <- batch tool 1: parse -> build .toml -> run hydropattern
 │   ├── batch_run_swl.py             <- batch tool 2: parse -> interpolate ARI curve -> plot
-│   ├── batch_runner.py              <- shared run_batch loop + RowProcessor strategy + run readme
-│   ├── common_swl.py                <- shared helpers: read <lake>_swl.xlsx / <avg-lake>_avg.csv
+│   ├── batch/                       <- runner.py (shared run_batch loop + RowProcessor), run_readme.py
+│   ├── units.py                     <- m<->ft and IGLD85<->NAVD88 conversions (separate steps)
+│   ├── lakes.py                     <- lake names, avg filenames, centroid save points
+│   ├── ari.py                       <- ARI constants and formatting
+│   ├── avg_stats.py                 <- generic avg statistics (annual maxima, window shares, Poisson)
+│   ├── swl_method_quality.py        <- swl~avg regression used to judge swl methods
+│   ├── swl/                         <- sheets.py (read <lake>_swl.xlsx), naming.py, contours.py
 │   ├── fillin_swl.py                 <- batch tool 3: interpolate + extrapolate missing swl scenarios
 │   ├── analyze_known_scenarios.py    <- known-vs-known SWL precip/temp directionality analysis
 │   ├── build_dashboard.py            <- builds a self-contained results dashboard
-│   ├── longtailpoint_report.py        <- generates memo figures/tables and validation analyses
-│   ├── build_memo_docx.py             <- builds the LTP memo .docx from its Markdown draft
-│   ├── clean_lake_levels_all_scenarios.py  <- data/raw/ -> data/clean/ AVG cleaning script
+│   ├── overtopping.py                 <- overtopping-specific memo figures/tables (F4, runup)
+│   ├── memo/                          <- to_docx.py (Markdown -> .docx), from_docx.py (.docx -> Markdown)│   ├── clean_lake_levels_all_scenarios.py  <- data/raw/ -> data/clean/ AVG cleaning script
 │   ├── clean_swl_summary.py        <- data/raw/ -> data/clean/ SWL cleaning script
 │   ├── build_avg_template.py        <- regenerates templates/template_avg.xlsx
 │   └── build_swl_template.py        <- regenerates templates/template_swl.xlsx
@@ -93,7 +97,7 @@ After cleaning AVG/SWL inputs and generating the 17-scenario workbook with
 `uv run python -m great_lakes.fillin_swl data\clean`, run:
 
 ```powershell
-uv run python -m great_lakes.longtailpoint_report
+uv run python -m great_lakes.overtopping
 ```
 
 This regenerates F2-F4, T1-T2, the SWL~AVG regression, and leave-one-out tables under
@@ -104,11 +108,11 @@ To build the memo Word document from its Markdown draft
 (`docs/longtailpoint_memo_draft.md`, the source of truth; edit text there, not in Word):
 
 ```powershell
-uv run python -m great_lakes.build_memo_docx
+uv run python -m great_lakes.memo.to_docx --draft docs\longtailpoint_memo_draft.md --out longtailpoint\longtailpoint_memo.docx
 ```
 
 This writes `longtailpoint/longtailpoint_memo.docx` (Letter, 1-in margins, 11 pt Calibri)
-with the figures above embedded. Run `longtailpoint_report` first if figures are missing.
+with the figures above embedded. Run `great_lakes.overtopping` first if figures are missing.
 
 # Batch tool 1: batch_run_avg.py
 
@@ -565,5 +569,5 @@ across all 4 lakes, while the tool runs.
 ## Running the tests
 
 ```powershell
-uv run pytest tests/test_fillin_swl.py tests/test_common_swl.py
+uv run pytest tests/test_fillin_swl.py tests/test_units.py tests/test_lakes.py
 ```

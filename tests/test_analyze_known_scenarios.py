@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from great_lakes import analyze_known_scenarios, common_swl
+from great_lakes import analyze_known_scenarios, lakes
 
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
 
@@ -92,7 +92,7 @@ def _write_known_scenario_workbook(path: Path) -> None:
 
 
 def test_analyze_lake_computes_precip_and_temp_directionality(tmp_path):
-    workbook_path = tmp_path / common_swl.LAKE_SWL_FILENAMES["superior"]
+    workbook_path = tmp_path / lakes.LAKE_SWL_FILENAMES["superior"]
     _write_known_scenario_workbook(workbook_path)
 
     result = analyze_known_scenarios.analyze_lake("superior", tmp_path)

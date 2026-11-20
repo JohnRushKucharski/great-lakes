@@ -204,7 +204,7 @@ That was a real reproducibility / operator-expectation defect. The identical bug
 |---|---|---|---|
 | Raw AVG cleaning | `data\raw\lake_levels_all_scenarios_9jul2026.xlsx` | `data\raw\clean_lake_levels_all_scenarios.py` | `data\clean\{superior,michiganhuron,stclair,erie,ontario}_avg.csv` |
 | Raw SWL cleaning | `data\raw\still_water_summary__22may2026.xlsm` | `data\raw\clean_swl_summary.py` | `data\clean\{superior,michigan,huron,ontario}_swl.xlsx` |
-| Fill / extrapolate SWL scenarios | clean SWL xlsx + clean AVG csv | `fillin_swl.py`, `common_swl.py` | `data\filled\*_swl.xlsx`, `data\extrapolated\*_swl.xlsx` |
+| Fill / extrapolate SWL scenarios | clean SWL xlsx + clean AVG csv | `fillin_swl.py`, `lakes.py`, `swl/sheets.py` | `data\filled\*_swl.xlsx`, `data\extrapolated\*_swl.xlsx` |
 | AVG batch analysis | clean AVG csv + workbook templates | `batch_run_avg.py`, `templates\build_avg_template.py` | hydropattern `.toml`, output folders, grid CSVs, PNGs, Excel outputs |
 | SWL batch analysis | clean / extrapolated SWL xlsx + workbook templates | `batch_run_swl.py`, `templates\build_swl_template.py` | SWL grid CSVs + PNGs; equivalent-elevation and elevation-delta grids/plots when requested |
 | Known-scenario side analysis | extrapolated SWL xlsx | `analyze_known_scenarios.py` | `data\analysis\known_scenario_directionality.csv` + summary xlsx |
@@ -317,7 +317,7 @@ The implementation matches that:
 - same-row / nearest-precip anchor selection: `fillin_swl.py:191-213`
 - additive `delta = avg_means[target] - avg_means[anchor]`: `:238-247`
 - stage ordering guarantees filled scenarios can serve as anchors for extrapolation: `:347-369`
-- Michigan and Huron both resolve to `michiganhuron_avg.csv` through `common_swl.SWL_LAKE_TO_AVG_LAKE` (`common_swl.py:36-41`, `88-96`)
+- Michigan and Huron both resolve to `michiganhuron_avg.csv` through `lakes.SWL_LAKE_TO_AVG_LAKE` (`lakes.py`)
 
 **Integrity evidence**
 
@@ -381,7 +381,7 @@ The Superior case is especially important because `_10_3` is itself a **filled**
 
 **Unit conversion evidence**
 
-`common_swl.py:55-69` documents and implements a flat +0.44 ft offset after converting meters to feet. I checked the cited workbook directly:
+`units.m_igld85_to_ft_NAVD88` documents and implements a flat +0.44 ft offset after converting meters to feet (exact 0.3048 m/ft). I checked the cited workbook directly:
 
 | `longtail_waterlevel.xlsx` `Sheet2` | Value |
 |---|---:|
@@ -390,7 +390,7 @@ The Superior case is especially important because `_10_3` is itself a **filled**
 | NAVG88 low | 582.00 ft |
 | IGLD85 low | 581.56 ft |
 
-That is exactly the +0.44 ft relationship the code uses. The conversion tests in `tests\test_common_swl.py` also assert those exact pairs.
+That is exactly the +0.44 ft relationship the code uses. The conversion tests in `tests\test_units.py` those exact pairs.
 
 **Integrity evidence**
 
@@ -445,7 +445,7 @@ That is exactly the +0.44 ft relationship the code uses. The conversion tests in
 | Question | Answer |
 |---|---|
 | Raw->clean: correct raw sheet/column selected, no silent mislabeling? | **Yes, with one caveat.** The cleaners select the intended sheets/columns and preserve sampled numeric values exactly. Scenario relabeling in SWL cleaning matches the raw workbook `summary` dP/dT definitions. Caveat: the AVG cleaner itself does not add an explicit units label; units are inferred from surrounding docs/value ranges. |
-| Is Michigan-Huron treated as one connected lake everywhere it should be? | **Yes in the audited code paths.** AVG cleaning emits `michiganhuron_avg.csv`; `batch_run_avg.py` uses `michiganhuron`; `common_swl.py` maps both `michigan` and `huron` SWL workbooks to the shared AVG CSV for extrapolation. |
+| Is Michigan-Huron treated as one connected lake everywhere it should be? | **Yes in the audited code paths.** AVG cleaning emits `michiganhuron_avg.csv`; `batch_run_avg.py` uses `michiganhuron`; `lakes.py` maps both `michigan` and `huron` SWL workbooks to the shared AVG CSV for extrapolation. |
 | Does fill/extrapolation match ADR 0001 exactly? | **Yes.** Same-row nearest-precip anchor selection and additive `AVG(target)-AVG(anchor)` shifting are implemented as described, and real output cells matched manual recomputation. |
 | Is `17 = 5 known + 7 filled + 5 extrapolated` true in actual files? | **Yes for all 4 SWL lakes.** |
 | Are unit conversions applied exactly once, in the correct direction, only at final output? | **Yes for equivalent-elevation / elevation-delta outputs.** Primary SWL metrics are not elevation units and are not converted. |
@@ -518,7 +518,7 @@ No sampled plot showed a lake-name swap, unit mismatch, or empty rendering.
 Command run (original audit pass):
 
 ```powershell
-uv run pytest tests\test_common_swl.py tests\test_fillin_swl.py tests\test_batch_run_avg.py tests\test_batch_run_swl.py tests\test_build_dashboard.py tests\test_scenario_grid.py tests\test_swl_batch_run.py -v
+uv run pytest tests\test_units.py tests\test_lakes.py tests\test_fillin_swl.py tests\test_batch_run_avg.py tests\test_batch_run_swl.py tests\test_build_dashboard.py tests\test_scenario_grid.py tests\test_swl_batch_run.py -v
 ```
 
 Result (original audit pass, before fixes):
@@ -542,7 +542,7 @@ Result: **685 passed**, plus 2 pre-existing failures in `tests\test_stable_reque
 |---|---|---|---|
 | Raw AVG cleaning (`clean_lake_levels_all_scenarios.py`) | `tests\test_clean_raw_scripts.py` (new) | Good | Covers the `LAKES` sheet-name mapping and the extracted `clean_lake_frame()` transform (month drop, `time` rename, string-date formatting past pandas' datetime64 range). |
 | Raw SWL cleaning (`clean_swl_summary.py`) | `tests\test_clean_raw_scripts.py` (new) | Good | Covers `source_sheet_name()`, a regression test locking the `SCENARIOS` precip/temp mapping (guards the exact historical lowLL/highLL swap bug called out in the script's own comment), `NEW_HEADER`, and the extracted `clean_scenario_frame()` blank-ID-row transform. |
-| Shared unit conversion / Michigan-Huron AVG mapping (`common_swl.py`) | `tests\test_common_swl.py` | Good | Strong low-level checks, including the 0.44 ft datum offset and shared Michigan/Huron AVG file mapping. |
+| Shared unit conversion / Michigan-Huron AVG mapping (`units.py`, `lakes.py`) | `tests\test_units.py`, `tests\test_lakes.py` | Good | Strong low-level checks, including the 0.44 ft datum offset and shared Michigan/Huron AVG file mapping. |
 | Scenario-grid core | `tests\test_scenario_grid.py` | Good | Covers parsing and sparse-grid behavior. |
 | Fill / extrapolate SWL (`fillin_swl.py`) | `tests\test_fillin_swl.py` | Strong | Covers hull split, barycentric weights, anchor selection, extrapolation math, workbook writing, and CLI orchestration. |
 | AVG batch runner (`batch_run_avg.py`) | `tests\test_batch_run_avg.py` | Strong | Includes parser tests, an end-to-end run against real AVG CSVs, and (new) `_to_bool` regression tests for string booleans. |

@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
-from great_lakes.longtailpoint_report import write_presentation_figure  # noqa: E402
+from great_lakes.overtopping import write_presentation_figure  # noqa: E402
 
 BASELINE_DIR = Path(__file__).resolve().parent.parent / "batch_swl_output" / "baseline"
 

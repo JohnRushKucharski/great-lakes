@@ -29,7 +29,8 @@ import pandas as pd
 
 from great_lakes import batch_run_avg as avg
 from great_lakes import batch_run_swl as swl
-from great_lakes import common_swl
+from great_lakes import units
+from great_lakes.swl import naming
 
 # Resolved equivalent_elevation keyword, mirrored from batch_run_swl.py's
 # _BASELINE_MAGNITUDE_KEYWORD (kept as a local copy rather than importing the private
@@ -76,7 +77,7 @@ def compute_magnitude_ft(resource: "swl.ResourceSpec") -> float:
     filename numbers derived from it) aren't a human-friendly/authoritative NAVD88
     elevation on their own -- see GLOSSARY.md's "Equivalent elevation" definition.
     """
-    return common_swl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
+    return units.m_igld85_to_ft_NAVD88(resource.magnitude_value)
 
 
 def compute_equivalent_elevation_basis(row: dict[str, Any], resource: "swl.ResourceSpec") -> str | None:
@@ -94,7 +95,7 @@ def compute_equivalent_elevation_basis(row: dict[str, Any], resource: "swl.Resou
     raw = row.get("equivalent_elevation")
     if isinstance(raw, str) and raw.strip().lower() == _BASELINE_MAGNITUDE_KEYWORD:
         return _BASELINE_MAGNITUDE_KEYWORD
-    override_ft = common_swl.m_igld85_to_ft_NAVD88(resource.equivalent_elevation)
+    override_ft = units.m_igld85_to_ft_NAVD88(resource.equivalent_elevation)
     return f"{override_ft:.2f} ft override"
 
 
@@ -120,17 +121,17 @@ class ManifestEntry:
     output_dir: Path
     # On-disk file-name stem (no suffix), per the workbook's config.filename_style --
     # equals qualified_name for "qualified_name" style (and always for avg entries,
-    # which have no filename_style concept) or common_swl.output_file_stem's ft-based
+    # which have no filename_style concept) or naming.output_file_stem's ft-based
     # stem for "elevation_runup_savepoint" style. resolve_files uses this (not
     # qualified_name) to find each entry's actual output files.
     file_stem: str
     # The actual crest elevation being evaluated: magnitude_ft + this component's
-    # runup allowance (common_swl.RUNUP_FT_BY_COMPONENT), or just magnitude_ft for avg
+    # runup allowance (naming.RUNUP_FT_BY_COMPONENT), or just magnitude_ft for avg
     # entries (no runup allowance concept there). Used by the dashboard's "Elevation
     # (NAVD88)" picker instead of the raw magnitude_ft, since the runup allowance
     # itself is already a separate picker ("Runup (ft)").
     elevation_ft: float
-    # The numeric runup allowance itself (common_swl.RUNUP_FT_BY_COMPONENT's value for
+    # The numeric runup allowance itself (naming.RUNUP_FT_BY_COMPONENT's value for
     # component_name), 0.0 for avg entries. The dashboard's "Runup (ft)" picker filters
     # on this numeric value directly (not the raw component_name code) -- see
     # GLOSSARY.md's "Runup allowance" entry.
@@ -161,7 +162,7 @@ def build_entries(workbook_path: Path) -> list[ManifestEntry]:
         resource = swl.parse_resource_row(row)
         output_dir = swl.resolve_output_folder(resource, config)
         magnitude_ft = compute_magnitude_ft(resource)
-        runup_ft = common_swl.RUNUP_FT_BY_COMPONENT.get(resource.component_name, 0.0)
+        runup_ft = naming.RUNUP_FT_BY_COMPONENT.get(resource.component_name, 0.0)
         threshold_ari_grid_path = threshold_ari_plot_path = None
         if resource.threshold is not None:
             threshold_ari_grid_path, threshold_ari_plot_path = (
@@ -211,7 +212,7 @@ def build_avg_entries(workbook_path: Path) -> list[ManifestEntry]:
             )
         output_dir = avg.resolve_output_folder(resource, config)
         magnitude_value = resource.magnitude[1]
-        magnitude_ft = common_swl.m_igld85_to_ft_NAVD88(magnitude_value)
+        magnitude_ft = units.m_igld85_to_ft_NAVD88(magnitude_value)
         entries.append(
             ManifestEntry(
                 workbook_path=workbook_path,

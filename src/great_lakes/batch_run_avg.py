@@ -17,8 +17,8 @@ from typing import Any, Callable
 import pandas as pd
 from hydropattern.cli import run as _hydropattern_cli_run  # type: ignore[import-untyped]
 
-from great_lakes import batch_runner
-from great_lakes.batch_runner import (  # noqa: F401 -- re-exported for backward compat
+from great_lakes.batch import runner as batch_runner
+from great_lakes.batch.runner import (  # noqa: F401 -- re-exported for backward compat
     BatchSummary,
     RowResult,
     RowValidationError,

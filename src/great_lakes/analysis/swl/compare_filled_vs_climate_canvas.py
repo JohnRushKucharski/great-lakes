@@ -13,7 +13,7 @@ Delaunay-linear (barycentric) interpolation:
   which is every in-hull scenario here, since none sit on the sparse known grid's
   own row/column lines.
 
-For each lake's centroid save point (common_swl.center_save_point_id) and every ARI
+For each lake's centroid save point (lakes.lake_centroid_save_point_id) and every ARI
 in ARIS, this evaluates both methods at each in-hull scenario coordinate present in
 filled_data_dir's workbook and writes a comparison CSV + README.txt to output_dir
 (default: `<filled_data_dir>/img/comparison` -- see resolve_default_output_dir).
@@ -38,10 +38,12 @@ import typer
 from climate_canvas.data_utilities import interpolator  # type: ignore[import-untyped]
 from hydropattern.scenario_grid import parse_scenario_name  # type: ignore[import-untyped]
 
-from great_lakes import ari_constants, common_swl, run_readme
+from great_lakes import ari, lakes, units
+from great_lakes.batch import run_readme
 from great_lakes.fillin_swl import known_scenario_coords
+from great_lakes.swl import sheets as swl_sheets
 
-LAKES = tuple(common_swl.LAKE_SWL_FILENAMES)
+LAKES = tuple(lakes.LAKE_SWL_FILENAMES)
 ARIS = (1.0, 10.0, 50.0, 100.0)
 
 _COMPARISON_CSV_NAME = "filled_vs_climate_canvas_comparison.csv"
@@ -66,46 +68,48 @@ def run(clean_data_dir: Path, filled_data_dir: Path) -> pd.DataFrame:
     """
     rows = []
     for lake in LAKES:
-        clean_path = common_swl.resolve_lake_swl_path(lake, clean_data_dir)
+        clean_path = lakes.resolve_lake_swl_path(lake, clean_data_dir)
         known_sheets = pd.read_excel(clean_path, sheet_name=None)
-        save_point_id = common_swl.center_save_point_id(known_sheets)
+        save_point_id = lakes.lake_centroid_save_point_id(lake, known_sheets)
 
-        filled_path = common_swl.resolve_lake_swl_path(lake, filled_data_dir)
+        filled_path = lakes.resolve_lake_swl_path(lake, filled_data_dir)
         filled_sheets = pd.read_excel(filled_path, sheet_name=None)
 
         coords = known_scenario_coords(list(known_sheets.keys()))
         precips = sorted({p for p, _ in coords.values()})
         temps = sorted({t for _, t in coords.values()})
 
-        for ari in ARIS:
+        for aril in ARIS:
             z = np.full((len(temps), len(precips)), np.nan)
             for name, df in known_sheets.items():
-                suffix = common_swl.parse_scenario_sheet_name(name)
+                suffix = swl_sheets.parse_scenario_sheet_name(name)
                 if suffix not in coords:
                     continue
                 p, t = parse_scenario_name(suffix)
-                row = df.loc[df["ID"] == save_point_id, ari]
+                row = df.loc[df["ID"] == save_point_id, aril]
                 if row.empty:
                     continue
-                z[temps.index(t), precips.index(p)] = row.iloc[0] * common_swl.METERS_TO_FEET
+                z[temps.index(t), precips.index(p)] = units.convert_units(
+                    row.iloc[0], "m", "ft"
+                )
             xs = np.array(precips, dtype=float)
             ys = np.array(temps, dtype=float)
             cc_interp = interpolator(xs, ys, z, fillin=True)
 
             for name, df in filled_sheets.items():
-                suffix = common_swl.parse_scenario_sheet_name(name)
+                suffix = swl_sheets.parse_scenario_sheet_name(name)
                 if suffix is None or suffix in coords or not suffix.startswith("_"):
                     continue  # skip known scenarios; only compare in-hull fills
                 p, t = parse_scenario_name(suffix)
-                row = df.loc[df["ID"] == save_point_id, ari]
+                row = df.loc[df["ID"] == save_point_id, aril]
                 if row.empty:
                     continue
-                filled_ft = row.iloc[0] * common_swl.METERS_TO_FEET
+                filled_ft = units.convert_units(row.iloc[0], "m", "ft")
                 cc_ft = cc_interp((p, t))
                 rows.append({
                     "lake": lake,
                     "save_point_id": save_point_id,
-                    "ari": ari,
+                    "ari": aril,
                     "scenario": suffix,
                     "precip_delta": p,
                     "temp_delta": t,
@@ -129,7 +133,7 @@ _NAMING_SCHEME_TEXT = (
     "fillin_swl_ft (hydropattern's own Delaunay fill), climate_canvas_ft (climate_"
     "canvas's own interpolate+fillin over the same known points), and diff_ft "
     "(fillin_swl_ft - climate_canvas_ft). ARI values: "
-    f"{', '.join(ari_constants.format_ari(a) for a in ARIS)}. See "
+    f"{', '.join(ari.format_ari(a) for a in ARIS)}. See "
     "docs/filled_vs_climate_canvas_comparison.md for the write-up."
 )
 
@@ -159,10 +163,10 @@ def main(
     csv_path = write_comparison_csv(comparison, output_dir)
 
     inputs = [
-        (f"{lake} known swl workbook", common_swl.resolve_lake_swl_path(lake, clean_data_dir))
+        (f"{lake} known swl workbook", lakes.resolve_lake_swl_path(lake, clean_data_dir))
         for lake in LAKES
     ] + [
-        (f"{lake} filled swl workbook", common_swl.resolve_lake_swl_path(lake, filled_data_dir))
+        (f"{lake} filled swl workbook", lakes.resolve_lake_swl_path(lake, filled_data_dir))
         for lake in LAKES
     ]
     if len(comparison):

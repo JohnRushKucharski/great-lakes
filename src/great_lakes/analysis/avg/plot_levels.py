@@ -10,7 +10,7 @@ computes:
    response surface per lake).
 2. The average lake level associated with the SWL workbooks' ARI values that
    are >= 1 year (1, 2, 5, 10, 20, 50, 100, 200, 500, 1000 -- see
-   ari_constants.SWL_ARIS; the <1-year SWL ARI values, 0.1/0.2/0.5, are dropped
+   ari.SWL_ARIS; the <1-year SWL ARI values, 0.1/0.2/0.5, are dropped
    here -- see "Why ARI < 1 is dropped" below), for both the high-water tail
    (level exceeded on average once every ARI years) and the low-water tail
    (level undershot on average once every ARI years), using the
@@ -83,18 +83,20 @@ import typer
 from climate_canvas.plots_utilities import plot_response_surface  # type: ignore[import-untyped]
 from hydropattern.scenario_grid import parse_scenario_name  # type: ignore[import-untyped]
 
-from great_lakes import ari_constants, common_swl, run_readme
+from great_lakes import units
+from great_lakes.ari import SWL_ARIS, format_ari
+from great_lakes.batch import run_readme
 from great_lakes.fillin_swl import ALL_SCENARIO_SUFFIXES
+from great_lakes.swl import contours
 
 # ARI=1's target aep=1/1=1.0 is only reachable in the theoretical limit (needs
 # infinite Poisson rate); ARI<1 needs aep>1, which isn't a valid probability at
 # all. Drop ARI<1; ARI=1 itself is replaced per-lake/tail/decluster below with
 # the actual minimum achievable ARI (see module docstring).
-AVG_ARIS = tuple(ari for ari in ari_constants.SWL_ARIS if ari >= 1.0)
-METERS_TO_FEET = common_swl.METERS_TO_FEET
+AVG_ARIS = tuple(ari for ari in SWL_ARIS if ari >= 1.0)
 
 # The 3 distinct avg-level datasets (Michigan and Huron share one; see
-# common_swl.LAKE_AVG_FILENAMES).
+# lakes.LAKE_AVG_FILENAMES).
 AVG_LAKES = ("superior", "michiganhuron", "ontario")
 
 ALL_COORDS = {suffix: parse_scenario_name(suffix) for suffix in ALL_SCENARIO_SUFFIXES}
@@ -142,7 +144,7 @@ def min_achievable_ari(columns: dict[str, np.ndarray], tail: str, decluster: boo
     for suffix, values in columns.items():
         if suffix not in ALL_COORDS:
             continue
-        values_ft = values * METERS_TO_FEET
+        values_ft = units.convert_units(values, "m", "ft")
         years = len(values_ft) / 12.0
         population = population_for(values_ft, tail, decluster)
         n = len(population)
@@ -189,7 +191,7 @@ def build_grid(columns: dict[str, np.ndarray],
         if suffix not in ALL_COORDS:
             continue
         precip, temp = ALL_COORDS[suffix]
-        values_ft = values * METERS_TO_FEET
+        values_ft = units.convert_units(values, "m", "ft")
         if ari is None:
             level = float(values_ft.mean())
         else:
@@ -202,7 +204,7 @@ def build_grid(columns: dict[str, np.ndarray],
 
 
 def one_sided_color_style(zs: np.ndarray, threshold: float, tail: str | None) -> tuple | None:
-    """Thin tail-gated wrapper around common_swl.one_sided_color_style (see there for
+    """Thin tail-gated wrapper around contours.one_sided_color_style (see there for
     the shared math/rationale): only low-tail plots may get the 'Reds_r'
     all-below-threshold treatment, and only high-tail plots may get 'Blues'
     all-above-threshold -- tail-agnostic (mean, tail=None) plots always keep the
@@ -216,7 +218,7 @@ def one_sided_color_style(zs: np.ndarray, threshold: float, tail: str | None) ->
         return None
     if tail == "high" and not (z_min >= threshold):
         return None
-    return common_swl.one_sided_color_style((z_min, z_max), threshold)
+    return contours.one_sided_color_style((z_min, z_max), threshold)
 
 
 def resolve_default_output_dir(data_dir: Path) -> Path:
@@ -265,7 +267,7 @@ def run(data_dir: Path, output_dir: Path) -> tuple[Path, ...]:
         path = data_dir / f"{lake}_avg.csv"
         df = pd.read_csv(path)
         columns = {col: df[col].to_numpy(dtype=float) for col in df.columns if col != "time"}
-        baseline_avg_ft = columns["_0_0"].mean() * METERS_TO_FEET
+        baseline_avg_ft = units.convert_units(columns["_0_0"].mean(), "m", "ft")
 
         # 1. Mean plot (tail-agnostic).
         xs, ys, zs = build_grid(columns, ari=None, tail=None, decluster=False)
@@ -290,7 +292,7 @@ def run(data_dir: Path, output_dir: Path) -> tuple[Path, ...]:
                 for ari in aris:
                     xs, ys, zs = build_grid(columns, ari=ari, tail=tail, decluster=decluster)
                     decl_note = " decl" if decluster else ""
-                    ari_label = ari_constants.format_ari(ari)
+                    ari_label = format_ari(ari)
                     floor_note = " [min]" if ari == round(floor_ari, 2) else ""
                     # Kept short (single line) -- a longer title clips at the
                     # figure edge since plot_response_surface doesn't use a
@@ -312,7 +314,7 @@ _NAMING_SCHEME_TEXT = (
     "declustered = only local peaks/troughs are).\n"
     "ari/<clustered|declustered>/<high|low>/interpolated/<lake>_<ari>.png - same, "
     "climate_canvas interpolate+fillin resampled.\n"
-    "ARI values follow ari_constants.SWL_ARIS restricted to >=1 year; ARI=1 is "
+    "ARI values follow ari.SWL_ARIS restricted to >=1 year; ARI=1 is "
     "replaced per lake/tail/clustered-or-declustered combination by that "
     "combination's actual minimum achievable ARI (flagged '[min]' in the plot "
     "title) -- see this module's docstring for why."

@@ -2,10 +2,10 @@
 
 For each of the 4 Great Lakes swl workbooks in data_dir (5 **known** scenarios
 only -- no filled/interpolated/extrapolated sheets), picks the save point nearest the
-lake's centroid (mean lat/lon over all its save points -- see
-common_swl.center_save_point_id) and plots climate_canvas's response surface --
+lake's centroid (see
+lakes.lake_centroid_save_point_id) and plots climate_canvas's response surface --
 precip_delta (x) vs temp_delta (y), colored by SWL in **feet** -- for every ARI column
-in ari_constants.SWL_ARIS. Two plots per lake/ARI:
+in ari.SWL_ARIS. Two plots per lake/ARI:
 
 - `<lake>_<ari>.png`: interpolation OFF -- only the 5 known precip/temp cells are
   colored, everything else left blank.
@@ -38,11 +38,13 @@ import pandas as pd
 import typer
 from climate_canvas.plots_utilities import plot_response_surface  # type: ignore[import-untyped]
 
-from great_lakes import ari_constants, common_swl, run_readme
+from great_lakes import ari, lakes, units
+from great_lakes.batch import run_readme
 from great_lakes.fillin_swl import known_scenario_coords
+from great_lakes.swl import sheets as swl_sheets
 
-LAKES = tuple(common_swl.LAKE_SWL_FILENAMES)
-ARIS = ari_constants.SWL_ARIS
+LAKES = tuple(lakes.LAKE_SWL_FILENAMES)
+ARIS = ari.SWL_ARIS
 
 
 def resolve_default_output_dir(data_dir: Path) -> Path:
@@ -84,18 +86,18 @@ def run(data_dir: Path, output_dir: Path) -> tuple[Path, ...]:
     """
     written: list[Path] = []
     for lake in LAKES:
-        path = common_swl.resolve_lake_swl_path(lake, data_dir)
+        path = lakes.resolve_lake_swl_path(lake, data_dir)
         sheets = pd.read_excel(path, sheet_name=None)
-        save_point_id = common_swl.center_save_point_id(sheets)
+        save_point_id = lakes.lake_centroid_save_point_id(lake, sheets)
 
-        avg_means = common_swl.read_avg_scenario_means(lake, data_dir)
-        baseline_avg_ft = avg_means["_0_0"] * common_swl.METERS_TO_FEET
+        avg_means = lakes.read_avg_scenario_means(lake, data_dir)
+        baseline_avg_ft = units.convert_units(avg_means["_0_0"], "m", "ft")
 
         coords = known_scenario_coords(list(sheets.keys()))
 
-        for ari in ARIS:
-            ari_label = ari_constants.format_ari(ari)
-            xs, ys, zs = common_swl.build_scenario_ari_grid(coords, sheets, save_point_id, ari)
+        for aril in ARIS:
+            ari_label = ari.format_ari(aril)
+            xs, ys, zs = swl_sheets.build_scenario_ari_grid(coords, sheets, save_point_id, aril)
             title = (f"{lake.capitalize()} save point {save_point_id} -- ARI={ari_label} "
                       f"(baseline average lake level={baseline_avg_ft:.2f} ft)")
             written.extend(_write_pair(
@@ -109,7 +111,7 @@ _NAMING_SCHEME_TEXT = (
     "precip/temp cells colored, interpolate=False).\n"
     "interpolated/<lake>_<ari>.png - same, climate_canvas interpolate+fillin "
     "resampled (Delaunay-linear fillin outside the known scenarios' convex hull).\n"
-    "ARI values follow ari_constants.SWL_ARIS (all 13 workbook columns)."
+    "ARI values follow ari.SWL_ARIS (all 13 workbook columns)."
 )
 
 app = typer.Typer(add_completion=False, no_args_is_help=True)
@@ -133,7 +135,7 @@ def main(
     written = run(data_dir, output_dir)
 
     inputs = [
-        (f"{lake} swl workbook", common_swl.resolve_lake_swl_path(lake, data_dir))
+        (f"{lake} swl workbook", lakes.resolve_lake_swl_path(lake, data_dir))
         for lake in LAKES
     ]
     workspace_root = Path(__file__).resolve().parents[4]

@@ -6,7 +6,7 @@ import pytest
 from typer.testing import CliRunner
 
 from great_lakes.analysis.swl import compare_filled_vs_climate_canvas as cfc
-from great_lakes.ari_constants import SWL_ARIS
+from great_lakes.ari import SWL_ARIS
 
 runner = CliRunner()
 

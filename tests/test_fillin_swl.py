@@ -5,6 +5,7 @@ import pytest
 from typer.testing import CliRunner
 
 from great_lakes import fillin_swl
+from great_lakes.lakes import LAKE_AVG_FILENAMES, LAKE_SWL_FILENAMES
 
 # ---- resolve_default_output_dir ----------------------------------------------------
 
@@ -432,9 +433,9 @@ def _make_avg_csv(data_dir, filename):
 def _make_data_dir(tmp_path):
     data_dir = tmp_path / "clean"
     data_dir.mkdir()
-    for _lake, filename in fillin_swl.common_swl.LAKE_SWL_FILENAMES.items():
+    for _lake, filename in LAKE_SWL_FILENAMES.items():
         _make_lake_workbook(data_dir / filename)
-    for filename in fillin_swl.common_swl.LAKE_AVG_FILENAMES.values():
+    for filename in LAKE_AVG_FILENAMES.values():
         _make_avg_csv(data_dir, filename)
     return data_dir
 
@@ -447,7 +448,7 @@ def test_cli_processes_all_four_lakes_writes_17_sheets_each_by_default(tmp_path)
 
     assert result.exit_code == 0, result.output
     import pandas as pd
-    for filename in fillin_swl.common_swl.LAKE_SWL_FILENAMES.values():
+    for filename in LAKE_SWL_FILENAMES.values():
         sheets = pd.read_excel(output_dir / filename, sheet_name=None)
         assert len(sheets) == 17
         assert set(REAL_KNOWN_SHEET_NAMES) <= set(sheets.keys())
@@ -464,7 +465,7 @@ def test_cli_no_extrapolate_writes_12_sheets_only(tmp_path):
 
     assert result.exit_code == 0, result.output
     import pandas as pd
-    for filename in fillin_swl.common_swl.LAKE_SWL_FILENAMES.values():
+    for filename in LAKE_SWL_FILENAMES.values():
         sheets = pd.read_excel(output_dir / filename, sheet_name=None)
         assert len(sheets) == 12
         assert not any(name.startswith("extrapolated-") for name in sheets)

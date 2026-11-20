@@ -1,8 +1,6 @@
 """Generate analysis tables and figures for the Long Tail Point SWL memo."""
 
 import argparse
-from dataclasses import dataclass
-from math import ceil, exp, factorial
 from pathlib import Path
 from typing import Sequence
 
@@ -21,9 +19,18 @@ from hydropattern.scenario_grid import parse_scenario_name  # type: ignore[impor
 from matplotlib.colors import TwoSlopeNorm
 from matplotlib.patches import Rectangle
 from matplotlib.ticker import FormatStrFormatter
-from scipy.stats import t  # type: ignore[import-untyped]
 
-from great_lakes import batch_run_swl, common_swl, fillin_swl
+from great_lakes import batch_run_swl, fillin_swl, units
+from great_lakes.avg_stats import (
+    WINDOW_CATEGORIES,
+    annual_maxima,
+    high_year_flags,
+    poisson_probability_at_least,
+    poisson_window_category_shares,
+    rolling_window_category_shares,
+)
+from great_lakes.swl.sheets import NON_ARI_COLUMNS, parse_scenario_sheet_name
+from great_lakes.swl_method_quality import regression_prediction
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = WORKSPACE_ROOT / "data" / "clean"
@@ -44,7 +51,6 @@ WARMING_SCENARIOS = {
     3.0: ("_0_3", "_5_3", "_10_3", "_15_3"),
 }
 STATUS_MARKS = {"known": "", "interpolated": "*", "extrapolated": "**"}
-WINDOW_CATEGORIES = ("0", "1", "2", "3+")
 TIMELINE_YEARS = 100
 RANDOM_SEED = 20261028
 REPORT_OUTPUT_NAMES = (
@@ -67,100 +73,6 @@ REPORT_OUTPUT_NAMES = (
 )
 
 
-@dataclass(frozen=True)
-class RegressionPrediction:
-    """Linear prediction and residual-based 95% prediction interval."""
-
-    slope: float
-    intercept: float
-    prediction: float
-    residual_sd: float
-    lower_95: float
-    upper_95: float
-
-
-def annual_maxima(monthly: pd.DataFrame) -> pd.DataFrame:
-    """Return each scenario's annual maximum monthly level, indexed by year."""
-    frame = monthly.copy()
-    frame["year"] = frame["time"].astype(str).str.slice(0, 4).astype(int)
-    return frame.groupby("year", sort=True).max(numeric_only=True)
-
-
-def high_year_flags(values: pd.Series, fraction: float = 1 / 15) -> pd.Series:
-    """Mark exactly the highest `fraction` of records, breaking ties by row order."""
-    if not 0 < fraction <= 1:
-        raise ValueError("fraction must be greater than 0 and at most 1")
-    count = ceil(len(values) * fraction)
-    return values.rank(method="first", ascending=False) <= count
-
-
-def rolling_window_category_shares(
-    flags: pd.Series, window_years: int = 15
-) -> dict[str, float]:
-    """Return shares of overlapping windows with 0, 1, 2, or 3+ flagged years."""
-    if window_years < 1 or len(flags) < window_years:
-        raise ValueError("flags must contain at least one complete window")
-    counts = np.convolve(flags.to_numpy(dtype=int), np.ones(window_years, dtype=int), "valid")
-    return {
-        category: float(np.count_nonzero(_category_mask(counts, category)) / len(counts))
-        for category in WINDOW_CATEGORIES
-    }
-
-
-def _category_mask(counts: np.ndarray, category: str) -> np.ndarray:
-    if category == "3+":
-        return counts >= 3
-    return counts == int(category)
-
-
-def poisson_window_category_shares(rate: float = 1.0) -> dict[str, float]:
-    """Return Poisson probabilities for 0, 1, 2, and 3+ events in a window."""
-    if rate < 0:
-        raise ValueError("rate cannot be negative")
-    probabilities = [exp(-rate) * rate**count / factorial(count) for count in range(3)]
-    return dict(zip(WINDOW_CATEGORIES, [*probabilities, 1.0 - sum(probabilities)]))
-
-
-def poisson_probability_at_least(minimum_count: int, rate: float = 1.0) -> float:
-    """Return the Poisson probability of at least `minimum_count` events."""
-    if minimum_count < 0 or rate < 0:
-        raise ValueError("minimum_count and rate cannot be negative")
-    below = sum(exp(-rate) * rate**count / factorial(count) for count in range(minimum_count))
-    return 1.0 - below
-
-
-def regression_prediction(
-    x_values: Sequence[float], y_values: Sequence[float], target_x: float
-) -> RegressionPrediction:
-    """Fit ordinary least squares and calculate a 95% prediction interval."""
-    x = np.asarray(x_values, dtype=float)
-    y = np.asarray(y_values, dtype=float)
-    if len(x) != len(y) or len(x) < 3 or not np.isfinite(x).all() or not np.isfinite(y).all():
-        raise ValueError("regression requires at least three finite, paired observations")
-    x_mean = float(x.mean())
-    centered_x = x - x_mean
-    sum_squares_x = float(centered_x @ centered_x)
-    if sum_squares_x == 0:
-        raise ValueError("regression requires variation in x")
-    slope = float(centered_x @ (y - y.mean()) / sum_squares_x)
-    intercept = float(y.mean() - slope * x_mean)
-    residuals = y - (intercept + slope * x)
-    residual_sd = float(np.sqrt((residuals @ residuals) / (len(x) - 2)))
-    prediction = intercept + slope * target_x
-    standard_error = residual_sd * np.sqrt(
-        1 + 1 / len(x) + (target_x - x_mean) ** 2 / sum_squares_x
-    )
-    margin = float(t.ppf(0.975, len(x) - 2) * standard_error)
-    return RegressionPrediction(
-        slope=slope,
-        intercept=intercept,
-        prediction=float(prediction),
-        residual_sd=residual_sd,
-        lower_95=float(prediction - margin),
-        upper_95=float(prediction + margin),
-    )
-
-
 def _scenario_status(suffix: str) -> str:
     if suffix in KNOWN_SUFFIXES:
         return "known"
@@ -175,7 +87,7 @@ def _load_scenario_sheets(swl_path: Path) -> dict[str, pd.DataFrame]:
     sheets = pd.read_excel(swl_path, sheet_name=None, engine="calamine")
     by_suffix: dict[str, pd.DataFrame] = {}
     for sheet_name, frame in sheets.items():
-        suffix = common_swl.parse_scenario_sheet_name(sheet_name)
+        suffix = parse_scenario_sheet_name(sheet_name)
         if suffix is None:
             continue
         if suffix in by_suffix:
@@ -194,7 +106,7 @@ def _load_scenario_sheets(swl_path: Path) -> dict[str, pd.DataFrame]:
 def _ari_columns(frame: pd.DataFrame) -> list[tuple[float, str | int | float]]:
     columns = []
     for column in frame.columns:
-        if column in common_swl.NON_ARI_COLUMNS:
+        if column in NON_ARI_COLUMNS:
             continue
         if not isinstance(column, (str, int, float)):
             raise ValueError(f"Unexpected ARI column type: {type(column).__name__}")
@@ -219,19 +131,11 @@ def _scenario_level_ft(
         [float(row[column[1]]) for column in columns],
         ari,
     )
-    return common_swl.m_igld85_to_ft_NAVD88(value_m)
+    return units.m_igld85_to_ft_NAVD88(value_m)
 
 
 def _scenario_means(monthly: pd.DataFrame) -> dict[str, float]:
     return {suffix: float(monthly[suffix].mean()) for suffix in fillin_swl.ALL_SCENARIO_SUFFIXES}
-
-
-def m_igld85_delta_to_ft_NAVD88(delta_m_igld85: float) -> float:
-    """Convert an IGLD85 elevation difference to ft without applying datum offset."""
-    return (
-        common_swl.m_igld85_to_ft_NAVD88(delta_m_igld85)
-        - common_swl.m_igld85_to_ft_NAVD88(0.0)
-    )
 
 
 def _scenario_coordinates(suffix: str) -> tuple[float, float]:
@@ -384,7 +288,7 @@ def _write_f2(means: dict[str, float], output_dir: Path) -> None:
                 "temp_delta_c": temp,
                 "status": _scenario_status(suffix),
                 "avg_mean_m_igld85": means[suffix],
-                "avg_change_ft": (means[suffix] - baseline) * common_swl.METERS_TO_FEET,
+                "avg_change_ft": units.convert_units(means[suffix] - baseline, "m", "ft"),
             }
         )
     frame = pd.DataFrame(rows)
@@ -596,7 +500,7 @@ def _write_regression_and_loo(
         suffix for suffix in fillin_swl.ALL_SCENARIO_SUFFIXES if suffix not in KNOWN_SUFFIXES
     ]
     x_m = [means[suffix] for suffix in known]
-    x_ft = [common_swl.m_igld85_to_ft_NAVD88(value) for value in x_m]
+    x_ft = [units.m_igld85_to_ft_NAVD88(value) for value in x_m]
     ari_values = sorted({ari for ari, _ in _ari_columns(sheets[known[0]])} | {PRIMARY_ARI})
     predictions: list[dict[str, object]] = []
     residual_rows: list[dict[str, object]] = []
@@ -618,11 +522,11 @@ def _write_regression_and_loo(
                     "slope": model.slope,
                     "intercept_ft_NAVD88": model.intercept,
                     "residual_ft": observed - (model.intercept + model.slope *
-                                               common_swl.m_igld85_to_ft_NAVD88(means[suffix])),
+                                               units.m_igld85_to_ft_NAVD88(means[suffix])),
                 }
             )
         for suffix in targets:
-            target_x = common_swl.m_igld85_to_ft_NAVD88(means[suffix])
+            target_x = units.m_igld85_to_ft_NAVD88(means[suffix])
             estimate = regression_prediction(x_ft, y_ft, target_x)
             predictions.append(
                 {
@@ -697,7 +601,7 @@ def _write_loo_row_shift(
         for ari in ari_values:
             anchor_level = _scenario_level_ft(sheets[anchor], SAVE_POINT_ID, ari)
             observed = _scenario_level_ft(sheets[target], SAVE_POINT_ID, ari)
-            delta_ft = m_igld85_delta_to_ft_NAVD88(means[target] - means[anchor])
+            delta_ft = units.convert_units(means[target] - means[anchor], "m", "ft")
             predicted = anchor_level + delta_ft
             error = predicted - observed
             rows.append(

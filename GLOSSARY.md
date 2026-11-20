@@ -106,7 +106,7 @@ interpolating the water level at that same ARI under every other scenario's own 
 water level is equally likely, under this scenario, as the lookup value is under the
 baseline scenario?" All swl-workbook levels, `magnitude_value`, and `equivalent_elevation`
 are in meters, IGLD85 datum (the analysis itself never converts units), but the written
-output is converted to feet, NAVD88 datum (see `common_swl.m_igld85_to_ft_NAVD88`, a flat
+output is converted to feet, NAVD88 datum (see `units.m_igld85_to_ft_NAVD88`, a flat
 +0.44ft offset plus a standard 0.3048 m/ft scale — see
 `longtailpoint/longtail_waterlevel.xlsx` Sheet2's "NAVD88 to IGLD85" table) since a water
 level, unlike the primary metric's portion/percentage/return_period units, has physical

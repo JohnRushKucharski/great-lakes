@@ -1,11 +1,11 @@
-"""Tests for great_lakes.ari_constants."""
+"""Tests for great_lakes.ari."""
 import pytest
 
-from great_lakes import ari_constants
+from great_lakes import ari as ari_module
 
 
 def test_swl_aris_matches_all_13_workbook_ari_columns():
-    assert ari_constants.SWL_ARIS == (
+    assert ari_module.SWL_ARIS == (
         0.1, 0.2, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0, 100.0, 200.0, 500.0, 1000.0,
     )
 
@@ -18,4 +18,4 @@ def test_swl_aris_matches_all_13_workbook_ari_columns():
     (1000.0, "1000"),
 ])
 def test_format_ari_drops_superfluous_decimal_on_whole_numbers(ari, expected):
-    assert ari_constants.format_ari(ari) == expected
+    assert ari_module.format_ari(ari) == expected

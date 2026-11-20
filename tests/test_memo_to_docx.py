@@ -1,12 +1,13 @@
 """Tests for the Long Tail Point memo .docx builder."""
 
+import pytest
 from docx import Document
 from docx.enum.section import WD_ORIENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Inches, Pt
 from PIL import Image
 
-from great_lakes import build_memo_docx
+from great_lakes.memo import to_docx as build_memo_docx
 
 DRAFT = """**TO:** Project Team
 **SUBJECT:** Dune elevations
@@ -113,3 +114,10 @@ def test_landscape_block_gets_own_wide_page_and_larger_figure(tmp_path):
     assert doc.sections[2].page_width == Inches(8.5)
     assert Inches(6.5) < doc.inline_shapes[0].width <= Inches(9)
     assert not any("landscape" in p.text for p in doc.paragraphs)
+
+
+def test_build_memo_has_no_case_study_default_paths():
+    with pytest.raises(TypeError):
+        build_memo_docx.build_memo()  # type: ignore[call-arg]
+    assert not hasattr(build_memo_docx, "DRAFT_PATH")
+    assert not hasattr(build_memo_docx, "OUT_PATH")

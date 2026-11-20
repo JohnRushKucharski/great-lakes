@@ -1,15 +1,15 @@
 """Recover a memo's Markdown draft from its (hand-edited) Word document.
 
-Inverse of `build_memo_docx`. The .docx is the source of truth for memo text once it is
+Inverse of `great_lakes.memo.to_docx`. The .docx is the source of truth for memo text once it is
 edited in Word; this brings that text back into the Markdown draft so the draft can be
 reviewed, diffed, and rebuilt from. Lossy by design -- it handles the constructs
-`build_memo_docx` writes (header fields, `##` headings, paragraphs, bullets, numbered
+`to_docx` writes (header fields, `##` headings, paragraphs, bullets, numbered
 items, pipe tables, figures, landscape sections, inline bold/italic/code) and nothing else.
 
 Each embedded picture becomes the next `{{Fn}}` slot id, taken in order from the existing
 draft (`figure_slots`), since the image itself carries no slot name.
 
-Usage: python -m great_lakes.memo_docx_to_md DOCX [--draft PATH] [--out PATH]
+Usage: python -m great_lakes.memo.from_docx DOCX [--draft PATH] [--out PATH]
 """
 
 import argparse
@@ -31,7 +31,7 @@ _HEADER = re.compile(r"^([A-Z ]+):\t(.*)$", re.DOTALL)
 _NUMBERED = re.compile(r"^(\d+)\.\t(.*)$", re.DOTALL)
 _BULLET = re.compile(r"^[\u2022\uf0b7\u00b7\u25cf\u25e6\u25aa\u2013-]\t(.*)$", re.DOTALL)
 _PLACEHOLDER = re.compile(r"^\[[^\]]*placeholder[^\]]*\]$", re.IGNORECASE)
-_LIST_BASE_EMU = 228600  # build_memo_docx: top-level list items sit at 0.25 in
+_LIST_BASE_EMU = 228600  # memo.to_docx: top-level list items sit at 0.25 in
 _LIST_STEP_EMU = 228600
 
 

@@ -10,7 +10,8 @@ from pathlib import Path
 import pytest
 
 from great_lakes import build_dashboard as dash
-from great_lakes import common_swl
+from great_lakes import units
+from great_lakes.swl import naming
 
 # ---- compute_magnitude_ft -----------------------------------------------------------
 
@@ -31,7 +32,7 @@ def _resource(**overrides):
 
 def test_compute_magnitude_ft_converts_m_igld85_to_ft_NAVD88():
     resource = _resource(magnitude_value=178.7747637915269)
-    expected = common_swl.m_igld85_to_ft_NAVD88(178.7747637915269)
+    expected = units.m_igld85_to_ft_NAVD88(178.7747637915269)
     assert dash.compute_magnitude_ft(resource) == pytest.approx(expected)
 
 
@@ -58,7 +59,7 @@ def test_basis_is_baseline_magnitude_case_insensitive():
 def test_basis_is_override_label_in_ft_NAVD88_for_numeric_cell():
     resource = _resource(magnitude_value=178.77, equivalent_elevation=178.7)
     row = {"equivalent_elevation": 178.7}
-    expected_ft = common_swl.m_igld85_to_ft_NAVD88(178.7)
+    expected_ft = units.m_igld85_to_ft_NAVD88(178.7)
     result = dash.compute_equivalent_elevation_basis(row, resource)
     assert result == f"{expected_ft:.2f} ft override"
 
@@ -109,7 +110,7 @@ def test_build_entries_reads_rows_and_resolves_output_dir(tmp_path):
     assert entry.qualified_name == "longtail_17877_base_1968"
     assert entry.output_dir == out_dir
     assert entry.equivalent_elevation_basis == "baseline_magnitude"
-    assert entry.magnitude_ft == pytest.approx(common_swl.m_igld85_to_ft_NAVD88(178.7747637915269))
+    assert entry.magnitude_ft == pytest.approx(units.m_igld85_to_ft_NAVD88(178.7747637915269))
     assert entry.workbook_path == wb_path
     assert entry.analysis_type == "swl"
 
@@ -142,8 +143,8 @@ def test_build_entries_file_stem_elevation_runup_savepoint_style(tmp_path):
         filename_style="elevation_runup_savepoint",
     )
     entries = dash.build_entries(wb_path)
-    expected_stem = common_swl.output_file_stem(
-        common_swl.m_igld85_to_ft_NAVD88(178.7747637915269), "base", 1968,
+    expected_stem = naming.output_file_stem(
+        units.m_igld85_to_ft_NAVD88(178.7747637915269), "base", 1968,
     )
     assert entries[0].file_stem == expected_stem
     assert entries[0].qualified_name == "longtail_17877_base_1968"  # identity unchanged
@@ -156,7 +157,7 @@ def test_build_entries_elevation_ft_is_magnitude_plus_runup(tmp_path):
         [["longtail_17877", "run25", "michigan", ">=", 178.7747637915269, 1968, None]],
     )
     entries = dash.build_entries(wb_path)
-    magnitude_ft = common_swl.m_igld85_to_ft_NAVD88(178.7747637915269)
+    magnitude_ft = units.m_igld85_to_ft_NAVD88(178.7747637915269)
     assert entries[0].elevation_ft == pytest.approx(magnitude_ft + 2.5)
 
 
@@ -543,7 +544,7 @@ def test_build_avg_entries_reads_rows_and_marks_analysis_type_avg(tmp_path):
     assert entry.equivalent_elevation_basis is None
     assert entry.qualified_name == "longtail_17877_mo_avg"
     assert entry.output_dir == out_dir
-    assert entry.magnitude_ft == pytest.approx(common_swl.m_igld85_to_ft_NAVD88(178.7747637915269))
+    assert entry.magnitude_ft == pytest.approx(units.m_igld85_to_ft_NAVD88(178.7747637915269))
 
 
 def test_build_avg_entries_requires_magnitude_characteristic(tmp_path):

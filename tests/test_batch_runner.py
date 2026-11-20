@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from great_lakes import batch_runner
+from great_lakes.batch import runner as batch_runner
 
 
 @dataclass(frozen=True)

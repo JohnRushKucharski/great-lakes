@@ -6,7 +6,8 @@ import pandas as pd
 import pytest
 
 from great_lakes import batch_run_swl as swl_batch_run
-from great_lakes import common_swl
+from great_lakes import units
+from great_lakes.swl import contours, naming
 
 # ---- _is_blank ----------------------------------------------------------------------
 
@@ -753,8 +754,8 @@ def test_resolve_output_stem_elevation_runup_savepoint_style():
         output_directory="out", filename_style="elevation_runup_savepoint",
     )
     stem = swl_batch_run.resolve_output_stem(resource, config)
-    expected_ft = common_swl.m_igld85_to_ft_NAVD88(178.774764)
-    assert stem == common_swl.output_file_stem(expected_ft, "run25", 1968)
+    expected_ft = units.m_igld85_to_ft_NAVD88(178.774764)
+    assert stem == naming.output_file_stem(expected_ft, "run25", 1968)
 
 
 def test_resolve_output_stem_savepoint_elevation_runup_style():
@@ -766,8 +767,8 @@ def test_resolve_output_stem_savepoint_elevation_runup_style():
         output_directory="out", filename_style="savepoint_elevation_runup",
     )
     stem = swl_batch_run.resolve_output_stem(resource, config)
-    expected_ft = common_swl.m_igld85_to_ft_NAVD88(178.774764)
-    assert stem == common_swl.output_file_stem_savepoint_elevation_runup(
+    expected_ft = units.m_igld85_to_ft_NAVD88(178.774764)
+    assert stem == naming.output_file_stem_savepoint_elevation_runup(
         expected_ft, "run25", 1968
     )
 
@@ -790,8 +791,8 @@ def test_resolve_plot_title_elevation_runup_savepoint_style():
         output_directory="out", filename_style="elevation_runup_savepoint",
     )
     title = swl_batch_run.resolve_plot_title("primary", resource, config)
-    expected_ft = common_swl.m_igld85_to_ft_NAVD88(178.774764)
-    assert title == common_swl.build_plot_title("primary", expected_ft, "run25", 1968)
+    expected_ft = units.m_igld85_to_ft_NAVD88(178.774764)
+    assert title == naming.build_plot_title("primary", expected_ft, "run25", 1968)
 
 
 def test_resolve_plot_title_savepoint_elevation_runup_style():
@@ -803,8 +804,8 @@ def test_resolve_plot_title_savepoint_elevation_runup_style():
         output_directory="out", filename_style="savepoint_elevation_runup",
     )
     title = swl_batch_run.resolve_plot_title("primary", resource, config)
-    expected_ft = common_swl.m_igld85_to_ft_NAVD88(178.774764)
-    assert title == common_swl.build_plot_title("primary", expected_ft, "run25", 1968)
+    expected_ft = units.m_igld85_to_ft_NAVD88(178.774764)
+    assert title == naming.build_plot_title("primary", expected_ft, "run25", 1968)
 
 
 def test_resolve_plot_title_passes_baseline_ari_through_to_build_plot_title():
@@ -818,8 +819,8 @@ def test_resolve_plot_title_passes_baseline_ari_through_to_build_plot_title():
     title = swl_batch_run.resolve_plot_title(
         "elevation_delta", resource, config, baseline_ari=5.0
     )
-    expected_ft = common_swl.m_igld85_to_ft_NAVD88(178.774764)
-    assert title == common_swl.build_plot_title(
+    expected_ft = units.m_igld85_to_ft_NAVD88(178.774764)
+    assert title == naming.build_plot_title(
         "elevation_delta", expected_ft, "run25", 1968, baseline_ari=5.0
     )
     assert "baseline ARI: 5" in title
@@ -1116,7 +1117,7 @@ def test_build_resource_outputs_primary_one_sided_style_when_threshold_outside_r
     )
     primary_call = calls[0]
     z_range = (float(np.nanmin(primary_call["zs"])), float(np.nanmax(primary_call["zs"])))
-    expected_style = common_swl.one_sided_color_style(z_range, -1.0)
+    expected_style = contours.one_sided_color_style(z_range, -1.0)
     assert expected_style is not None
     assert primary_call["color_map"] == expected_style[0]
     assert primary_call["levels"] == expected_style[2]
@@ -1160,8 +1161,8 @@ def test_build_resource_outputs_elevation_runup_savepoint_filename_style(tmp_pat
     grid_path, plot_path = swl_batch_run.build_resource_outputs(
         resource, data_dir, config, plot_fn=_recording_plot_fn(calls)
     )
-    expected_stem = common_swl.output_file_stem(
-        common_swl.m_igld85_to_ft_NAVD88(110.0), "run25", 1
+    expected_stem = naming.output_file_stem(
+        units.m_igld85_to_ft_NAVD88(110.0), "run25", 1
     )
     assert grid_path == tmp_path / "out" / f"{expected_stem}_grid.csv"
     assert plot_path == tmp_path / "out" / f"{expected_stem}_plot.png"
@@ -1252,7 +1253,7 @@ def test_build_resource_outputs_equivalent_elevation_writes_second_grid_and_plot
     # threshold/zs are converted from meters (IGLD85) to feet (NAVD88) at output time --
     # the underlying analysis (compute_equivalent_elevation_metrics) still works in
     # meters; build_resource_outputs converts only when writing the grid/plot.
-    assert elev_call["threshold"] == pytest.approx(common_swl.m_igld85_to_ft_NAVD88(110.0))
+    assert elev_call["threshold"] == pytest.approx(units.m_igld85_to_ft_NAVD88(110.0))
     assert elev_call["save_path"] == elev_plot
     # This fixture's equivalent-elevation grid is degenerate (every cell equals the
     # comparison threshold exactly), so one_sided_color_style treats it as one-sided
@@ -1262,7 +1263,7 @@ def test_build_resource_outputs_equivalent_elevation_writes_second_grid_and_plot
     assert elev_call["color_map_ticks"] is not None
     assert elev_call["fillin"] is True
     for value in elev_call["zs"]:
-        assert value == pytest.approx(common_swl.m_igld85_to_ft_NAVD88(110.0))
+        assert value == pytest.approx(units.m_igld85_to_ft_NAVD88(110.0))
 
 
 def test_build_resource_outputs_equivalent_elevation_numeric_override_uses_value_as_threshold(
@@ -1286,7 +1287,7 @@ def test_build_resource_outputs_equivalent_elevation_numeric_override_uses_value
     # The elevation plot's threshold tracks the override value (115.0), not
     # magnitude_value (110.0) -- the primary plot (calls[0]) is unaffected either way --
     # and is expressed in ft NAVD88, not the raw meters override.
-    assert calls[1]["threshold"] == pytest.approx(common_swl.m_igld85_to_ft_NAVD88(115.0))
+    assert calls[1]["threshold"] == pytest.approx(units.m_igld85_to_ft_NAVD88(115.0))
 
 
 def test_build_resource_outputs_primary_grid_unaffected_by_equivalent_elevation_value(tmp_path):
@@ -1380,21 +1381,21 @@ def test_build_resource_outputs_elevation_delta_writes_third_grid_and_plot(tmp_p
     # equivalent_elevation values, converted to ft and differenced from the
     # ft-converted lookup value (resource.equivalent_elevation resolves to
     # magnitude_value == 110.0 via "baseline_magnitude").
-    lookup_ft = common_swl.m_igld85_to_ft_NAVD88(110.0)
-    baseline_delta_ft = common_swl.m_igld85_to_ft_NAVD88(110.0) - lookup_ft
-    other_delta_ft = common_swl.m_igld85_to_ft_NAVD88(116.0) - lookup_ft
+    lookup_ft = units.m_igld85_to_ft_NAVD88(110.0)
+    baseline_delta_ft = units.m_igld85_to_ft_NAVD88(110.0) - lookup_ft
+    other_delta_ft = units.m_igld85_to_ft_NAVD88(116.0) - lookup_ft
     assert baseline_delta_ft == pytest.approx(0.0)
-    assert other_delta_ft == pytest.approx(common_swl.m_igld85_to_ft_NAVD88(116.0) - lookup_ft)
+    assert other_delta_ft == pytest.approx(units.m_igld85_to_ft_NAVD88(116.0) - lookup_ft)
     assert min(np.ravel(delta_call["zs"])) <= other_delta_ft + 1e-9
     assert any(v == pytest.approx(0.0, abs=1e-9) for v in np.ravel(delta_call["zs"]))
-    # levels/widths come from common_swl.symmetric_delta_levels, centered on 0,
+    # levels/widths come from contours.symmetric_delta_levels, centered on 0,
     # independent of whether this particular range is one-sided. color_map_ticks is
     # the *filtered* (in-range) subset -- see colorbar_ticks_within_range: passing an
     # out-of-range tick to matplotlib's colorbar blanks it entirely, which was the
     # root cause of the previously-diagnosed "blank elevation-delta colorbar" bug.
     delta_z_range = (float(np.nanmin(delta_call["zs"])), float(np.nanmax(delta_call["zs"])))
-    expected_levels, expected_widths = common_swl.symmetric_delta_levels(delta_z_range)
-    expected_ticks = common_swl.colorbar_ticks_within_range(expected_levels, delta_z_range)
+    expected_levels, expected_widths = contours.symmetric_delta_levels(delta_z_range)
+    expected_ticks = contours.colorbar_ticks_within_range(expected_levels, delta_z_range)
     assert delta_call["levels"] == expected_levels
     assert delta_call["widths"] == expected_widths
     assert delta_call["color_map_ticks"] == expected_ticks
@@ -1616,7 +1617,7 @@ def test_build_save_point_ari_elevation_output_writes_grid_and_calls_plot_fn(tmp
     assert plot_path == tmp_path / "out" / "savepoint1_ari5_elevation_plot.png"
     assert grid_path.exists()
     assert len(calls) == 1
-    assert calls[0]["title"] == common_swl.build_threshold_ari_title(5.0, 1)
+    assert calls[0]["title"] == naming.build_threshold_ari_title(5.0, 1)
     assert calls[0]["save_path"] == plot_path
     assert calls[0]["show_values"] == config.show_values
     assert calls[0]["value_decimals"] == config.value_decimals

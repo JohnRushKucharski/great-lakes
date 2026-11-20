@@ -6,7 +6,7 @@ import pytest
 from typer.testing import CliRunner
 
 from great_lakes.analysis.swl import plot_filled_and_extrapolated as pfe
-from great_lakes.ari_constants import SWL_ARIS
+from great_lakes.ari import SWL_ARIS
 
 runner = CliRunner()
 

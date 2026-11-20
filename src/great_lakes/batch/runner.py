@@ -18,7 +18,7 @@ from math import isnan
 from pathlib import Path
 from typing import Any, Callable, Protocol, TypeVar
 
-from great_lakes import run_readme as _run_readme
+from great_lakes.batch import run_readme as _run_readme
 
 ResourceT = TypeVar("ResourceT")
 # Contravariant: ConfigT only ever appears as a parameter type in RowProcessor's
@@ -274,7 +274,7 @@ def write_run_readme(
 ) -> Path:
     """Write output_directory/README.txt: a reproducibility record of one batch run.
 
-    Thin wrapper around great_lakes.run_readme.write_readme -- the generic core
+    Thin wrapper around great_lakes.batch.run_readme.write_readme -- the generic core
     shared with great_lakes.analysis's scripts (see GLOSSARY.md's "Run readme"
     entry). Supplies this job's inputs (resources workbook + data directory), its
     results text (format_summary(summary)), and every succeeded row's output_paths

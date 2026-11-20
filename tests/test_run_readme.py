@@ -1,4 +1,4 @@
-"""Tests for great_lakes.run_readme's generic reproducibility-record writer.
+"""Tests for great_lakes.batch.run_readme's generic reproducibility-record writer.
 
 This is the generic core extracted out of batch_runner.write_run_readme (which now
 wraps it -- see test_batch_runner.py's write_run_readme tests, unmodified, for that
@@ -9,7 +9,7 @@ succeeded/failed summary -- just a flat list of input files and written outputs.
 from datetime import datetime, timezone
 from pathlib import Path
 
-from great_lakes import run_readme
+from great_lakes.batch import run_readme
 
 _FIXED_NOW = datetime(2026, 8, 10, 12, 30, 0, tzinfo=timezone.utc)
 

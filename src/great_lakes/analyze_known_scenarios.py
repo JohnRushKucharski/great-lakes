@@ -21,8 +21,9 @@ from pathlib import Path
 
 import pandas as pd
 
-from great_lakes import common_swl
+from great_lakes import lakes
 from great_lakes.fillin_swl import known_scenario_coords
+from great_lakes.swl import sheets as swl_sheets
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "extrapolated"
 OUTPUT_DIR = Path(__file__).resolve().parents[2] / "data" / "analysis"
@@ -39,7 +40,7 @@ def sheet_name_for_suffix(
     if suffix not in known_coords:
         raise ValueError(f"{suffix!r} is not a known scenario in this workbook.")
     for name in sheet_names:
-        if common_swl.parse_scenario_sheet_name(name) == suffix:
+        if swl_sheets.parse_scenario_sheet_name(name) == suffix:
             return name
     raise ValueError(f"No sheet found for suffix {suffix!r}.")
 
@@ -51,8 +52,8 @@ def analyze_lake(lake: str, data_dir: Path) -> pd.DataFrame:
     lake, ID, lat, lon, ari, swl_p10_dt5, swl_p20_dt5, precip_delta, precip_pct,
     swl_dt0_p0, swl_dt7_p0, temp_delta, temp_pct.
     """
-    path = common_swl.resolve_lake_swl_path(lake, data_dir)
-    sheets = common_swl.load_lake_sheets(path)
+    path = lakes.resolve_lake_swl_path(lake, data_dir)
+    sheets = swl_sheets.load_lake_sheets(path)
     sheet_names = list(sheets.keys())
     coords = known_scenario_coords(sheet_names)
 
@@ -66,7 +67,7 @@ def analyze_lake(lake: str, data_dir: Path) -> pd.DataFrame:
     df_t0 = sheets[t0_name].set_index("ID")
     df_t7 = sheets[t7_name].set_index("ID")
 
-    ari_columns = [c for c in df_p10.columns if c not in common_swl.NON_ARI_COLUMNS]
+    ari_columns = [c for c in df_p10.columns if c not in swl_sheets.NON_ARI_COLUMNS]
 
     rows = []
     for ari in ari_columns:
@@ -141,9 +142,9 @@ def summarize(results: pd.DataFrame) -> dict[str, pd.DataFrame]:
 
 
 def main(data_dir: Path = DATA_DIR, output_dir: Path = OUTPUT_DIR) -> None:
-    lakes = list(common_swl.LAKE_SWL_FILENAMES)
+    lake_names = list(lakes.LAKE_SWL_FILENAMES)
     all_results = pd.concat(
-        [analyze_lake(lake, data_dir) for lake in lakes], ignore_index=True
+        [analyze_lake(lake, data_dir) for lake in lake_names], ignore_index=True
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -160,7 +161,7 @@ def main(data_dir: Path = DATA_DIR, output_dir: Path = OUTPUT_DIR) -> None:
     n_rows = len(all_results)
     n_save_points = all_results.groupby("lake")["ID"].nunique().sum()
     n_aris = all_results["ari"].nunique()
-    print(f"Analyzed {n_save_points} save points x {n_aris} ARIs across {len(lakes)} "
+    print(f"Analyzed {n_save_points} save points x {n_aris} ARIs across {len(lake_names)} "
           f"lakes ({n_rows} total rows).")
     print(f"Raw results: {csv_path}")
     print(f"Summary tables: {xlsx_path}")

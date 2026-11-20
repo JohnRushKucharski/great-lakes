@@ -4,7 +4,7 @@ Status: phases 1-6 complete; phase 7 in progress (`.docx` built, awaiting user p
 review in Word). PDF dropped (user: .docx only). Header filled (TO: Longtail Point Project
 Delivery Team; FROM: Great Lakes Coastal Resiliency Study Team; PREPARED BY: John Kucharski,
 Senior Expert Advisor, Deltares; DATE: 30 October 2026). Builder:
-`python -m great_lakes.build_memo_docx` (draft -> `longtailpoint/longtailpoint_memo.docx`).
+`python -m great_lakes.memo.to_docx --draft PATH --out PATH` (draft -> `longtailpoint/longtailpoint_memo.docx`).
 Main memo and Appendices A-B drafted in
 `docs/longtailpoint_memo_draft.md`, concision pass and captions applied with user direction.
 This file is the source

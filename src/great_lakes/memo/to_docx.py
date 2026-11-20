@@ -1,12 +1,12 @@
-"""Build the Long Tail Point SWL memo (.docx) from its Markdown draft.
+"""Build a memo (.docx) from its Markdown draft.
 
-The draft (`docs/longtailpoint_memo_draft.md`) is the source of truth. Supported Markdown:
+The Markdown draft is the source of truth. Supported Markdown:
 memo header lines (`**KEY:** value`) before the first `##` heading, `##` headings
 (`Appendix ...` starts a new page), paragraphs, `- ` bullets (two-space indent nests),
 `1. ` numbered items, pipe tables, `![alt](path)` figures, standalone `[... placeholder ...]`
 lines, and inline `**bold**`, `*italic*`, and `` `code` ``.
 
-Usage: python -m great_lakes.build_memo_docx [--draft PATH] [--out PATH]
+Usage: python -m great_lakes.memo.to_docx --draft PATH --out PATH
 """
 
 import argparse
@@ -24,10 +24,6 @@ from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
 from docx.text.paragraph import Paragraph
 from PIL import Image
-
-REPO_ROOT = Path(__file__).resolve().parents[2]
-DRAFT_PATH = REPO_ROOT / "docs" / "longtailpoint_memo_draft.md"
-OUT_PATH = REPO_ROOT / "longtailpoint" / "longtailpoint_memo.docx"
 
 FONT = "Calibri"
 MAX_FIGURE_WIDTH = Inches(6.0)
@@ -241,7 +237,7 @@ def _start_section(doc: DocumentType, landscape: bool) -> None:
     )
 
 
-def build_memo(draft_path: Path = DRAFT_PATH, out_path: Path = OUT_PATH) -> Path:
+def build_memo(draft_path: Path, out_path: Path) -> Path:
     """Render the Markdown memo draft to a Letter-size, 11 pt Word document.
 
     `<!-- landscape -->` / `<!-- portrait -->` lines start a new page in that orientation.
@@ -318,8 +314,8 @@ def _is_block_start(line: str) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--draft", type=Path, default=DRAFT_PATH)
-    parser.add_argument("--out", type=Path, default=OUT_PATH)
+    parser.add_argument("--draft", type=Path, required=True)
+    parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
     print(build_memo(args.draft, args.out))
 

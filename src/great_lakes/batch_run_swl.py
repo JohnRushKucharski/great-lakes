@@ -30,8 +30,9 @@ from hydropattern.scenario_grid import (  # type: ignore[import-untyped]
     require_scenario_grid,
 )
 
-from great_lakes import batch_runner, common_swl
-from great_lakes.batch_runner import (  # noqa: F401 -- re-exported for backward compat
+from great_lakes import lakes, units
+from great_lakes.batch import runner as batch_runner
+from great_lakes.batch.runner import (  # noqa: F401 -- re-exported for backward compat
     BatchSummary,
     RowResult,
     RowValidationError,
@@ -43,13 +44,14 @@ from great_lakes.batch_runner import (  # noqa: F401 -- re-exported for backward
     _to_bool,
     format_summary,
 )
+from great_lakes.swl import contours, naming, sheets
 
-LAKE_SWL_FILENAMES = common_swl.LAKE_SWL_FILENAMES
-resolve_lake_swl_path = common_swl.resolve_lake_swl_path
-parse_scenario_sheet_name = common_swl.parse_scenario_sheet_name
-_NON_ARI_COLUMNS = common_swl.NON_ARI_COLUMNS
-_load_lake_sheets = common_swl.load_lake_sheets
-_m_igld85_to_ft_NAVD88 = common_swl.m_igld85_to_ft_NAVD88
+LAKE_SWL_FILENAMES = lakes.LAKE_SWL_FILENAMES
+resolve_lake_swl_path = lakes.resolve_lake_swl_path
+parse_scenario_sheet_name = sheets.parse_scenario_sheet_name
+_NON_ARI_COLUMNS = sheets.NON_ARI_COLUMNS
+_load_lake_sheets = sheets.load_lake_sheets
+_m_igld85_to_ft_NAVD88 = units.m_igld85_to_ft_NAVD88
 
 
 def interpolate_ari(levels: Sequence[float], aris: Sequence[float], threshold: float) -> float:
@@ -412,7 +414,7 @@ class BatchConfig:
     metric_mode: str = "return_period"  # portion | percentage | return_period
     # "qualified_name" -> <resource_name>_<component_name>[_<save_point_id>] (default,
     # generic). "elevation_runup_savepoint" -> longtailpoint-specific
-    # <elev>ft_plus<runup>ft-runup_savepoint<id> (see common_swl.output_file_stem).
+    # <elev>ft_plus<runup>ft-runup_savepoint<id> (see swl.naming.output_file_stem).
     filename_style: str = "qualified_name"
     overwrite: bool = False
     plot_interpolate: bool = True
@@ -462,7 +464,7 @@ def resolve_output_stem(resource: ResourceSpec, config: BatchConfig) -> str:
     "elevation_runup_savepoint" -> longtailpoint-specific ft-based naming
     "<elevation>ft_plus<runup>ft-runup_savepoint<id>"; requires resource.magnitude_value
     to be an IGLD85-meters elevation and resource.component_name to be one of
-    common_swl.RUNUP_FT_BY_COMPONENT's keys (raises ValueError otherwise).
+    swl.naming.RUNUP_FT_BY_COMPONENT's keys (raises ValueError otherwise).
     "savepoint_elevation_runup" -> longtailpoint-specific naming
     "<save point>_<elevation>_<runup>", elevation = magnitude + runup combined; same
     resource requirements as "elevation_runup_savepoint".
@@ -470,13 +472,13 @@ def resolve_output_stem(resource: ResourceSpec, config: BatchConfig) -> str:
     if config.filename_style == "qualified_name":
         return resource.qualified_name
     if config.filename_style == "elevation_runup_savepoint":
-        magnitude_ft = common_swl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
-        return common_swl.output_file_stem(
+        magnitude_ft = units.m_igld85_to_ft_NAVD88(resource.magnitude_value)
+        return naming.output_file_stem(
             magnitude_ft, resource.component_name, resource.save_point_id
         )
     if config.filename_style == "savepoint_elevation_runup":
-        magnitude_ft = common_swl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
-        return common_swl.output_file_stem_savepoint_elevation_runup(
+        magnitude_ft = units.m_igld85_to_ft_NAVD88(resource.magnitude_value)
+        return naming.output_file_stem_savepoint_elevation_runup(
             magnitude_ft, resource.component_name, resource.save_point_id
         )
     raise ValueError(
@@ -501,8 +503,8 @@ def resolve_plot_title(
     Only longtailpoint-style runs (config.filename_style in
     _LONGTAILPOINT_FILENAME_STYLES, the same gate resolve_output_stem uses) get the
     "Longtail Point <type>/elevation.../save point..." title from
-    common_swl.build_plot_title -- resource.component_name is only guaranteed to be a
-    known runup-allowance code (common_swl.RUNUP_FT_BY_COMPONENT) for those runs.
+    swl.naming.build_plot_title -- resource.component_name is only guaranteed to be a
+    known runup-allowance code (swl.naming.RUNUP_FT_BY_COMPONENT) for those runs.
     Every other filename_style keeps the original, generic
     "<resource>_<component>[_<save point>]" title (resource.qualified_name), optionally
     suffixed with the plot kind for the equivalent-elevation/elevation-delta plots so
@@ -516,8 +518,8 @@ def resolve_plot_title(
         if plot_kind == "primary":
             return resource.qualified_name
         return f"{resource.qualified_name}_{plot_kind}"
-    magnitude_ft = common_swl.m_igld85_to_ft_NAVD88(resource.magnitude_value)
-    return common_swl.build_plot_title(
+    magnitude_ft = units.m_igld85_to_ft_NAVD88(resource.magnitude_value)
+    return naming.build_plot_title(
         plot_kind, magnitude_ft, resource.component_name, resource.save_point_id,
         baseline_ari=baseline_ari,
     )
@@ -802,7 +804,7 @@ def compute_baseline_ari(resource: ResourceSpec, swl_path: Path) -> float:
     sheet's 'equivalent_elevation' cell = "baseline_magnitude") or an explicit numeric
     override, resolved at parse time by parse_resource_row. This is the shared "baseline
     ARI" surfaced in equivalent_elevation/elevation_delta plot titles (see
-    common_swl.build_plot_title's baseline_ari param) and used internally by
+    swl.naming.build_plot_title's baseline_ari param) and used internally by
     compute_equivalent_elevation_metrics.
 
     Callers should only invoke this when resource.equivalent_elevation is not None --
@@ -919,7 +921,7 @@ def build_resource_outputs(
     compute_equivalent_elevation_metrics works entirely in meters, IGLD85 datum (the
     unit of magnitude_value/equivalent_elevation and the swl workbooks' level curves);
     the equivalent_elevation and elevation_delta grids/plots are the only places that
-    convert to feet, NAVD88 datum (via common_swl.m_igld85_to_ft_NAVD88), since they are
+    convert to feet, NAVD88 datum (via units.m_igld85_to_ft_NAVD88), since they are
     the only outputs of this script that represent a water level rather than a
     metric_mode value (portion/percentage/return_period), which has no elevation units
     to convert.
@@ -966,7 +968,7 @@ def build_resource_outputs(
     primary_extra: dict[str, Any] = {}
     if resource.threshold is not None:
         primary_z_range = (float(np.nanmin(zs)), float(np.nanmax(zs)))
-        primary_style = common_swl.one_sided_color_style(primary_z_range, resource.threshold)
+        primary_style = contours.one_sided_color_style(primary_z_range, resource.threshold)
         if primary_style is not None:
             color_map = primary_style[0]
             primary_extra = dict(
@@ -1000,8 +1002,8 @@ def build_resource_outputs(
         elev_xs, elev_ys, elev_zs = build_grid(list(elev_values_ft.keys()), elev_values_ft)
         write_grid_csv(elev_xs, elev_ys, elev_zs, elev_grid_path)
         elev_z_range = (float(np.nanmin(elev_zs)), float(np.nanmax(elev_zs)))
-        elev_levels, elev_widths = common_swl.rounded_levels(elev_z_range, comparison_ft)
-        elev_style = common_swl.one_sided_color_style(elev_z_range, comparison_ft)
+        elev_levels, elev_widths = contours.rounded_levels(elev_z_range, comparison_ft)
+        elev_style = contours.one_sided_color_style(elev_z_range, comparison_ft)
         elev_color_map = elev_style[0] if elev_style is not None else config.plot_color_map
         elev_norm = elev_style[1] if elev_style is not None else None
         plot_fn(
@@ -1031,9 +1033,9 @@ def build_resource_outputs(
         delta_xs, delta_ys, delta_zs = build_grid(list(delta_values_ft.keys()), delta_values_ft)
         write_grid_csv(delta_xs, delta_ys, delta_zs, delta_grid_path)
         delta_z_range = (float(np.nanmin(delta_zs)), float(np.nanmax(delta_zs)))
-        delta_levels, delta_widths = common_swl.symmetric_delta_levels(delta_z_range)
-        delta_ticks = common_swl.colorbar_ticks_within_range(delta_levels, delta_z_range)
-        delta_style = common_swl.one_sided_color_style(delta_z_range, 0.0)
+        delta_levels, delta_widths = contours.symmetric_delta_levels(delta_z_range)
+        delta_ticks = contours.colorbar_ticks_within_range(delta_levels, delta_z_range)
+        delta_style = contours.one_sided_color_style(delta_z_range, 0.0)
         delta_color_map = delta_style[0] if delta_style is not None else config.plot_color_map
         delta_norm = delta_style[1] if delta_style is not None else None
         plot_fn(
@@ -1076,7 +1078,7 @@ def build_save_point_ari_elevation_output(
 
     The z-axis is labeled "Elevation (ft, NAVD88)"; the colorbar is centered on the
     baseline (_0_0) scenario's own value at resource.threshold's ARI (white at
-    baseline), via common_swl.one_sided_color_style -- unlike elevation_delta's fixed
+    baseline), via contours.one_sided_color_style -- unlike elevation_delta's fixed
     0 center, since this plot reports raw elevations rather than a delta.
 
     Raises FileExistsError if either target output file already exists and
@@ -1102,15 +1104,15 @@ def build_save_point_ari_elevation_output(
     grid_path.parent.mkdir(parents=True, exist_ok=True)
     write_grid_csv(xs, ys, zs, grid_path)
     z_range = (float(np.nanmin(zs)), float(np.nanmax(zs)))
-    levels, widths = common_swl.rounded_levels(z_range, baseline_ft)
-    style = common_swl.one_sided_color_style(z_range, baseline_ft)
+    levels, widths = contours.rounded_levels(z_range, baseline_ft)
+    style = contours.one_sided_color_style(z_range, baseline_ft)
     color_map = style[0] if style is not None else config.plot_color_map
     norm = style[1] if style is not None else None
     plot_fn(
         xs, ys, zs,
         interpolate=config.plot_interpolate,
         labels=("Precipitation Delta (%)", "Temperature Delta (C)", "Elevation (ft, NAVD88)"),
-        title=common_swl.build_threshold_ari_title(resource.threshold, resource.save_point_id),
+        title=naming.build_threshold_ari_title(resource.threshold, resource.save_point_id),
         save_path=plot_path,
         show=False,
         threshold=baseline_ft,
@@ -1185,10 +1187,10 @@ class _SwlRowProcessor:
 
 def _naming_scheme_text(config: BatchConfig) -> str:
     """Naming-scheme blurb for config.filename_style: the longtailpoint-specific
-    dedicated write-up (see common_swl.naming_scheme_readme_text) when one exists,
+    dedicated write-up (see swl.naming.naming_scheme_readme_text) when one exists,
     else a generic description of the "qualified_name" default."""
     try:
-        return common_swl.naming_scheme_readme_text(config.filename_style)
+        return naming.naming_scheme_readme_text(config.filename_style)
     except ValueError:
         header = "Output filename naming scheme for this directory\n" + "=" * 50 + "\n\n"
         return header + (

@@ -21,7 +21,7 @@ _KNOWN_SHEETS = {
 
 def _tiny_swl_sheet(offset: float) -> pd.DataFrame:
     """2 save points, all 13 real ARI columns."""
-    from great_lakes.ari_constants import SWL_ARIS
+    from great_lakes.ari import SWL_ARIS
     rows = {
         "ID": [1, 2],
         "lat": [44.0, 45.0],

@@ -1,4 +1,4 @@
-"""Tests for great_lakes.memo_docx_to_md (inverse of build_memo_docx)."""
+"""Tests for great_lakes.memo.from_docx (inverse of memo.to_docx)."""
 
 from pathlib import Path
 
@@ -6,8 +6,8 @@ import pytest
 from docx import Document
 from PIL import Image
 
-from great_lakes.build_memo_docx import build_memo
-from great_lakes.memo_docx_to_md import docx_to_markdown, figure_slots
+from great_lakes.memo.from_docx import docx_to_markdown, figure_slots
+from great_lakes.memo.to_docx import build_memo
 
 DRAFT = """\
 **TO:** Project team
