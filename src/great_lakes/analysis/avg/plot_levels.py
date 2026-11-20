@@ -1,14 +1,13 @@
-"""Plot mean and Poisson-method ARI response surfaces for average lake levels.
+"""Plot Poisson-method ARI response surfaces for average lake levels.
 
-For each of the 3 distinct average-lake-level datasets in `data/clean/` --
+(Phase 4 moves this into data-products/avg-statistics/. The mean-level figures now live
+in great_lakes.avg_figures.)
+
+For each of the 3 distinct average-lake-level datasets in `data/avg/` --
 superior, michiganhuron (Michigan and Huron are one hydraulically-connected lake
 and share a single avg-level dataset), ontario -- and each of the 17 precip/temp
 scenarios in that dataset's monthly time series (1970-2999, 1030 years), this
-computes:
-
-1. The scenario's overall mean average lake level -> `mean/<lake>.png` (one
-   response surface per lake).
-2. The average lake level associated with the SWL workbooks' ARI values that
+computes the average lake level associated with the SWL workbooks' ARI values that
    are >= 1 year (1, 2, 5, 10, 20, 50, 100, 200, 500, 1000 -- see
    ari.SWL_ARIS; the <1-year SWL ARI values, 0.1/0.2/0.5, are dropped
    here -- see "Why ARI < 1 is dropped" below), for both the high-water tail
@@ -71,7 +70,7 @@ cell secretly showing a different return period).
 
     uv run python -m great_lakes.analysis.avg.plot_levels <data_dir> [output_dir]
 
-output_dir defaults to `<data_dir>/img/avg` (see resolve_default_output_dir).
+    output_dir defaults to `<data_dir>/figures/ari` (see resolve_default_output_dir).
 """
 
 from pathlib import Path
@@ -86,8 +85,8 @@ from hydropattern.scenario_grid import parse_scenario_name  # type: ignore[impor
 from great_lakes import units
 from great_lakes.ari import SWL_ARIS, format_ari
 from great_lakes.batch import run_readme
-from great_lakes.fillin_swl import ALL_SCENARIO_SUFFIXES
 from great_lakes.swl import contours
+from great_lakes.swl.complete import ALL_SCENARIO_SUFFIXES
 
 # ARI=1's target aep=1/1=1.0 is only reachable in the theoretical limit (needs
 # infinite Poisson rate); ARI<1 needs aep>1, which isn't a valid probability at
@@ -181,10 +180,10 @@ def poisson_ari_level(population: np.ndarray, ari: float, years: float, tail: st
 
 
 def build_grid(columns: dict[str, np.ndarray],
-               ari: float | None, tail: str | None, decluster: bool) -> tuple[
+               ari: float, tail: str, decluster: bool) -> tuple[
         np.ndarray, np.ndarray, np.ndarray]:
-    """Build (precip x, temp y, z) grid, z = mean (ari is None) or Poisson ARI
-    level (ari given), over the full 17-scenario coordinate space, in feet.
+    """Build (precip x, temp y, z) grid, z = Poisson ARI level, over the full
+    17-scenario coordinate space, in feet.
     """
     z = np.full((len(ALL_TEMPS), len(ALL_PRECIPS)), np.nan)
     for suffix, values in columns.items():
@@ -192,27 +191,19 @@ def build_grid(columns: dict[str, np.ndarray],
             continue
         precip, temp = ALL_COORDS[suffix]
         values_ft = units.convert_units(values, "m", "ft")
-        if ari is None:
-            level = float(values_ft.mean())
-        else:
-            assert tail is not None, "tail is required whenever ari is given"
-            years = len(values_ft) / 12.0
-            population = population_for(values_ft, tail, decluster)
-            level = poisson_ari_level(population, ari, years, tail)
-        z[ALL_TEMPS.index(temp), ALL_PRECIPS.index(precip)] = level
+        years = len(values_ft) / 12.0
+        population = population_for(values_ft, tail, decluster)
+        z[ALL_TEMPS.index(temp), ALL_PRECIPS.index(precip)] = poisson_ari_level(
+            population, ari, years, tail)
     return np.array(ALL_PRECIPS, dtype=float), np.array(ALL_TEMPS, dtype=float), z
 
 
-def one_sided_color_style(zs: np.ndarray, threshold: float, tail: str | None) -> tuple | None:
+def one_sided_color_style(zs: np.ndarray, threshold: float, tail: str) -> tuple | None:
     """Thin tail-gated wrapper around contours.one_sided_color_style (see there for
     the shared math/rationale): only low-tail plots may get the 'Reds_r'
     all-below-threshold treatment, and only high-tail plots may get 'Blues'
-    all-above-threshold -- tail-agnostic (mean, tail=None) plots always keep the
-    default RdBu behavior, since the mean's threshold is not expected to fall outside
-    its own grid's range the way an extreme-tail ARI level does.
+    all-above-threshold.
     """
-    if tail is None:
-        return None
     z_min, z_max = float(np.nanmin(zs)), float(np.nanmax(zs))
     if tail == "low" and not (z_max <= threshold):
         return None
@@ -222,16 +213,15 @@ def one_sided_color_style(zs: np.ndarray, threshold: float, tail: str | None) ->
 
 
 def resolve_default_output_dir(data_dir: Path) -> Path:
-    """Default output_dir when the CLI's output_dir argument is omitted: a sibling
-    `img/avg` subfolder of data_dir (normally data/clean), alongside the other
-    great_lakes.analysis scripts' own `img/...` outputs -- see docs/data_pipelines.md.
+    """Default output_dir when the CLI's output_dir argument is omitted: a
+    `figures/ari` subfolder of data_dir (normally data/avg).
     """
-    return data_dir / "img" / "avg"
+    return data_dir / "figures" / "ari"
 
 
 def _write_pair(xs: np.ndarray, ys: np.ndarray, zs: np.ndarray, title: str,
                 directory: Path, filename: str, threshold: float,
-                labels: tuple[str, str, str], tail: str | None = None) -> tuple[Path, Path]:
+                labels: tuple[str, str, str], tail: str) -> tuple[Path, Path]:
     """Write both the raw (interpolate=False) plot and its interpolated
     (interpolate=True, fillin=True) companion into `directory` and
     `directory/interpolated`, both named `<filename>.png`.
@@ -258,8 +248,8 @@ def _write_pair(xs: np.ndarray, ys: np.ndarray, zs: np.ndarray, title: str,
 
 
 def run(data_dir: Path, output_dir: Path) -> tuple[Path, ...]:
-    """Generate every mean + ARI response-surface plot for every lake in AVG_LAKES,
-    under output_dir's mean/ and ari/<clustered|declustered>/<high|low>/ subfolders
+    """Generate every ARI response-surface plot for every lake in AVG_LAKES, under
+    output_dir's ari/<clustered|declustered>/<high|low>/ subfolders
     (each with a sibling interpolated/ subfolder). Returns every file written.
     """
     written: list[Path] = []
@@ -269,15 +259,7 @@ def run(data_dir: Path, output_dir: Path) -> tuple[Path, ...]:
         columns = {col: df[col].to_numpy(dtype=float) for col in df.columns if col != "time"}
         baseline_avg_ft = units.convert_units(columns["_0_0"].mean(), "m", "ft")
 
-        # 1. Mean plot (tail-agnostic).
-        xs, ys, zs = build_grid(columns, ari=None, tail=None, decluster=False)
-        title = f"{lake.capitalize()} mean level (baseline avg={baseline_avg_ft:.2f} ft)"
-        written.extend(_write_pair(
-            xs, ys, zs, title, output_dir / "mean", lake, baseline_avg_ft,
-            ("precip_delta", "temp_delta", "mean lake level (ft)"),
-        ))
-
-        # 2. ARI plots: high/low tail x declustered/non-declustered ("clustered").
+        # ARI plots: high/low tail x declustered/non-declustered ("clustered").
         for tail in ("high", "low"):
             for decluster in (False, True):
                 cluster_label = "declustered" if decluster else "clustered"
@@ -307,8 +289,6 @@ def run(data_dir: Path, output_dir: Path) -> tuple[Path, ...]:
 
 
 _NAMING_SCHEME_TEXT = (
-    "mean/<lake>.png - overall mean average lake level response surface.\n"
-    "mean/interpolated/<lake>.png - same, climate_canvas interpolate+fillin resampled.\n"
     "ari/<clustered|declustered>/<high|low>/<lake>_<ari>.png - Poisson-method ARI "
     "response surface (clustered = every monthly value is a candidate event; "
     "declustered = only local peaks/troughs are).\n"
@@ -326,12 +306,12 @@ app = typer.Typer(add_completion=False, no_args_is_help=True)
 @app.command()
 def main(
     data_dir: Path = typer.Argument(
-        ..., help="Directory holding the clean <lake>_avg.csv files (data/clean)."),
+        ..., help="Directory holding the clean <lake>_avg.csv files (data/avg)."),
     output_dir: Optional[Path] = typer.Argument(
         None, help="Directory to write plots + README.txt to. Defaults to "
-                    "<data_dir>/img/avg."),
+                    "<data_dir>/figures/ari."),
 ) -> None:
-    """Plot mean and Poisson-method ARI response surfaces for every lake in
+    """Plot Poisson-method ARI response surfaces for every lake in
     AVG_LAKES, and write a README.txt documenting the run (see run_readme.write_readme).
     """
     if output_dir is None:

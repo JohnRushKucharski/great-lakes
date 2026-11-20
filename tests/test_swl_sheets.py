@@ -54,3 +54,31 @@ def test_build_scenario_ari_grid_ignores_sheets_not_in_coords():
     assert ys.shape == (1,)
     assert zs.shape == (1, 1)
     assert zs[0, 0] == pytest.approx(units.convert_units(100.0, "m", "ft"))
+
+
+def test_build_scenario_ari_grid_honors_units_and_datum():
+    coords = {"_0_0": (0.0, 0.0)}
+    kwargs = dict(save_point_id=1, ari=1)
+    _, _, ft_navd = sheets.build_scenario_ari_grid(
+        coords, _ari_sheets(), to_units="ft", to_datum="NAVD88", **kwargs)
+    _, _, m_igld = sheets.build_scenario_ari_grid(
+        coords, _ari_sheets(), to_units="m", to_datum="IGLD85", **kwargs)
+    assert ft_navd[0, 0] == pytest.approx(units.m_igld85_to_ft_NAVD88(100.0))
+    assert m_igld[0, 0] == pytest.approx(100.0)
+
+
+def test_estimated_cell_mask_marks_filled_and_extrapolated_sheets_only():
+    frame = _ari_sheets()["baseline-_0_0"]
+    all_sheets = {
+        "baseline-_0_0": frame, "nearterm-_5_1.5": frame,
+        "filled-_10_3": frame, "extrapolated-_15_7": frame,
+    }
+    coords = {"_0_0": (0.0, 0.0), "_5_1.5": (5.0, 1.5),
+              "_10_3": (10.0, 3.0), "_15_7": (15.0, 7.0)}
+    xs, ys, _ = sheets.build_scenario_ari_grid(coords, all_sheets, save_point_id=1, ari=1)
+
+    mask = sheets.estimated_cell_mask(coords, all_sheets)
+
+    assert mask.shape == (len(ys), len(xs))
+    flagged = {(xs[j], ys[i]) for i, j in zip(*np.nonzero(mask))}
+    assert flagged == {(10.0, 3.0), (15.0, 7.0)}

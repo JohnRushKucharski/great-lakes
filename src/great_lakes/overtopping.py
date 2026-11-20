@@ -20,7 +20,7 @@ from matplotlib.colors import TwoSlopeNorm
 from matplotlib.patches import Rectangle
 from matplotlib.ticker import FormatStrFormatter
 
-from great_lakes import batch_run_swl, fillin_swl, units
+from great_lakes import batch_run_swl, units
 from great_lakes.avg_stats import (
     WINDOW_CATEGORIES,
     annual_maxima,
@@ -29,6 +29,7 @@ from great_lakes.avg_stats import (
     poisson_window_category_shares,
     rolling_window_category_shares,
 )
+from great_lakes.swl import complete as swl_complete
 from great_lakes.swl.sheets import NON_ARI_COLUMNS, parse_scenario_sheet_name
 from great_lakes.swl_method_quality import regression_prediction
 
@@ -93,7 +94,7 @@ def _load_scenario_sheets(swl_path: Path) -> dict[str, pd.DataFrame]:
         if suffix in by_suffix:
             raise ValueError(f"Multiple SWL sheets found for scenario {suffix}")
         by_suffix[suffix] = frame
-    expected = set(fillin_swl.ALL_SCENARIO_SUFFIXES)
+    expected = set(swl_complete.ALL_SCENARIO_SUFFIXES)
     if by_suffix.keys() != expected:
         raise ValueError(
             "SWL workbook scenarios do not match the expected 17-scenario set: "
@@ -135,7 +136,9 @@ def _scenario_level_ft(
 
 
 def _scenario_means(monthly: pd.DataFrame) -> dict[str, float]:
-    return {suffix: float(monthly[suffix].mean()) for suffix in fillin_swl.ALL_SCENARIO_SUFFIXES}
+    return {
+        suffix: float(monthly[suffix].mean()) for suffix in swl_complete.ALL_SCENARIO_SUFFIXES
+    }
 
 
 def _scenario_coordinates(suffix: str) -> tuple[float, float]:
@@ -279,7 +282,7 @@ def _draw_scenario_grid(
 def _write_f2(means: dict[str, float], output_dir: Path) -> None:
     baseline = means["_0_0"]
     rows = []
-    for suffix in fillin_swl.ALL_SCENARIO_SUFFIXES:
+    for suffix in swl_complete.ALL_SCENARIO_SUFFIXES:
         precip, temp = _scenario_coordinates(suffix)
         rows.append(
             {
@@ -444,7 +447,7 @@ def _write_t1(
 ) -> dict[str, float]:
     thresholds = {
         suffix: _scenario_level_ft(sheets[suffix], SAVE_POINT_ID, PRIMARY_ARI)
-        for suffix in fillin_swl.ALL_SCENARIO_SUFFIXES
+        for suffix in swl_complete.ALL_SCENARIO_SUFFIXES
     }
     rows = []
     for design in DESIGN_ELEVATIONS_FT:
@@ -495,9 +498,9 @@ def _write_regression_and_loo(
     sheets: dict[str, pd.DataFrame],
     output_dir: Path,
 ) -> None:
-    known = sorted(KNOWN_SUFFIXES, key=fillin_swl.ALL_SCENARIO_SUFFIXES.index)
+    known = sorted(KNOWN_SUFFIXES, key=swl_complete.ALL_SCENARIO_SUFFIXES.index)
     targets = [
-        suffix for suffix in fillin_swl.ALL_SCENARIO_SUFFIXES if suffix not in KNOWN_SUFFIXES
+        suffix for suffix in swl_complete.ALL_SCENARIO_SUFFIXES if suffix not in KNOWN_SUFFIXES
     ]
     x_m = [means[suffix] for suffix in known]
     x_ft = [units.m_igld85_to_ft_NAVD88(value) for value in x_m]
@@ -629,7 +632,7 @@ def _write_loo_interpolation(
     for target in ("_5_1.5", "_10_5"):
         remaining = [suffix for suffix in KNOWN_SUFFIXES if suffix != target]
         coordinates = {suffix: _scenario_coordinates(suffix) for suffix in remaining}
-        weights = fillin_swl.build_barycentric_weights(coordinates, [target])[target]
+        weights = swl_complete.build_barycentric_weights(coordinates, [target])[target]
         vertices, coefficients = weights
         for ari in ari_values:
             observed = _scenario_level_ft(sheets[target], SAVE_POINT_ID, ari)

@@ -219,7 +219,7 @@ _Avoid_: Naming readme, manifest (manifest collides with `build_dashboard.py`'s
 
 **Average lake level (AVG(l,s))**:
 The mean of the full synthetic scenario record (all ~12,360 monthly rows spanning
-1970-2999) in `data/clean/<avg-lake>_avg.csv` for lake `l`'s scenario `s` column — a
+1970-2999) in `data/avg/<avg-lake>_avg.csv` for lake `l`'s scenario `s` column — a
 single scalar per lake+scenario, independent of save point or ARI. `michigan` and
 `huron` (separate `<lake>_swl.xlsx` workbooks) both read the same `michiganhuron_avg.csv`
 column, since Michigan-Huron is one hydraulically-connected lake with one water level.

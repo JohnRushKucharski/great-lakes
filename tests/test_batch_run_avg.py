@@ -966,13 +966,12 @@ def test_format_summary_reports_counts_and_failed_rows():
 
 # ---- run_batch integration test (real data, real hydropattern run) -----------------
 
-REAL_DATA_DIR = Path(__file__).parent.parent / "data" / "clean"
+REAL_DATA_DIR = Path(__file__).parent.parent / "data" / "avg"
 
 
 @pytest.mark.skipif(
     not REAL_DATA_DIR.exists(),
-    reason="data/clean is gitignored (regenerable); run clean_lake_levels_all_scenarios.py "
-    "locally to populate it and exercise this end-to-end test.",
+    reason="data/avg is missing; run data-products/avg/scripts/clean.py to populate it.",
 )
 def test_run_batch_end_to_end_against_real_avg_csvs(tmp_path):
     """Runs a small fixture workbook through run_batch with the real hydropattern

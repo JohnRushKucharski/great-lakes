@@ -12,10 +12,9 @@ htmlcov/
 # Regenerable analysis outputs (derived from raw/ via scripts) are NOT committed --
 # keep them locally as insurance, regenerate via the batch/clean scripts if lost.
 data/analysis/
-# old figure folders, replaced by the new data/ figures in the data-products phase
-data/clean/img/
-data/filled/img/
-data/extrapolated/img/
+# bulk/intermediate outputs of the data products (regenerate via each product's scripts);
+# the docs-embedded figures and data/ products are tracked instead
+data-products/*/outputs/
 
 # longtailpoint: track input workbooks + dashboard.html/manifest.js viewer files
 # (small, needed to browse results without re-running anything). Bulky generated

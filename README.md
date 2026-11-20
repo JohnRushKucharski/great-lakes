@@ -3,8 +3,8 @@
 Batch-generating and running `hydropattern` `.toml` configs against Great Lakes
 lake-level timeseries — one `.toml` file and one hydropattern run per row of a
 spreadsheet — plus standalone tools for storm water level (SWL) frequency-curve
-analysis, SWL scenario fill-in/extrapolation, known-scenario directionality analysis,
-and a results dashboard.
+analysis, SWL scenario fill-in/extrapolation, and a results dashboard. Data products
+(cleaning, completion, figures, gates) live in `data-products/`.
 
 See [`GLOSSARY.md`](./GLOSSARY.md) for the domain vocabulary (**resource**, **resources
 sheet**, **config sheet**, **subdirectory structure**) used throughout this document.
@@ -16,62 +16,47 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 ├── GLOSSARY.md                <- domain glossary
 ├── docs/
 │   ├── data_pipelines.md
+│   ├── plans/reorg_plan.md       <- active reorganization plan
 │   └── adr/
-│       ├── 0001-row-shift-extrapolation-for-out-of-hull-scenarios.md
-│       └── 0002-sidecar-js-manifest-for-longtailpoint-dashboard.md
-├── src/great_lakes/
+├── src/great_lakes/              <- library code (logic lives here; scripts stay thin)
 │   ├── batch_run_avg.py             <- batch tool 1: parse -> build .toml -> run hydropattern
 │   ├── batch_run_swl.py             <- batch tool 2: parse -> interpolate ARI curve -> plot
 │   ├── batch/                       <- runner.py (shared run_batch loop + RowProcessor), run_readme.py
+│   ├── paths.py                     <- Layout: every data/ and data-products/ location
+│   ├── cleaning/                    <- avg.py, swl.py (data/raw/ -> data/avg, data/swl/clean)
 │   ├── units.py                     <- m<->ft and IGLD85<->NAVD88 conversions (separate steps)
 │   ├── lakes.py                     <- lake names, avg filenames, centroid save points
 │   ├── ari.py                       <- ARI constants and formatting
+│   ├── avg_figures.py               <- avg mean-level figures (all 5 lakes)
 │   ├── avg_stats.py                 <- generic avg statistics (annual maxima, window shares, Poisson)
 │   ├── swl_method_quality.py        <- swl~avg regression used to judge swl methods
-│   ├── swl/                         <- sheets.py (read <lake>_swl.xlsx), naming.py, contours.py
-│   ├── fillin_swl.py                 <- batch tool 3: interpolate + extrapolate missing swl scenarios
-│   ├── analyze_known_scenarios.py    <- known-vs-known SWL precip/temp directionality analysis
+│   ├── swl/                         <- sheets.py, naming.py, contours.py, complete.py (fill +
+│   │                                   extrapolate), figures.py, gates.py, effects.py
+│   ├── analysis/avg/plot_levels.py  <- avg ARI figures (moves to avg-statistics in phase 4)
 │   ├── build_dashboard.py            <- builds a self-contained results dashboard
 │   ├── overtopping.py                 <- overtopping-specific memo figures/tables (F4, runup)
-│   ├── memo/                          <- to_docx.py (Markdown -> .docx), from_docx.py (.docx -> Markdown)│   ├── clean_lake_levels_all_scenarios.py  <- data/raw/ -> data/clean/ AVG cleaning script
-│   ├── clean_swl_summary.py        <- data/raw/ -> data/clean/ SWL cleaning script
+│   ├── memo/                          <- to_docx.py (Markdown -> .docx), from_docx.py (.docx -> Markdown)
 │   ├── build_avg_template.py        <- regenerates templates/template_avg.xlsx
 │   └── build_swl_template.py        <- regenerates templates/template_swl.xlsx
 ├── templates/
 │   ├── template_avg.xlsx           <- blank resources+config workbook template (batch_run_avg.py)
 │   └── template_swl.xlsx           <- blank resources+config workbook template (batch_run_swl.py)
-├── data/
-│   ├── raw/                    <- source Excel workbooks (committed, not code)
-│   ├── clean/                  <- cleaned per-lake data (gitignored, regenerable from raw/)
-│   │   ├── superior_avg.csv        <- batch_run_avg.py / fillin_swl.py (timeseries -> AVG)
-│   │   ├── michiganhuron_avg.csv
-│   │   ├── stclair_avg.csv
-│   │   ├── erie_avg.csv
-│   │   ├── ontario_avg.csv
-│   │   ├── superior_swl.xlsx       <- batch_run_swl.py / fillin_swl.py (ARI frequency curves)
-│   │   ├── michigan_swl.xlsx
-│   │   ├── huron_swl.xlsx
-│   │   └── ontario_swl.xlsx
-│   ├── extrapolated/            <- fillin_swl.py output (--extrapolate, default): 17 scenarios
-│   │   ├── superior_swl.xlsx
-│   │   ├── michigan_swl.xlsx
-│   │   ├── huron_swl.xlsx
-│   │   └── ontario_swl.xlsx
-│   ├── filled/                 <- fillin_swl.py output (--no-extrapolate): 12 scenarios only
-│   │   ├── superior_swl.xlsx
-│   │   ├── michigan_swl.xlsx
-│   │   ├── huron_swl.xlsx
-│   │   └── ontario_swl.xlsx
-│   └── analysis/                <- analyze_known_scenarios.py output (gitignored, regenerable)
+├── data/                       <- tracked data (inputs to everything else)
+│   ├── raw/                    <- source Excel workbooks (read-only, never edited)
+│   ├── avg/                    <- cleaned avg csvs (5 lakes) + figures/<lake>.png
+│   └── swl/
+│       ├── clean/              <- 5 known scenarios per lake + figures/<lake>.png
+│       └── complete/           <- all 17 scenarios per lake + figures/<lake>.png
+├── data-products/              <- one folder per product; each has its own README
+│   ├── avg/   {inputs, scripts, methods, outputs}
+│   └── swl/   {inputs, scripts, methods, outputs}   <- outputs/ is gitignored
 └── longtailpoint/               <- an example project using this tooling (see its own README)
 ```
 
-`data/clean/`, `data/filled/`, `data/extrapolated/`, and `data/analysis/` are all
-gitignored — they're regenerable from `data/raw/` via the scripts documented below, so
-they're kept locally as insurance but not committed. `data/raw/`'s source workbooks
-*are* committed (they're the ground-truth inputs); the scripts that clean them live in
-`src/great_lakes/` alongside the rest of the code (so they're covered by the same
-mypy/ruff checks as everything else), not in `data/raw/` itself.
+`data-products/*/outputs/` is gitignored (regenerable). Everything under `data/` is
+tracked, including the summary figures. Each product's README
+([`avg`](data-products/avg/README.md), [`swl`](data-products/swl/README.md)) says how to
+regenerate its outputs.
 
 ## Installation
 
@@ -83,26 +68,28 @@ uv sync --group test --group dev
 `openpyxl`, `scipy` (Delaunay triangulation, via `climate-canvas`), `python-calamine`
 (fast `.xlsx` reading), and `xlsxwriter` (workbook writing) are all direct dependencies.
 
-You only need to re-run the cleaning scripts if the raw source workbooks in
-`data/raw/` change:
+You only need to re-run the data-product scripts if the raw source workbooks in
+`data/raw/` change (see each product's README for options such as `--units`/`--datum`):
 
 ```powershell
-uv run python -m great_lakes.clean_lake_levels_all_scenarios
-uv run python -m great_lakes.clean_swl_summary
+uv run python data-products/avg/scripts/clean.py --overwrite
+uv run python data-products/avg/scripts/plot_figures.py
+uv run python data-products/swl/scripts/clean.py --overwrite
+uv run python data-products/swl/scripts/complete.py --overwrite
+uv run python data-products/swl/scripts/plot_figures.py
 ```
 
 ## Long Tail Point memo analyses
 
-After cleaning AVG/SWL inputs and generating the 17-scenario workbook with
-`uv run python -m great_lakes.fillin_swl data\clean`, run:
+After the data products above are built, run:
 
 ```powershell
 uv run python -m great_lakes.overtopping
 ```
 
 This regenerates F2-F4, T1-T2, the SWL~AVG regression, and leave-one-out tables under
-`longtailpoint/presentation/`. The source inputs are `data/clean/michiganhuron_avg.csv`
-and `data/extrapolated/michigan_swl.xlsx`; the report files are derived outputs.
+`longtailpoint/presentation/`. The source inputs are `data/avg/michiganhuron_avg.csv`
+and `data/swl/complete/michigan_swl.xlsx`; the report files are derived outputs.
 
 To build the memo Word document from its Markdown draft
 (`docs/longtailpoint_memo_draft.md`, the source of truth; edit text there, not in Word):
@@ -165,12 +152,12 @@ Leave a cell blank to use its default.
 ## 2. Run it
 
 ```powershell
-uv run python -m great_lakes.batch_run_avg my_run.xlsx data\clean
+uv run python -m great_lakes.batch_run_avg my_run.xlsx data\avg
 ```
 
 Arguments:
 1. Path to your filled-in resources+config workbook.
-2. Path to the directory containing the lake `*_avg.csv` files (normally `data/clean`).
+2. Path to the directory containing the lake `*_avg.csv` files (normally `data/avg`).
 
 As it runs, you'll see one line per row as it starts and finishes, so you can follow
 along in real time (a row can take a while — each one runs a full hydropattern analysis,
@@ -246,7 +233,7 @@ uv run pytest tests/test_batch_run_avg.py
 **SWL**), not timeseries. SWL data include storm surge and wave set-up but exclude
 near-shore processes (run-up, overtopping). USACE sources often call this "still water
 level" (also "SWL"); that name is easy to confuse with average (monthly) water levels,
-which is why this repo says *storm* water level. Each `data/clean/<lake>_swl.xlsx` workbook has one sheet per
+which is why this repo says *storm* water level. Each `data/swl/clean/<lake>_swl.xlsx` workbook has one sheet per
 **scenario** (5, not 17 — swl only has climate-scenario variants, no water-year timing
 dimension), and each sheet is a table of **save points** (rows) against **Average Return
 Interval** (ARI, in years — the column headers) with the water level at that save point
@@ -355,12 +342,12 @@ Leave a cell blank to use its default.
 ## 2. Run it
 
 ```powershell
-uv run python -m great_lakes.batch_run_swl my_swl_run.xlsx data\clean
+uv run python -m great_lakes.batch_run_swl my_swl_run.xlsx data\swl\clean
 ```
 
 Arguments:
 1. Path to your filled-in resources+config workbook.
-2. Path to the directory containing the lake `*_swl.xlsx` files (normally `data/clean`).
+2. Path to the directory containing the lake `*_swl.xlsx` files (normally `data/swl/clean`, or `data/swl/complete` for all 17 scenarios).
 
 As it runs, you'll see one line per row as it starts and finishes, and a final summary,
 same as `batch_run_avg.py`. A row failing (bad data, an out-of-range threshold that had to
@@ -430,14 +417,14 @@ uv run python -m great_lakes.build_swl_template
 uv run pytest tests/test_batch_run_swl.py
 ```
 
-# Batch tool 3: fillin_swl.py
+# Scenario completion: `swl/complete.py`
 
-Each `data/clean/<lake>_swl.xlsx` workbook only has **5 of 17** possible climate
-scenarios (the **known scenarios**). `fillin_swl.py` estimates the other 12 (**target
-scenarios**), per save point and per ARI column, and writes a new
-`data/filled/<lake>_swl.xlsx` workbook with all 17 scenario sheets. Nothing else reads
-`data/filled/` yet — `batch_run_swl.py` still points at `data/clean/` — so this is a
-standalone enrichment step for now.
+Each `data/swl/clean/<lake>_swl.xlsx` workbook only has **5 of 17** possible climate
+scenarios (the **known scenarios**). `great_lakes.swl.complete` estimates the other 12 (**target
+scenarios**), per save point and per ARI column, and writes
+`data/swl/complete/<lake>_swl.xlsx` with all 17 scenario sheets (the 12-sheet
+intermediate goes to `data-products/swl/outputs/filled/`). `batch_run_swl.py` can read
+either directory.
 
 Every one of the 17 scenarios is a point on a fixed (`precip_delta`, `temp_delta`) grid.
 Plotting the 5 known scenarios' coordinates, the 12 targets split into two groups that
@@ -469,7 +456,7 @@ SWL(l, T, p, r) = wA * SWL(l, A, p, r) + wB * SWL(l, B, p, r) + wC * SWL(l, C, p
 ```
 
 **Worked example** (a simple hand-computable triangle, not real lake data — see
-`SIMPLE_TRIANGLE_*` fixtures in `tests/test_fillin_swl.py`): vertices `A=(0,0)->100`,
+`SIMPLE_TRIANGLE_*` fixtures in `tests/test_swl_complete.py`): vertices `A=(0,0)->100`,
 `B=(10,0)->110`, `C=(0,10)->130` describe the plane `z = 100 + x + 3y`. Target point
 `(2, 2)` gets barycentric weights `(wA, wB, wC) = (0.6, 0.2, 0.2)`:
 
@@ -490,7 +477,7 @@ Its one hard limitation is exactly the reason this tool needs a Stage 2 at all: 
 **Theory.** See
 [`docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md`](docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md)
 for the full rationale. In short: a save point's SWL is treated as `AVG(l, s)` (the mean
-lake level under scenario `s`, from `data/clean/<avg-lake>_avg.csv`) plus a "waves" term
+lake level under scenario `s`, from `data/avg/<avg-lake>_avg.csv`) plus a "waves" term
 that captures storm-driven water level above/below the mean. The assumption is that the
 waves term stays constant across scenarios on the same **warming row** (same
 `temp_delta`) — i.e. a given amount of warming doesn't change storminess, only the mean
@@ -510,7 +497,7 @@ this collapses to one additive scalar shift applied uniformly to every cell of t
 anchor's sheet — no per-cell computation is needed at runtime.
 
 **Worked example** (see `test_extrapolate_scenarios_shifts_anchor_values_by_avg_delta` in
-`tests/test_fillin_swl.py`): anchor `_0_7` has SWL values `100.0`/`200.0` at two save
+`tests/test_swl_complete.py`): anchor `_0_7` has SWL values `100.0`/`200.0` at two save
 points for one ARI column. `AVG(l, "_0_7") = 180.0` and `AVG(l, "_10_7") = 185.0`, a
 `+5.0` delta:
 
@@ -536,38 +523,17 @@ prefix, instead of Stage 1's `filled-` prefix.
 ## CLI usage
 
 ```powershell
-# extrapolation on (default) -> defaults to data\extrapolated
-uv run python -m great_lakes.fillin_swl data\clean
-
-# extrapolation off -> defaults to data\filled
-uv run python -m great_lakes.fillin_swl data\clean --no-extrapolate
-
-# explicit output_dir always overrides the default, either way
-uv run python -m great_lakes.fillin_swl data\clean data\filled
+uv run python data-products/swl/scripts/complete.py [--overwrite]
 ```
 
-Arguments:
-1. `data_dir` — directory containing the known `<lake>_swl.xlsx` and `<avg-lake>_avg.csv`
-   files (normally `data/clean`).
-2. `output_dir` *(optional)* — directory to write the filled `<lake>_swl.xlsx` workbooks
-   to. When omitted, defaults to a sibling of `data_dir`: `data/extrapolated` when
-   `--extrapolate` (the default), or `data/filled` with `--no-extrapolate` — since the two
-   modes produce workbooks with a different number of sheets, they default to different
-   directories rather than silently overwriting each other. Pass `output_dir` explicitly to
-   override either default.
-
-Flags:
-- `--overwrite` / (default: refuse and raise if an output file already exists).
-- `--extrapolate` (default) / `--no-extrapolate` — run Stage 2, producing 17 sheets per
-  lake (5 known + 7 filled + 5 extrapolated). `--no-extrapolate` skips Stage 2, producing
-  12 sheets (5 known + 7 filled) — the extrapolated scenarios are simply omitted, not
-  replaced by anything else.
-
-A progress bar (typer's built-in `typer.progressbar`) ticks once per save-point row,
-across all 4 lakes, while the tool runs.
+Reads `data/swl/clean/<lake>_swl.xlsx` and `data/avg/<avg-lake>_avg.csv`. Writes the
+12-sheet filled workbooks to `data-products/swl/outputs/filled/` (gitignored) and the
+17-sheet workbooks (5 known + 7 filled + 5 extrapolated) to `data/swl/complete/`. Without
+`--overwrite` the script refuses to replace existing files. Pass `--root` to run against
+another repository root.
 
 ## Running the tests
 
 ```powershell
-uv run pytest tests/test_fillin_swl.py tests/test_units.py tests/test_lakes.py
+uv run pytest tests/test_swl_complete.py tests/test_units.py tests/test_lakes.py
 ```

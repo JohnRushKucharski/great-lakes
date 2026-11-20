@@ -10,24 +10,25 @@ job is the end-to-end path and how the stages connect.)
 ```text
 +------------------------------+
 | data/raw/*.xlsx, *.xlsm      |
-| (committed source workbooks) |
+| (committed, read-only)       |
 +------------------------------+
                 |
-                | STEP 1: clean_lake_levels_all_scenarios.py
-                |         clean_swl_summary.py
+                | STEP 1: data-products/avg/scripts/clean.py
+                |         data-products/swl/scripts/clean.py
                 v
-+----------------------------------+
-| data/clean/*_avg.csv, *_swl.xlsx |
-| (gitignored, regenerable)        |
-+----------------------------------+
++-------------------------------------------+
+| data/avg/*_avg.csv                        |
+| data/swl/clean/*_swl.xlsx (5 scenarios)   |
+| (committed)                               |
++-------------------------------------------+
                   |
-                  | STEP 2: fillin_swl.py
-                  |         (Delaunay fill, then optional row-shift extrapolation)
+                  | STEP 2: data-products/swl/scripts/complete.py
+                  |         (Delaunay fill, then row-shift extrapolation)
                   v
-+-------------------------------------------------+
-| data/filled/*_swl.xlsx           (12 scenarios) |
-| data/extrapolated/*_swl.xlsx     (17 scenarios) |
-+-------------------------------------------------+
++--------------------------------------------------------------+
+| data/swl/complete/*_swl.xlsx (17 scenarios, committed)       |
+| data-products/swl/outputs/filled/ (12 scenarios, gitignored) |
++--------------------------------------------------------------+
                          |
                          | STEP 3: fill in a copy of templates/template_*.xlsx by hand
                          |         -> resources+config .xlsx (one row per component)
@@ -55,21 +56,22 @@ job is the end-to-end path and how the stages connect.)
 +------------------------------------------------------+
 ```
 
-**STEP 5 (optional, not shown above — a side branch, not part of the main trunk):**
-`analyze_known_scenarios.py` reads `data/extrapolated/*_swl.xlsx` directly (step 2's
-output) and writes `data/analysis/known_scenario_directionality.csv` + a summary
-`.xlsx`. It doesn't feed into steps 3/4/6 and doesn't require them to have run.
+**Figures and gates (side branches off steps 1-2):** `plot_figures.py` in each product
+writes the tracked summary figures next to the data (`data/avg/figures/`,
+`data/swl/{clean,complete}/figures/`) and bulk figures to `data-products/*/outputs/`.
+`data-products/swl/scripts/compare_fill_to_climate_canvas.py` and `check_ari_curves.py`
+are **gates**: they fail (exit code 1) if the fill disagrees with climate_canvas by more
+than 0.05 ft, or if any swl ARI curve has a missing or decreasing value.
+`data-products/swl/methods/summarize_precip_temp_effects.py` summarizes known-scenario
+directionality. None feed steps 3/4/6.
 
-All module names above are invoked as `uv run python -m great_lakes.<name>`. Numbers
-match the step-by-step walkthrough below.
-
-Numbers match the step-by-step walkthrough below. The "5." branch (known-scenario
-analysis) is optional and independent of steps 3/4/6 — it only needs step 2's
-extrapolated output.
+Scripts under `data-products/` are run as `uv run python data-products/<product>/scripts/<name>.py`;
+library and batch tools as `uv run python -m great_lakes.<name>`. Each product's README
+(`data-products/avg/README.md`, `data-products/swl/README.md`) has the full detail.
 
 Every arrow above is a script (or CLI module) you invoke directly — nothing runs
 automatically as a side effect of another stage. Skipping a stage (e.g. re-using
-already-cleaned `data/clean/` files) is fine; each stage only needs its documented
+already-cleaned `data/avg/` files) is fine; each stage only needs its documented
 inputs to exist, regardless of how they were produced.
 
 ## Step-by-step: raw data to outputs
@@ -83,25 +85,24 @@ uv sync --group test --group dev
 ### 1. Clean the raw workbooks (only if `data/raw/*` changed)
 
 ```powershell
-uv run python -m great_lakes.clean_lake_levels_all_scenarios
-uv run python -m great_lakes.clean_swl_summary
+uv run python data-products/avg/scripts/clean.py --overwrite
+uv run python data-products/swl/scripts/clean.py --overwrite
 ```
 Inputs: `data\raw\lake_levels_all_scenarios_9jul2026.xlsx`,
 `data\raw\still_water_summary__22may2026.xlsm` (committed).
-Outputs: `data\clean\{superior,michiganhuron,stclair,erie,ontario}_avg.csv`,
-`data\clean\{superior,michigan,huron,ontario}_swl.xlsx` (gitignored, regenerable —
-commit only if you intend them as new ground truth).
+Outputs: `data\avg\{superior,michiganhuron,stclair,erie,ontario}_avg.csv`,
+`data\swl\clean\{superior,michigan,huron,ontario}_swl.xlsx` (committed). The swl clean
+step drops save points whose ARI values are all missing in the source (3 in Michigan).
 
-### 2. Fill in the missing SWL scenarios
+### 2. Complete the SWL scenarios
 
 ```powershell
-uv run python -m great_lakes.fillin_swl data\clean
+uv run python data-products/swl/scripts/complete.py --overwrite
 ```
-Inputs: `data\clean\*_swl.xlsx` + `data\clean\*_avg.csv` (step 1's outputs).
-Output (default, `--extrapolate`): `data\extrapolated\*_swl.xlsx` (17 scenarios).
-With `--no-extrapolate`: `data\filled\*_swl.xlsx` (12 scenarios) instead.
-See `README.md`'s "Batch tool 3: fillin_swl.py" section for the interpolation/
-extrapolation math and all flags.
+Inputs: `data\swl\clean\*_swl.xlsx` + `data\avg\*_avg.csv` (step 1's outputs).
+Outputs: `data\swl\complete\*_swl.xlsx` (17 scenarios) and
+`data-products\swl\outputs\filled\*_swl.xlsx` (12 scenarios, gitignored).
+See `README.md`'s "Scenario completion" section for the interpolation/extrapolation math.
 
 ### 3. Fill in a resources+config workbook
 
@@ -118,14 +119,12 @@ script's recognized columns ever change.
 ### 4. Run the batch analysis
 
 ```powershell
-uv run python -m great_lakes.batch_run_avg my_run.xlsx data\clean
-uv run python -m great_lakes.batch_run_swl my_swl_run.xlsx data\clean
+uv run python -m great_lakes.batch_run_avg my_run.xlsx data\avg
+uv run python -m great_lakes.batch_run_swl my_swl_run.xlsx data\swl\complete
 ```
-(`batch_run_swl.py` typically points at `data\extrapolated` or `data\filled` instead of
-`data\clean`, depending on which scenario coverage the analysis needs.)
+(`batch_run_swl.py` can instead point at `data\swl\clean` for known scenarios only.)
 
-Inputs: the workbook from step 3, plus the matching clean/filled/extrapolated data
-directory from step 1/2.
+Inputs: the workbook from step 3, plus the matching data directory from step 1/2.
 Outputs, written to the workbook's `output_directory`: per-row `.toml` + grid CSV +
 plot PNG (+ summary/output `.xlsx` for avg), and a `README.txt` **run readme** — see
 GLOSSARY.md's "Run readme" entry — documenting exactly what ran, with what inputs, what
@@ -133,13 +132,16 @@ succeeded/failed, every file the run wrote, and any pre-existing files in that
 directory tree the run doesn't recognize as its own (a stale-output flag). Read the run
 readme first when checking whether an output tree reflects a specific run.
 
-### 5. (Optional) known-scenario directionality analysis
+### 5. Gates and known-scenario directionality (optional)
 
 ```powershell
-uv run python -m great_lakes.analyze_known_scenarios
+uv run python data-products/swl/scripts/compare_fill_to_climate_canvas.py
+uv run python data-products/swl/scripts/check_ari_curves.py
+uv run python data-products/swl/methods/summarize_precip_temp_effects.py
 ```
-Input: `data\extrapolated\*_swl.xlsx` (step 2's output). Output:
-`data\analysis\known_scenario_directionality.csv` + summary `.xlsx`.
+Inputs: `data\swl\{clean,complete}` and `data-products\swl\outputs\filled`. Outputs:
+under `data-products\swl\outputs\{gates,methods}\`. Every output folder gets a `README.txt`
+run record.
 
 ### 6. Build the results dashboard
 

@@ -7,16 +7,16 @@ import pytest
 from typer.testing import CliRunner
 
 from great_lakes.analysis.avg import plot_levels
-from great_lakes.fillin_swl import ALL_SCENARIO_SUFFIXES
+from great_lakes.swl.complete import ALL_SCENARIO_SUFFIXES
 
 runner = CliRunner()
 
 
 # ---- resolve_default_output_dir -----------------------------------------------------
 
-def test_resolve_default_output_dir_is_img_avg_sibling_of_data_dir():
-    data_dir = Path("data/clean")
-    assert plot_levels.resolve_default_output_dir(data_dir) == Path("data/clean/img/avg")
+def test_resolve_default_output_dir_is_figures_ari_under_data_dir():
+    data_dir = Path("data/avg")
+    assert plot_levels.resolve_default_output_dir(data_dir) == Path("data/avg/figures/ari")
 
 
 # ---- fixture: tiny synthetic <lake>_avg.csv, all 17 scenario columns ----------------
@@ -44,18 +44,12 @@ def data_dir(tmp_path):
 @pytest.fixture
 def small_scope(monkeypatch):
     """Restrict the module's lake/ARI scope so tests run in reasonable time -- still
-    exercises every branch (mean, high/low tail, clustered/declustered, interpolated)."""
+    exercises every branch (high/low tail, clustered/declustered, interpolated)."""
     monkeypatch.setattr(plot_levels, "AVG_LAKES", ("superior",))
     monkeypatch.setattr(plot_levels, "AVG_ARIS", (2.0,))
 
 
 # ---- run() writes the new folder layout ---------------------------------------------
-
-def test_run_writes_mean_plots_raw_and_interpolated(data_dir, small_scope, tmp_path):
-    output_dir = tmp_path / "out"
-    plot_levels.run(data_dir, output_dir)
-    assert (output_dir / "mean" / "superior.png").exists()
-    assert (output_dir / "mean" / "interpolated" / "superior.png").exists()
 
 
 def test_run_writes_ari_plots_under_clustered_and_declustered(data_dir, small_scope, tmp_path):
@@ -87,7 +81,6 @@ def test_main_writes_readme_with_inputs_and_naming_scheme(data_dir, small_scope,
     assert result.exit_code == 0, result.output
     readme_text = (output_dir / "README.txt").read_text()
     assert "superior_avg.csv" in readme_text
-    assert "mean/" in readme_text
     assert "ari/" in readme_text
 
 
@@ -96,4 +89,4 @@ def test_main_defaults_output_dir_when_omitted(data_dir, small_scope):
     assert result.exit_code == 0, result.output
     default_output = plot_levels.resolve_default_output_dir(data_dir)
     assert (default_output / "README.txt").exists()
-    assert (default_output / "mean" / "superior.png").exists()
+    assert list((default_output / "ari").rglob("superior_*.png"))

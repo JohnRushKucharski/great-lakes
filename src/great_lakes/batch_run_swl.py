@@ -3,7 +3,7 @@
 Reads a resources.xlsx template (config sheet + resources sheet) and, for each row of the
 resources sheet, evaluates a magnitude-only characteristic against a water-level/ARI
 (Average Return Interval) frequency curve -- one curve per save point, per scenario sheet,
-in the corresponding lake's `<lake>_swl.xlsx` data file (see data/clean/).
+in the corresponding lake's `<lake>_swl.xlsx` data file (see data/swl/complete/).
 
 Unlike batch_run_avg.py, this script does NOT generate a hydropattern .toml or invoke
 hydropattern.cli: there is no timeseries here (each scenario sheet holds one static

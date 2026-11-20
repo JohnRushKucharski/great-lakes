@@ -31,13 +31,15 @@ def build_scenario_ari_grid(
     sheets: dict[str, pd.DataFrame],
     save_point_id: int,
     ari: float,
+    to_units: units.Units = "ft",
+    to_datum: units.Datum = "IGLD85",
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Build the (precip x, temp y, water-level-in-feet z) grid for one save point/ARI.
+    """Build the (precip x, temp y, water level z) grid for one save point/ARI.
 
     `coords` ({suffix: (precip, temp)}) sets which scenarios the grid spans; sheets whose
     suffix is not in `coords` are ignored. z is shaped (len(temps), len(precips)), NaN
-    where a coordinate has no sheet or no row for `save_point_id`. Values are converted
-    from meters to feet (datum unchanged).
+    where a coordinate has no sheet or no row for `save_point_id`. Sheet values are meters,
+    IGLD85; z is converted to `to_units` and `to_datum` (default feet, IGLD85).
     """
     precips = sorted({p for p, _ in coords.values()})
     temps = sorted({t for _, t in coords.values()})
@@ -51,11 +53,32 @@ def build_scenario_ari_grid(
         row = df.loc[df["ID"] == save_point_id, ari]
         if row.empty:
             continue
-        z[temps.index(temp), precips.index(precip)] = units.convert_units(
-            float(row.iloc[0]), "m", "ft"
+        value = units.convert_units(float(row.iloc[0]), "m", to_units)
+        z[temps.index(temp), precips.index(precip)] = units.convert_datum(
+            value, "IGLD85", to_datum, to_units
         )
 
     return np.array(precips, dtype=float), np.array(temps, dtype=float), z
+
+
+def estimated_cell_mask(
+    coords: dict[str, tuple[float, float]], sheets: dict[str, pd.DataFrame]
+) -> np.ndarray:
+    """Boolean grid (same shape as `build_scenario_ari_grid` z) of estimated cells.
+
+    A cell is estimated when its sheet is labelled `filled-` or `extrapolated-`.
+    """
+    precips = sorted({p for p, _ in coords.values()})
+    temps = sorted({t for _, t in coords.values()})
+    mask = np.zeros((len(temps), len(precips)), dtype=bool)
+    for sheet_name in sheets:
+        suffix = parse_scenario_sheet_name(sheet_name)
+        if suffix not in coords:
+            continue
+        if sheet_name.partition("-")[0] in ("filled", "extrapolated"):
+            precip, temp = coords[suffix]
+            mask[temps.index(temp), precips.index(precip)] = True
+    return mask
 
 
 @lru_cache(maxsize=None)

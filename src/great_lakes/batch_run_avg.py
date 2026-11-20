@@ -3,7 +3,7 @@
 Reads a resources.xlsx template (config sheet + resources sheet) and, for each row
 of the resources sheet, generates one hydropattern .toml file (one component per row)
 and runs it in-process against the corresponding lake's average lake-level timeseries
-CSV (see clean_lake_levels_all_scenarios.py for how those CSVs are produced).
+CSV (see data-products/avg/scripts/clean.py for how those CSVs are produced).
 
 See GLOSSARY.md for the "resource"/"resources sheet"/"config sheet"/"subdirectory
 structure" vocabulary used throughout this file.
@@ -37,7 +37,7 @@ from great_lakes.batch.runner import (  # noqa: F401 -- re-exported for backward
 _VALID_OPERATORS = frozenset({"<", "<=", ">", ">=", "=", "!="})
 
 # lake code (as used in the resources sheet "lake" column) -> avg CSV filename produced
-# by clean_lake_levels_all_scenarios.py.
+# by data-products/avg/scripts/clean.py.
 LAKE_CSV_NAMES = {
     "superior": "superior_avg.csv",
     "michiganhuron": "michiganhuron_avg.csv",
