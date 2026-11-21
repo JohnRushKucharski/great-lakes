@@ -11,8 +11,8 @@ import pytest
 
 pytest.importorskip("hydropattern.scenarios")
 
-REPORT_DIR = Path(__file__).resolve().parents[1] / "longtailpoint" / "habitat" / "report"
-spec = importlib.util.spec_from_file_location("pondweed_runs", REPORT_DIR / "pondweed_runs.py")
+SCRIPTS = Path(__file__).resolve().parents[1] / "case-studies/long-tail-point/habitat/scripts"
+spec = importlib.util.spec_from_file_location("pondweed_runs", SCRIPTS / "pondweed_runs.py")
 assert spec is not None and spec.loader is not None
 pondweed_runs = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pondweed_runs)

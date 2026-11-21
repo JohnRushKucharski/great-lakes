@@ -24,6 +24,8 @@ case-studies/*/*/outputs/*
 !case-studies/long-tail-point/overtopping/outputs/figures/
 !case-studies/long-tail-point/overtopping/outputs/dashboard.html
 !case-studies/long-tail-point/overtopping/outputs/manifest.js
+!case-studies/long-tail-point/habitat/outputs/figures/
+!case-studies/long-tail-point/habitat/outputs/reliability/
 
 # generated zip and superseded/retired memos and habitat files (retired in the case-studies phase)
 longtailpoint.zip

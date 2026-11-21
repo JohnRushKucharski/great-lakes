@@ -7,7 +7,7 @@ Great Lakes Coastal Resiliency Study. It has three layers:
   gates for the avg (average monthly lake level) and swl (storm water level) data.
 - **Analyses** (`analyses/`): workflows that run on those data. Each has its own README.
 - **Case studies** (`case-studies/`): worked examples using the tooling (Long Tail Point
-  overtopping; habitat is the next to move in).
+  overtopping and habitat).
 
 See [`GLOSSARY.md`](./GLOSSARY.md) for the domain vocabulary (**resource**, **resources
 sheet**, **config sheet**, **subdirectory structure**) used throughout this document.
@@ -63,12 +63,12 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 └── case-studies/
     └── long-tail-point/
         ├── overtopping/            <- {inputs, scripts, methods, outputs, deliverables}
-        └── habitat/                <- not yet moved (still under longtailpoint/habitat/)
+        └── habitat/                <- {inputs, scripts, methods, outputs, deliverables}
 ```
 
 `data-products/*/outputs/`, `analyses/*/outputs/` and `case-studies/*/*/outputs/` are
 gitignored (regenerable), except the memo figures and `dashboard.html`/`manifest.js` of
-the overtopping case study.
+the overtopping case study and the figures and reliability tables of the habitat case study.
 Everything under `data/` is tracked, including the summary figures. Each README says how
 to regenerate its outputs:
 
@@ -80,6 +80,7 @@ to regenerate its outputs:
 | assess avg resources | [`analyses/assess-avg-resources`](analyses/assess-avg-resources/README.md) |
 | assess swl resources | [`analyses/assess-swl-resources`](analyses/assess-swl-resources/README.md) |
 | Long Tail Point overtopping | [`case-studies/long-tail-point/overtopping`](case-studies/long-tail-point/overtopping/README.md) |
+| Long Tail Point habitat | [`case-studies/long-tail-point/habitat`](case-studies/long-tail-point/habitat/README.md) |
 
 ## Installation
 
@@ -136,4 +137,21 @@ The memo is `deliverables/longtailpoint_memo_261030.docx`, edited by hand in Wor
 text). `build_memo_docx.py` builds a docx from the Markdown draft into `outputs/`;
 `sync_draft_from_docx.py` brings the draft back in line with the final docx. See the
 [workflow README](case-studies/long-tail-point/overtopping/README.md).
+
+## Long Tail Point habitat
+
+Dead Horse Bay habitat resilience to the avg scenarios (avg only; no swl). From the
+repository root:
+
+```powershell
+uv run python case-studies/long-tail-point/habitat/scripts/musky_runs.py
+uv run python case-studies/long-tail-point/habitat/scripts/pondweed_runs.py
+uv run python case-studies/long-tail-point/habitat/scripts/figure_lake_movement.py
+```
+
+The run scripts need `hydropattern` 0.3 or later; the figure scripts (F1, F3-F9) are
+listed in the [workflow README](case-studies/long-tail-point/habitat/README.md), which also
+covers the reliability tables, memo build and sync. The inputs are
+`data/avg/michiganhuron_avg.csv` and the tracked files in `inputs/`; the memo is
+`deliverables/LTP_habitat_resilience_memo-261112.docx`, edited by hand in Word.
 

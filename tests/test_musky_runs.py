@@ -12,9 +12,9 @@ import pytest
 
 pytest.importorskip("hydropattern.scenarios")
 
-REPORT_DIR = Path(__file__).resolve().parents[1] / "longtailpoint" / "habitat" / "report"
-sys.path.insert(0, str(REPORT_DIR))
-spec = importlib.util.spec_from_file_location("musky_runs", REPORT_DIR / "musky_runs.py")
+SCRIPTS = Path(__file__).resolve().parents[1] / "case-studies/long-tail-point/habitat/scripts"
+sys.path.insert(0, str(SCRIPTS))
+spec = importlib.util.spec_from_file_location("musky_runs", SCRIPTS / "musky_runs.py")
 assert spec is not None and spec.loader is not None
 musky_runs = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(musky_runs)
