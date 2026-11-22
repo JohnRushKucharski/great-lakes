@@ -1,9 +1,12 @@
 # Plan: Long Tail Point (LTP) storm water level memo
 
-Status: phases 1-6 complete; phase 7 in progress (`.docx` built, awaiting user page/layout
-review in Word). PDF dropped (user: .docx only). Header filled (TO: Longtail Point Project
+Status: memo complete. The hand-edited final is `deliverables/longtailpoint_memo_261030.docx` in
+the overtopping case study (the final text); this plan records the facts and the figure/table
+plan behind it. Historical note: paths written as `longtailpoint/...` below are now under
+`case-studies/long-tail-point/overtopping/` (`presentation/` figures are in `outputs/figures/`,
+the dashboard is `outputs/dashboard.html`). Header: TO: Longtail Point Project
 Delivery Team; FROM: Great Lakes Coastal Resiliency Study Team; PREPARED BY: John Kucharski,
-Senior Expert Advisor, Deltares; DATE: 30 October 2026). Builder:
+Senior Expert Advisor, Deltares; DATE: 30 October 2026. Builder:
 `case-studies/long-tail-point/overtopping/scripts/build_memo_docx.py` (draft -> `outputs/longtailpoint_memo_draft.docx`).
 Main memo and Appendices A-B drafted in
 `case-studies/long-tail-point/overtopping/inputs/memo_draft.md`, concision pass and captions applied with user direction.
@@ -255,5 +258,5 @@ generated artifacts or zips without asking. Ruff line length 100. If `uv run` fa
 ## 10. Housekeeping
 
 `GLOSSARY.md` "Known scenario" fix (extreme_low/extreme_high swap) committed on branch
-`ltp-swl-memo` with phases 1-6. `longtailpoint.zip` remains untracked (do not commit without
-asking). Merge `ltp-swl-memo` to `main` via PR when the report is done.
+`ltp-swl-memo` with phases 1-6. `longtailpoint.zip` is replaced by `outputs/long-tail-point-dashboard.zip` (gitignored; do not
+commit without asking). Merge `ltp-swl-memo` to `main` via PR when the report is done.

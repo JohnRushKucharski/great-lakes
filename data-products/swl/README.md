@@ -10,7 +10,7 @@ processed by `hydropattern`.
 
 ## Status
 
-Phase 3 complete: cleaning, completion, figures, two gates and the known-scenario
+Implemented: cleaning, completion, figures, two gates and the known-scenario
 summary.
 
 ## Inputs
@@ -56,7 +56,7 @@ small dot (see each legend).
 
 ## Methods
 
-- Fill and extrapolation: `README.md` ("Scenario completion") and
+- Fill and extrapolation: [`methods/scenario_completion.md`](methods/scenario_completion.md) and
   `docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md`.
 - Fill gate: `methods/compare_fill_to_climate_canvas.md`.
 - `methods/method_quality.md`: swl-on-avg regression and leave-one-out checks

@@ -4,6 +4,10 @@ status: accepted
 
 # Row-shift extrapolation for out-of-hull SWL scenarios
 
+> Path note (added in the reorganization; the decision is unchanged): `fillin_swl.py` is now
+> `data-products/swl/scripts/complete.py` (library: `great_lakes.swl.complete`), and
+> `data/clean/` is `data/avg/`.
+
 ## Context
 
 Each `<lake>_swl.xlsx` workbook has 5 **known scenarios** (of 17 total precip/temp

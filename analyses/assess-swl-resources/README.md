@@ -18,8 +18,7 @@ and a component has only a `magnitude` characteristic. For avg, see
 ## Status
 
 Implemented, with the v1 worksheets. `inputs/templates/new_template_batch_run_swl.xlsx` is
-a draft of the next worksheet version; `assess.py` does not read it yet. A
-`swl_method_quality` note is planned.
+a draft of the next worksheet version; `assess.py` does not read it yet.
 
 ## Inputs
 

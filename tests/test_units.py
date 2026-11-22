@@ -32,7 +32,8 @@ def test_convert_units_unknown_units_raises():
 
 
 # Datum offset: NAVD88_ft = IGLD85_ft + 0.44 (USACE team estimate; see
-# longtailpoint/longtail_waterlevel.xlsx Sheet2: NAVD88 587 ft -> IGLD85 586.56 ft).
+# case-studies/long-tail-point/overtopping/inputs/longtail_waterlevel.xlsx Sheet2: NAVD88 587 ft
+# -> IGLD85 586.56 ft).
 def test_convert_datum_known_pairs_in_feet():
     assert units.convert_datum(586.56, "IGLD85", "NAVD88", "ft") == pytest.approx(587.0)
     assert units.convert_datum(582.0, "NAVD88", "IGLD85", "ft") == pytest.approx(581.56)

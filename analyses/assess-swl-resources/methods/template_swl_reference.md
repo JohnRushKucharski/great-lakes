@@ -1,6 +1,6 @@
 # template_swl.xlsx reference
 
-Workbook for `batch_run_swl.py`. Two sheets: `resources` (one row = one grid+plot job) and `config` (key/value options).
+Workbook for `scripts/assess.py`. Two sheets: `resources` (one row = one grid+plot job) and `config` (key/value options).
 
 ## resources sheet
 
@@ -41,6 +41,6 @@ Key/value pairs (`option`, `value` columns). Blank/omitted falls back to default
 Unrecognized options, or duplicate option keys, raise a validation error.
 
 > Note: `filename_style`, `show_values`, `value_decimals` are valid `BatchConfig`
-> options in `batch_run_swl.py` but not yet pre-listed (with comments) in
-> `build_swl_template.py`'s `CONFIG_ROWS` / generated `config` sheet. Add them there
+> options in `scripts/assess.py` but not yet pre-listed (with comments) in
+> `scripts/build_template.py`'s `CONFIG_ROWS` / generated `config` sheet. Add them there
 > if you want them documented in the workbook itself.

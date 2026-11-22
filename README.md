@@ -12,15 +12,42 @@ Great Lakes Coastal Resiliency Study. It has three layers:
 See [`GLOSSARY.md`](./GLOSSARY.md) for the domain vocabulary (**resource**, **resources
 sheet**, **config sheet**, **subdirectory structure**) used throughout this document.
 
+## How the pieces fit
+
+```mermaid
+flowchart LR
+    raw["data/raw<br/>(read-only)"] --> avgp["data-products/avg"]
+    raw --> swlp["data-products/swl"]
+    avgp --> avg[("data/avg")]
+    swlp --> swl[("data/swl<br/>clean, complete")]
+    avg --> swlp
+    avg --> avgstat["analyses/avg-statistics"]
+    avg --> aavg["analyses/assess-avg-resources"]
+    swl --> aswl["analyses/assess-swl-resources"]
+    avg --> ot["case-studies/long-tail-point/overtopping"]
+    swl --> ot
+    aswl --> ot
+    aavg --> ot
+    avgstat --> ot
+    avg --> hab["case-studies/long-tail-point/habitat"]
+```
+
+avg and swl are separate datasets and are never mixed. Overtopping uses both; habitat uses
+avg only. The two case studies share no drafts, memos or scripts. Planned analyses
+(`report-resources`, `assess-avg-resource`, `assess-swl-resource`) are stubs. Every
+`methods/` note is listed in [`docs/methods-index.md`](docs/methods-index.md); data folders
+are described in [`data/README.md`](data/README.md).
+
 ## Directory layout
 
 ```
 ├── README.md                  <- this file
 ├── GLOSSARY.md                <- domain glossary
 ├── docs/
-│   ├── data_pipelines.md
-│   ├── plans/reorg_plan.md       <- active reorganization plan
-│   └── adr/
+│   ├── data_pipelines.md         <- end-to-end run order, raw data to outputs
+│   ├── methods-index.md          <- every methods/ note, with type and status
+│   ├── plans/                    <- reorg_plan.md and the two LTP memo plans
+│   └── adr/                      <- decisions already made
 ├── src/great_lakes/              <- library code (logic lives here; scripts stay thin)
 │   ├── batch/                       <- avg.py, swl.py (per-row processing), runner.py (shared
 │   │                                   run_batch loop), run_readme.py, assess.py,
@@ -43,7 +70,7 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 │   ├── overtopping.py                 <- overtopping-specific memo figures/tables (T1, F4, runup)
 │   └── memo/                          <- to_docx.py (Markdown -> .docx), from_docx.py (.docx ->
 │                                         Markdown), sync.py (draft vs recovered-draft diff)
-├── data/                       <- tracked data (inputs to everything else)
+├── data/                       <- tracked data (inputs to everything else); see data/README.md
 │   ├── raw/                    <- source Excel workbooks (read-only, never edited)
 │   ├── avg/                    <- cleaned avg csvs (5 lakes) + figures/<lake>.png
 │   └── swl/

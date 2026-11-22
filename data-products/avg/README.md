@@ -9,8 +9,8 @@ surge or wave set-up (see the swl product for that, and `GLOSSARY.md`).
 
 ## Status
 
-Phase 3 complete: cleaning and figures. The ARI figures and the other avg statistics move
-into `data-products/avg-statistics/` in phase 4.
+Implemented: cleaning and figures. The ARI figures and the other avg statistics live in
+[`analyses/avg-statistics`](../../analyses/avg-statistics/README.md).
 
 ## Inputs
 

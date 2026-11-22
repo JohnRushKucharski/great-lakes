@@ -80,7 +80,7 @@ viewer files:
 | `outputs/longtailpoint_memo_draft.docx` and the sync files | no | build and sync products |
 
 Scripts never write to `deliverables/`. Result file names carry the elevation in ft
-NAVD88 and match the original `longtailpoint/` runs exactly (e.g. `582d00`).
+NAVD88 and match the results of the earlier (pre-reorganization) runs exactly (e.g. `582d00`).
 
 ### Sharing the dashboard
 
