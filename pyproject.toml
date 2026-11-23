@@ -25,7 +25,7 @@ build-backend = "uv_build"
 
 [tool.uv.sources]
 climate-canvas = { git = "https://github.com/JohnRushKucharski/climate-canvas.git" }
-hydropattern = { git = "https://github.com/JohnRushKucharski/hydropattern.git", rev = "v0.1.1" }
+hydropattern = { git = "https://github.com/JohnRushKucharski/hydropattern.git", rev = "v0.3.3" }
 
 [dependency-groups]
 dev = [
@@ -38,6 +38,7 @@ dev = [
 ]
 test = [
     "pytest>=9.1.1",
+    "pytest-xdist>=3.8.0",
 ]
 
 [tool.ruff]
