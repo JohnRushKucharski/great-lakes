@@ -55,12 +55,12 @@ be meaningful, though this is not enforced.
 | `output_directory` | *(required)* | Base directory for generated `.toml` files and hydropattern outputs. |
 | `subdirectory_structure` | `flat` | `flat` (all rows share `output_directory`), `resource` (one subfolder per `resource_name`), or `row` (nested `resource_name/component_name`). |
 | `first_day_of_water_year` | `1` | Day-of-year (1-365) the water year starts on. |
-| `metric_mode` | `portion` | `portion`, `percentage`, or `return_period`. |
+| `metric_mode` | `portion` | `portion`, `percentage`, or `annual_probability` (portion of water years with at least 1 occurrence; not a return period, see [methods](methods/annual_probability_method.md)). An old `return_period` is read as `annual_probability` with a warning. |
 | `excel` | `true` | Also write an Excel copy of each run's output. |
 | `overwrite` | `false` | If `false`, a row whose expected output files already exist is skipped and reported as a failed row. |
 | `plot_enabled` | `true` | Generate a climate-canvas response-surface plot per component. |
 | `plot_interpolate` | `true` | Bilinearly interpolate the plotted response surface. |
-| `plot_color_map` | `RdBu` | hydropattern auto-reverses this per component based on `metric_mode`/`success_pattern` (see `docs/user/reference.md` in the hydropattern repo). |
+| `plot_color_map` | `RdBu` | The default is reversed per component when `success_pattern` is false, so red always means less success (applied here since hydropattern 0.3 no longer does). Any other map is used as given. |
 | `plot_color_map_ticks` | *(unset)* | Optional comma-separated explicit colorbar ticks, e.g. `-1.0, 0.0, 1.0`. |
 
 Leave a cell blank to use its default.
@@ -103,6 +103,7 @@ duluth_harbor_high_water_summary.xlsx    <- always written
 duluth_harbor_high_water_output.xlsx     <- only if excel=true
 duluth_harbor_high_water_grid.csv        <- only if plot_enabled=true
 duluth_harbor_high_water_plot.png        <- only if plot_enabled=true
+duluth_harbor_high_water_annual_probability.csv  <- only if metric_mode=annual_probability
 ```
 
 Where they land depends on `subdirectory_structure`. Every run also writes a `README.txt`
@@ -113,8 +114,9 @@ files written, and pre-existing files the run did not create), even if every row
 
 Row parsing, `.toml` generation and the per-row run are in `great_lakes.batch.avg`; the
 shared run loop and run record are in `great_lakes.batch.runner` and
-`great_lakes.batch.run_readme`. The metric computed per scenario is `hydropattern`'s own.
-`methods/` is empty for now.
+`great_lakes.batch.run_readme`. `portion` and `percentage` are `hydropattern`'s own;
+`annual_probability` is computed in `great_lakes.batch.annual_probability` from
+hydropattern's summary workbook (see `methods/annual_probability_method.md`).
 
 ## Assumptions & limitations
 

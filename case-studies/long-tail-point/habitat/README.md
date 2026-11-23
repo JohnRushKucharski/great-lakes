@@ -38,8 +38,7 @@ Tracked in `inputs/` (hand-edited or externally made; scripts never overwrite th
 ## Run
 
 From the repository root; no argument is required. `musky_runs.py` and `pondweed_runs.py`
-need `hydropattern` 0.3 or later (the pinned version in `uv.lock` is older; point
-`PYTHONPATH` at a newer checkout, e.g. `$env:PYTHONPATH='..\hydropattern'`). Run them
+need `hydropattern` 0.3 or later, which the pinned version satisfies. Run them
 before the figures that read their tables (F6, F9).
 
 ```powershell
@@ -92,7 +91,7 @@ only (no datum change; everything is IGLD85); floors are ft IGLD85.
 ## Methods
 
 The reviewed method notebooks are in `methods/` and are saved with their outputs. They read
-`data/avg/michiganhuron_avg.csv` and need `hydropattern` 0.3 or later:
+`data/avg/michiganhuron_avg.csv` and need `hydropattern` 0.3 or later (the pin satisfies it):
 
 - `musky_habitat.ipynb`: musky criteria at one floor (`BOTTOM_FT`, 573-579 ft; saved at 576).
 - `pondweed_habitat.ipynb`: pondweed criteria at one floor (`BOTTOM_FT`, 574-576 ft; saved

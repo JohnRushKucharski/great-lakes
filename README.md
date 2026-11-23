@@ -115,7 +115,8 @@ to regenerate its outputs:
 uv sync --group test --group dev
 ```
 
-`hydropattern` is a pinned git dependency (see `pyproject.toml`); `pandas`,
+`hydropattern` is a pinned git dependency (see `pyproject.toml`, currently `v0.3.3`);
+`pandas`,
 `openpyxl`, `scipy` (Delaunay triangulation, via `climate-canvas`), `python-calamine`
 (fast `.xlsx` reading), and `xlsxwriter` (workbook writing) are all direct dependencies.
 
@@ -176,7 +177,7 @@ uv run python case-studies/long-tail-point/habitat/scripts/pondweed_runs.py
 uv run python case-studies/long-tail-point/habitat/scripts/figure_lake_movement.py
 ```
 
-The run scripts need `hydropattern` 0.3 or later; the figure scripts (F1, F3-F9) are
+The run scripts need `hydropattern` 0.3 or later, which the pin satisfies; the figure scripts (F1, F3-F9) are
 listed in the [workflow README](case-studies/long-tail-point/habitat/README.md), which also
 covers the reliability tables, memo build and sync. The inputs are
 `data/avg/michiganhuron_avg.csv` and the tracked files in `inputs/`; the memo is

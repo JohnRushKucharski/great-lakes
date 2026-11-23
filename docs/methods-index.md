@@ -23,6 +23,7 @@ steps.
 | --- | --- | --- | --- |
 | [`avg_ari_poisson_method.md`](../analyses/avg-statistics/methods/avg_ari_poisson_method.md): Poisson / peaks-over-threshold ARI of avg levels | [avg-statistics](../analyses/avg-statistics/README.md) | method | final |
 | [`aep_method.md`](../analyses/assess-swl-resources/methods/aep_method.md): why swl ARI is converted to annual exceedance probability and not `1 / ARI` | [assess-swl-resources](../analyses/assess-swl-resources/README.md) | method | final |
+| [`annual_probability_method.md`](../analyses/assess-avg-resources/methods/annual_probability_method.md): avg `annual_probability` = portion of water years with at least 1 occurrence (not a return period) | [assess-avg-resources](../analyses/assess-avg-resources/README.md) | method | final |
 | [`equivalent_elevation_method.md`](../analyses/assess-swl-resources/methods/equivalent_elevation_method.md): equivalent elevation and elevation delta | [assess-swl-resources](../analyses/assess-swl-resources/README.md) | method | final |
 | [`template_swl_reference.md`](../analyses/assess-swl-resources/methods/template_swl_reference.md): every resources and config column of the swl worksheet | [assess-swl-resources](../analyses/assess-swl-resources/README.md) | method | final |
 

@@ -79,6 +79,14 @@ output land, relative to the config's base output directory:
 - `"resource"`: one subfolder per resource name.
 - `"row"`: one subfolder per resource name, nested with one subfolder per component name.
 
+**Annual probability** (`metric_mode="annual_probability"`, avg only):
+The portion of complete water years in which a component's pattern occurs at least once,
+per scenario, in [0, 1]. An **occurrence** is a run of consecutive success timesteps
+(hydropattern calls these events). It is **not a return period**: monthly lake levels are
+persistent, so occurrences are not independent. Replaces the avg `return_period` mode; the
+swl `return_period` is a true ARI-based return period and is unchanged. See
+`analyses/assess-avg-resources/methods/annual_probability_method.md`.
+
 **Save point**:
 A single row in a swl lake workbook sheet (`great_lakes.batch.swl`) — a fixed lat/lon location with an
 `ID`, whose water-level-vs-ARI curve is looked up by a resources-sheet row via

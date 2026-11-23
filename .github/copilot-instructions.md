@@ -61,8 +61,8 @@ that leave it (`docs/plans/ltp_*.md`).
   `hydropattern` (propose it, don't copy it here). Only case-study-specific logic lives in
   this repo. Same idea for `climate-canvas` (plotting dependency).
 - Bumping the pinned `hydropattern` version is an owner decision, done one workflow at a time
-  against saved baselines so existing results stay reproducible. Habitat run scripts and
-  notebooks need 0.3 or later (see its README).
+  against saved baselines so existing results stay reproducible. The pin (`v0.3.3`) satisfies
+  the habitat run scripts and notebooks, which need 0.3 or later.
 
 ## Commands (Python 3.12, uv)
 
