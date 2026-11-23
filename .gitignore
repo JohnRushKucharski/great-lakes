@@ -11,31 +11,21 @@ htmlcov/
 # Data policy: raw/ inputs, code, and small template workbooks are committed.
 # Regenerable analysis outputs (derived from raw/ via scripts) are NOT committed --
 # keep them locally as insurance, regenerate via the batch/clean scripts if lost.
-data/clean/
-data/filled/
-data/extrapolated/
 data/analysis/
+# bulk/intermediate outputs of the data products (regenerate via each product's scripts);
+# the docs-embedded figures and data/ products are tracked instead
+data-products/*/outputs/
+# analysis workflow outputs (regenerate via each workflow's scripts)
+analyses/*/outputs/
 
-# longtailpoint: track input workbooks + dashboard.html/manifest.js viewer files
-# (small, needed to browse results without re-running anything). Bulky generated
-# batch outputs stay untracked/regenerable.
-longtailpoint/*_output/
-longtailpoint/results_*.xlsx
-longtailpoint/~$*
-
-# untracked working drafts, plans, and habitat-memo work in progress
-docs/longtailpoint_memo_draft.md
-docs/report_plan.md
-longtailpoint/habitat/JK/
-longtailpoint/habitat/JO/
-longtailpoint/habitat/report/
-longtailpoint.zip
-longtailpoint/longtailpoint_memo.docx
-longtailpoint/longtailpoint_memo_261030.docx
-longtailpoint/MEMORANDUM.docx
-src/great_lakes/longtailpoint_report.py
-tests/test_build_habitat_report.py
-tests/test_longtailpoint_report.py
+# case studies: outputs are regenerable. Tracked: figures embedded in the memo, and the
+# dashboard viewer files (small; browse results without re-running anything).
+case-studies/*/*/outputs/*
+!case-studies/long-tail-point/overtopping/outputs/figures/
+!case-studies/long-tail-point/overtopping/outputs/dashboard.html
+!case-studies/long-tail-point/overtopping/outputs/manifest.js
+!case-studies/long-tail-point/habitat/outputs/figures/
+!case-studies/long-tail-point/habitat/outputs/reliability/
 
 # scratch space for ad hoc manual smoke tests, not part of the automated suite
 manual_tests/

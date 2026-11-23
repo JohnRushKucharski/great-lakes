@@ -6,7 +6,8 @@ other great_lakes module.
 """
 import openpyxl
 
-from great_lakes import build_avg_template, build_swl_template
+from great_lakes.batch import template_avg as build_avg_template
+from great_lakes.batch import template_swl as build_swl_template
 
 # ---- build_avg_template.py ----------------------------------------------------------
 

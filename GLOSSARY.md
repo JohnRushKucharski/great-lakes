@@ -2,9 +2,9 @@
 
 Tooling (dependent on `hydropattern` via a pinned git dependency) for batch-generating
 and running hydropattern `.toml` configs against Great Lakes lake-level timeseries, one
-`.toml`/run per row of a spreadsheet (`batch_run_avg.py`) — plus a second, standalone
-batch tool
-(`batch_run_swl.py`) that evaluates storm water level (SWL) frequency curves instead.
+`.toml`/run per row of a spreadsheet (`analyses/assess-avg-resources`) — plus a second,
+standalone workflow (`analyses/assess-swl-resources`) that evaluates storm water level
+(SWL) frequency curves instead.
 
 ## Language
 
@@ -63,12 +63,12 @@ produces its own independent `.toml` and hydropattern run.
 _Avoid_: Project (too generic — a resource is the Great-Lakes-specific unit of grouping).
 
 **Resources sheet**:
-The `templates/template_avg.xlsx` sheet where each row fully specifies one hydropattern
+The `template_avg.xlsx` sheet (in `analyses/assess-avg-resources/inputs/templates/`) where each row fully specifies one hydropattern
 component (name, lake, characteristics, plot threshold) to generate into its own `.toml`
 file and run independently.
 
 **Config sheet**:
-The `templates/template_avg.xlsx` sheet holding options shared across every row of the
+The `template_avg.xlsx` sheet (same folder) holding options shared across every row of the
 resources sheet (output directory, subdirectory structure, overwrite, first day of water
 year, metric mode, excel/plot output toggles).
 
@@ -79,8 +79,16 @@ output land, relative to the config's base output directory:
 - `"resource"`: one subfolder per resource name.
 - `"row"`: one subfolder per resource name, nested with one subfolder per component name.
 
+**Annual probability** (`metric_mode="annual_probability"`, avg only):
+The portion of complete water years in which a component's pattern occurs at least once,
+per scenario, in [0, 1]. An **occurrence** is a run of consecutive success timesteps
+(hydropattern calls these events). It is **not a return period**: monthly lake levels are
+persistent, so occurrences are not independent. Replaces the avg `return_period` mode; the
+swl `return_period` is a true ARI-based return period and is unchanged. See
+`analyses/assess-avg-resources/methods/annual_probability_method.md`.
+
 **Save point**:
-A single row in a `batch_run_swl.py` lake workbook sheet — a fixed lat/lon location with an
+A single row in a swl lake workbook sheet (`great_lakes.batch.swl`) — a fixed lat/lon location with an
 `ID`, whose water-level-vs-ARI curve is looked up by a resources-sheet row via
 `save_point_id` (exact match, wins if given) or nearest `lat`/`lon` (Euclidean distance,
 fallback).
@@ -89,7 +97,7 @@ sheet row represents).
 
 **ARI (Average Return Interval)**:
 The swl workbook's column headers (in years) — the inverse of exceedance probability for
-a given water level at a save point. `batch_run_swl.py` linearly interpolates in ARI-space
+a given water level at a save point. `great_lakes.batch.swl` linearly interpolates in ARI-space
 against a save point's (water level, ARI) pairs to find the ARI at a resource row's
 magnitude threshold. Out-of-range thresholds are clamped to the nearest end ARI (`0.1` or
 `1000`) with a warning, never extrapolated.
@@ -106,9 +114,9 @@ interpolating the water level at that same ARI under every other scenario's own 
 water level is equally likely, under this scenario, as the lookup value is under the
 baseline scenario?" All swl-workbook levels, `magnitude_value`, and `equivalent_elevation`
 are in meters, IGLD85 datum (the analysis itself never converts units), but the written
-output is converted to feet, NAVD88 datum (see `common_swl.m_igld85_to_ft_NAVD88`, a flat
-+0.44ft offset plus a standard 0.3048 m/ft scale — see
-`longtailpoint/longtail_waterlevel.xlsx` Sheet2's "NAVD88 to IGLD85" table) since a water
+output is converted to feet, NAVD88 datum (see `units.m_igld85_to_ft_NAVD88`, a flat
++0.44ft offset plus the case-study 3.281 ft/m scale — see
+`case-studies/long-tail-point/overtopping/inputs/longtail_waterlevel.xlsx` Sheet2's "NAVD88 to IGLD85" table) since a water
 level, unlike the primary metric's portion/percentage/return_period units, has physical
 elevation units to convert. Written to its own grid csv + plot png
 (`..._equivalent_elevation_grid.csv` / `_equivalent_elevation_plot.png`), with plot
@@ -205,7 +213,7 @@ _Avoid_: Base scenario, reference scenario (reference scenario collides with the
 `reference_timeseries` vocabulary used elsewhere in hydropattern core).
 
 **Run readme**:
-The `README.txt` a batch run (`batch_run_avg.py` or `batch_run_swl.py`) writes at the
+The `README.txt` an assess run (`assess-avg-resources` or `assess-swl-resources`) writes at the
 root of the config's `output_directory` after every invocation of `run_batch`, whether
 or not any row succeeded. Documents: the resources/config workbook and data directory
 used as inputs, the run's timestamp, a per-row succeeded/failed summary (with failure
@@ -219,7 +227,7 @@ _Avoid_: Naming readme, manifest (manifest collides with `build_dashboard.py`'s
 
 **Average lake level (AVG(l,s))**:
 The mean of the full synthetic scenario record (all ~12,360 monthly rows spanning
-1970-2999) in `data/clean/<avg-lake>_avg.csv` for lake `l`'s scenario `s` column — a
+1970-2999) in `data/avg/<avg-lake>_avg.csv` for lake `l`'s scenario `s` column — a
 single scalar per lake+scenario, independent of save point or ARI. `michigan` and
 `huron` (separate `<lake>_swl.xlsx` workbooks) both read the same `michiganhuron_avg.csv`
 column, since Michigan-Huron is one hydraulically-connected lake with one water level.
