@@ -2,6 +2,7 @@
 
 Status: **approved, not started** (decided with the owner in a design interview, 2026-11-20).
 Owner: John Kucharski (JK). Read `GLOSSARY.md` first and use its terms exactly.
+Later folder regrouping under `workflows/`: see `docs/plans/restructure_plan.md`.
 
 ## 1. Goal
 
@@ -256,7 +257,8 @@ the end of each phase. Ask the owner before every commit and push.
   analyses live in `data-products/historical/` using the same inputs/outputs/methods/scripts
   pattern. Not yet created (future work).
 - Whether to keep the older habitat summary docx and the `michiganhuron_avg.*` files.
-- Whether a pass/fail gate for ARI curve invariants (monotonic, no NaN) is wanted.
+- ARI curve gate: resolved. `data-products/swl/scripts/check_ari_curves.py` already fails on a
+  missing or decreasing water level; no extra checks wanted (2026-11-23).
 - The "Green Bay, WI" location in the GLOSSARY came from the plan PDF file name.
 - Local-only untracked tests (`tests/test_f*_*.py`, `test_musky_runs.py`,
   `test_pondweed_runs.py`) depend on the untracked habitat code; track them together with it.
