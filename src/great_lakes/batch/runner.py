@@ -54,6 +54,15 @@ def _to_bool(value: Any, default: bool) -> bool:
     return bool(value)
 
 
+def default_color_map_direction(color_map: str, reverse: bool) -> str:
+    """Return 'RdBu_r' for the default 'RdBu' when reverse is set; explicit maps are untouched.
+
+    Hydropattern 0.1.1 did this itself; the batch tools now apply it so plots keep their
+    colors (red = less success) after the bump.
+    """
+    return "RdBu_r" if color_map == "RdBu" and reverse else color_map
+
+
 def _require_str(row: dict[str, Any], field_name: str, errors: list[str]) -> str:
     value = row.get(field_name)
     if _is_blank(value):

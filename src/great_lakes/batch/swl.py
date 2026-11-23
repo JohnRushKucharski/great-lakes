@@ -23,8 +23,7 @@ from typing import Any, Callable, Sequence
 import numpy as np
 import pandas as pd
 from climate_canvas.plots_utilities import plot_response_surface  # type: ignore[import-untyped]
-from hydropattern.cli import _resolve_color_map, write_grid_csv  # type: ignore[import-untyped]
-from hydropattern.parsers import MetricMode  # type: ignore[import-untyped]
+from hydropattern.formatters import write_grid_csv  # type: ignore[import-untyped]
 from hydropattern.scenario_grid import (  # type: ignore[import-untyped]
     build_grid,
     require_scenario_grid,
@@ -184,6 +183,16 @@ def compute_metric(p_exceed: float, success_pattern: bool, mode: str) -> float:
         f"Unsupported metric mode {mode!r}; must be one of "
         "'portion', 'percentage', 'return_period'."
     )
+
+
+def _resolve_color_map(color_map: str, success_pattern: bool, metric_mode: str) -> str:
+    """Auto-reverse the default 'RdBu' so red means "less success" (explicit maps untouched).
+
+    Vendored from hydropattern 0.1.1 (removed upstream; swl is not run through hydropattern).
+    Reverses when the mode is return_period XOR the component is not a success pattern.
+    """
+    reverse = (metric_mode == "return_period") ^ (not success_pattern)
+    return batch_runner.default_color_map_direction(color_map, reverse)
 
 
 def select_save_point(
@@ -964,7 +973,7 @@ def build_resource_outputs(
     output_folder.mkdir(parents=True, exist_ok=True)
     write_grid_csv(xs, ys, zs, grid_path)
     color_map = _resolve_color_map(
-        config.plot_color_map, resource.success_pattern, MetricMode(config.metric_mode)
+        config.plot_color_map, resource.success_pattern, config.metric_mode
     )
     primary_extra: dict[str, Any] = {}
     if resource.threshold is not None:

@@ -58,14 +58,16 @@ CONFIG_ROWS = [
      'One of "flat", "resource", or "row". See GLOSSARY.md for the "Subdirectory '
      'structure" definition.'),
     ("first_day_of_water_year", 1, "Day-of-year (1-365) the water year starts on."),
-    ("metric_mode", "portion", 'One of "portion", "percentage", or "return_period".'),
+    ("metric_mode", "portion",
+     'One of "portion", "percentage", or "annual_probability" (portion of water years with '
+     "at least 1 occurrence; not a return period)."),
     ("excel", True, "Also write an Excel copy of each run's output."),
     ("overwrite", False, "Allow overwriting a run's output directory if it already exists."),
     ("plot_enabled", True, "Generate a climate-canvas response-surface plot per component."),
     ("plot_interpolate", True, "Bilinearly interpolate the plotted response surface."),
     ("plot_color_map", "RdBu",
-     'Matplotlib colormap name. Left at "RdBu", hydropattern auto-reverses it per '
-     "component based on metric_mode/success_pattern -- see docs/user/reference.md."),
+     'Matplotlib colormap name. Left at "RdBu", it is reversed per component when '
+     "success_pattern is false, so red always means less success."),
     ("plot_color_map_ticks", "",
      "(Optional) comma-separated explicit colorbar ticks, e.g. \"-1.0, 0.0, 1.0\"."),
 ]

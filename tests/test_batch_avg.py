@@ -3,6 +3,7 @@ import tomllib
 from dataclasses import replace
 from pathlib import Path
 
+import pandas as pd
 import pytest
 
 from great_lakes.batch import avg as avg_batch_run
@@ -366,12 +367,32 @@ def test_build_toml_text_output_section():
     output_dir = Path("out/duluth_harbor/high_water")
     _, data = parsed_toml(
         spec, output_directory=output_dir,
-        config=default_config(overwrite=True, excel=False, metric_mode="return_period"),
+        config=default_config(overwrite=True, excel=False, metric_mode="percentage"),
     )
     assert data["output"]["directory"] == output_dir.as_posix()
     assert data["output"]["overwrite"] is True
     assert data["output"]["excel"] is False
-    assert data["output"]["metric"]["mode"] == "return_period"
+    assert data["output"]["metric"]["mode"] == "percentage"
+
+
+def test_build_toml_text_annual_probability_runs_portion_without_hydropattern_plot():
+    spec = avg_batch_run.parse_resource_row(base_row())
+    _, data = parsed_toml(spec, config=default_config(metric_mode="annual_probability"))
+    assert data["output"]["metric"]["mode"] == "portion"
+    assert data["output"]["plot"]["enabled"] is False
+
+
+@pytest.mark.parametrize("success,expected", [(True, "RdBu"), (False, "RdBu_r")])
+def test_build_toml_text_reverses_default_color_map_for_failure_patterns(success, expected):
+    spec = avg_batch_run.parse_resource_row(base_row(success_pattern=success))
+    _, data = parsed_toml(spec)
+    assert data["output"]["plot"]["climate-canvas"]["color_map"] == expected
+
+
+def test_build_toml_text_leaves_explicit_color_map_alone():
+    spec = avg_batch_run.parse_resource_row(base_row(success_pattern=False))
+    _, data = parsed_toml(spec, config=default_config(plot_color_map="viridis"))
+    assert data["output"]["plot"]["climate-canvas"]["color_map"] == "viridis"
 
 
 def test_build_toml_text_plot_enabled_by_default():
@@ -618,6 +639,27 @@ def test_read_config_sheet_invalid_metric_mode_raises(tmp_path):
     assert "metric_mode" in str(exc_info.value)
 
 
+def test_read_config_sheet_accepts_annual_probability(tmp_path):
+    path = make_workbook(
+        tmp_path,
+        config_pairs=[("output_directory", "out"), ("metric_mode", "annual_probability")],
+    )
+    config = avg_batch_run.read_config_sheet(path)
+    assert config.metric_mode == "annual_probability"
+    assert config.metric_mode_note == ""
+
+
+def test_read_config_sheet_maps_legacy_return_period_to_annual_probability(tmp_path):
+    path = make_workbook(
+        tmp_path,
+        config_pairs=[("output_directory", "out"), ("metric_mode", "return_period")],
+    )
+    with pytest.warns(UserWarning, match="annual_probability"):
+        config = avg_batch_run.read_config_sheet(path)
+    assert config.metric_mode == "annual_probability"
+    assert "return_period" in config.metric_mode_note
+
+
 def test_read_config_sheet_invalid_color_map_ticks_raises(tmp_path):
     path = make_workbook(
         tmp_path,
@@ -745,6 +787,44 @@ def test_run_batch_run_readme_flags_stale_pre_existing_files(tmp_path):
 
     text = (out_dir / "README.txt").read_text()
     assert "leftover_from_old_run.csv" in text
+
+
+def test_run_batch_annual_probability_writes_table_grid_and_plot_after_run(tmp_path):
+    resources_path = make_resources_workbook(
+        tmp_path, [("duluth_harbor", "high_water", "superior", ">", 183.0)],
+    )
+    config = batch_config(tmp_path, metric_mode="annual_probability", plot_enabled=False)
+    out_dir = tmp_path / "out"
+
+    def fake_run(toml_path):
+        pd.DataFrame(
+            [("_0_0", "duluth_harbor_high_water", 1970, "complete", 1, 1)],
+            columns=["scenario", "outcome_column", "interval", "completeness",
+                     "event_count_lower", "event_count_upper"],
+        ).to_excel(
+            out_dir / "duluth_harbor_high_water_summary.xlsx",
+            sheet_name="reporting_details", index=False,
+        )
+
+    summary = avg_batch_run.run_batch(
+        resources_path, Path("data/clean"), config, run_toml=fake_run,
+    )
+
+    assert len(summary.succeeded) == 1
+    assert (out_dir / "duluth_harbor_high_water_annual_probability.csv").exists()
+    assert "duluth_harbor_high_water_annual_probability.csv" in (out_dir / "README.txt").read_text()
+
+
+def test_run_batch_run_readme_records_legacy_metric_mode_note(tmp_path):
+    resources_path = make_resources_workbook(
+        tmp_path, [("duluth_harbor", "", "superior", ">", 183.0)],
+    )
+    config = batch_config(
+        tmp_path, metric_mode="annual_probability",
+        metric_mode_note="metric_mode 'return_period' was read as 'annual_probability'.",
+    )
+    avg_batch_run.run_batch(resources_path, Path("data/clean"), config, run_toml=lambda p: None)
+    assert "was read as 'annual_probability'" in (tmp_path / "out" / "README.txt").read_text()
 
 
 def test_run_batch_invalid_row_reported_as_failed_and_does_not_run(tmp_path):

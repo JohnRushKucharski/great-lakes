@@ -9,6 +9,19 @@ from great_lakes import units
 from great_lakes.batch import swl as swl_batch_run
 from great_lakes.swl import contours, naming
 
+# ---- _resolve_color_map -----------------------------------------------------------------
+
+@pytest.mark.parametrize("color_map,success,mode,expected", [
+    ("RdBu", True, "portion", "RdBu"),
+    ("RdBu", False, "portion", "RdBu_r"),
+    ("RdBu", True, "return_period", "RdBu_r"),
+    ("RdBu", False, "return_period", "RdBu"),
+    ("viridis", False, "return_period", "viridis"),
+])
+def test_resolve_color_map_reverses_default_only(color_map, success, mode, expected):
+    assert swl_batch_run._resolve_color_map(color_map, success, mode) == expected
+
+
 # ---- _is_blank ----------------------------------------------------------------------
 
 @pytest.mark.parametrize("value", [None, float("nan"), "", "   "])

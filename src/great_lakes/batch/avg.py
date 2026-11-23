@@ -9,6 +9,7 @@ See GLOSSARY.md for the "resource"/"resources sheet"/"config sheet"/"subdirector
 structure" vocabulary used throughout this file.
 """
 
+import warnings
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -17,6 +18,7 @@ from typing import Any, Callable
 import pandas as pd
 from hydropattern.cli import run as _hydropattern_cli_run  # type: ignore[import-untyped]
 
+from great_lakes.batch import annual_probability
 from great_lakes.batch import runner as batch_runner
 from great_lakes.batch.runner import (  # noqa: F401 -- re-exported for backward compat
     BatchSummary,
@@ -197,7 +199,11 @@ class BatchConfig:
     """
 
     first_day_of_water_year: int = 1
-    metric_mode: str = "portion"  # portion | percentage | return_period
+    # portion | percentage (run by hydropattern) | annual_probability (computed here from
+    # hydropattern's summary workbook; see batch/annual_probability.py)
+    metric_mode: str = "portion"
+    # Set when a legacy metric_mode was re-read as another; shown in the run README.txt.
+    metric_mode_note: str = ""
     excel: bool = True
     overwrite: bool = False
     output_directory: str = ""  # base output directory; required, no sensible default
@@ -310,12 +316,14 @@ def build_toml_text(
     lines.append(f"excel = {_toml_bool(config.excel)}")
     lines.append("")
 
+    annual = config.metric_mode == annual_probability.METRIC_MODE
     lines.append("[output.metric]")
-    lines.append(f"mode = {_toml_str(config.metric_mode)}")
+    # hydropattern knows portion/percentage only; annual_probability is computed afterwards
+    lines.append(f"mode = {_toml_str('portion' if annual else config.metric_mode)}")
     lines.append("")
 
     lines.append("[output.plot]")
-    lines.append(f"enabled = {_toml_bool(config.plot_enabled)}")
+    lines.append(f"enabled = {_toml_bool(config.plot_enabled and not annual)}")
     lines.append("")
 
     lines.append("[output.plot.climate-canvas]")
@@ -323,7 +331,10 @@ def build_toml_text(
     lines.append("show = false")  # hardcoded: never spawn interactive windows in a batch run
     if resource.threshold is not None:
         lines.append(f"threshold = {resource.threshold!r}")
-    lines.append(f"color_map = {_toml_str(config.plot_color_map)}")
+    color_map = batch_runner.default_color_map_direction(
+        config.plot_color_map, reverse=not resource.success_pattern
+    )
+    lines.append(f"color_map = {_toml_str(color_map)}")
     if config.plot_color_map_ticks is not None:
         lines.append(f"color_map_ticks = {_toml_array(list(config.plot_color_map_ticks))}")
 
@@ -433,7 +444,8 @@ _CONFIG_STR_KEYS = frozenset(
 _CONFIG_TICKS_KEY = "plot_color_map_ticks"
 _CONFIG_KNOWN_KEYS = _CONFIG_BOOL_KEYS | _CONFIG_INT_KEYS | _CONFIG_STR_KEYS | {_CONFIG_TICKS_KEY}
 
-_VALID_METRIC_MODES = frozenset({"portion", "percentage", "return_period"})
+_LEGACY_METRIC_MODES = {"return_period": annual_probability.METRIC_MODE}
+_VALID_METRIC_MODES = frozenset({"portion", "percentage", annual_probability.METRIC_MODE})
 
 
 
@@ -482,6 +494,16 @@ def read_config_sheet(path: Path, sheet_name: str = "config") -> BatchConfig:
         )
 
     metric_mode = values.get("metric_mode")
+    metric_mode_note = ""
+    if not _is_blank(metric_mode) and str(metric_mode).strip() in _LEGACY_METRIC_MODES:
+        legacy = str(metric_mode).strip()
+        metric_mode = _LEGACY_METRIC_MODES[legacy]
+        metric_mode_note = (
+            f"Config sheet metric_mode {legacy!r} was read as {metric_mode!r}: the avg "
+            "batch reports the portion of water years with at least 1 occurrence, not a "
+            f"return period. Rename the option to {metric_mode!r} in the workbook."
+        )
+        warnings.warn(metric_mode_note, UserWarning, stacklevel=2)
     if not _is_blank(metric_mode) and str(metric_mode).strip() not in _VALID_METRIC_MODES:
         errors.append(
             f"Config sheet option 'metric_mode' {metric_mode!r} "
@@ -499,6 +521,7 @@ def read_config_sheet(path: Path, sheet_name: str = "config") -> BatchConfig:
         kwargs["first_day_of_water_year"] = int(values["first_day_of_water_year"])
     if not _is_blank(metric_mode):
         kwargs["metric_mode"] = str(metric_mode).strip()
+        kwargs["metric_mode_note"] = metric_mode_note
     if not _is_blank(values.get("excel")):
         kwargs["excel"] = _to_bool(values.get("excel"), defaults.excel)
     if not _is_blank(values.get("overwrite")):
@@ -544,6 +567,7 @@ def _default_run_toml(toml_path: Path) -> None:
         plot=None, output_directory=None, write_to_excel=None,  # type: ignore[arg-type]
         overwrite=None, interp=None, show=None, threshold=None,  # type: ignore[arg-type]
         color_map=None, color_map_ticks=None, fillin=None,  # type: ignore[arg-type]
+        minimum_coverage=None,  # type: ignore[arg-type]
         run_toml_options=True,
     )
 
@@ -560,6 +584,8 @@ def _expected_output_filenames(resource: ResourceSpec, config: BatchConfig) -> l
     filenames = [f"{name}.toml", f"{name}_summary.xlsx"]
     if config.excel:
         filenames.append(f"{name}_output.xlsx")
+    if config.metric_mode == annual_probability.METRIC_MODE:
+        filenames.append(f"{name}_annual_probability.csv")
     if config.plot_enabled:
         filenames.append(f"{name}_grid.csv")
         filenames.append(f"{name}_plot.png")
@@ -614,6 +640,18 @@ class _AvgRowProcessor:
         toml_path = output_folder / f"{resource.qualified_name}.toml"
         toml_path.write_text(toml_text, encoding="utf-8")
         self._run_toml(toml_path)
+        if config.metric_mode == annual_probability.METRIC_MODE:
+            plot_options: dict[str, Any] = {
+                "interpolate": config.plot_interpolate,
+                "threshold": resource.threshold,
+                "color_map": config.plot_color_map,
+                "color_map_ticks": config.plot_color_map_ticks,
+            }
+            annual_probability.write_outputs(
+                output_folder / f"{resource.qualified_name}_summary.xlsx",
+                resource.qualified_name, output_folder, resource.success_pattern,
+                config.plot_enabled, plot_options,
+            )
         return tuple(
             output_folder / name for name in _expected_output_filenames(resource, config)
         )
@@ -621,16 +659,19 @@ class _AvgRowProcessor:
 
 # ---- naming-scheme / run-readme ----------------------------------------------------
 
-def _naming_scheme_text() -> str:
+def _naming_scheme_text(config: BatchConfig) -> str:
     """Generic naming-scheme blurb for this script's one, fixed output naming
     convention (resource_name_component_name -- no per-run configurable
     filename_style, unlike the swl batch's Long Tail Point styles)."""
     header = "Output filename naming scheme for this directory\n" + "=" * 50 + "\n\n"
-    return header + (
+    text = header + (
         "Output filename pattern: <resource_name>_<component_name>...\n\n"
         "  resource_name/component_name - from this row's resources-sheet columns "
         "(see GLOSSARY.md's \"Resource\"/\"Resources sheet\" entries).\n"
     )
+    if config.metric_mode_note:
+        text += f"\nNote: {config.metric_mode_note}\n"
+    return text
 
 
 def run_batch(
@@ -665,6 +706,6 @@ def run_batch(
     )
     batch_runner.write_run_readme(
         resources_path, data_dir, Path(config.output_directory), summary,
-        naming_scheme_text=_naming_scheme_text(), workspace_root=workspace_root,
+        naming_scheme_text=_naming_scheme_text(config), workspace_root=workspace_root,
     )
     return summary
