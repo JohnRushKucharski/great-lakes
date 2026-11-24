@@ -1,9 +1,9 @@
-# assess-swl-resource
+# single-resource (swl)
 
 ## Purpose
 
 Planned: a detailed assessment of a single resource against swl (storm water level)
-frequency curves, beyond what one row of `assess-swl-resources` gives.
+frequency curves, beyond what one row of the swl batch-resources workflow gives.
 
 ## Status
 

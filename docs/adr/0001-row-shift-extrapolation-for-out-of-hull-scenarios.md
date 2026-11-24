@@ -6,7 +6,8 @@ status: accepted
 
 > Path note (added in the reorganization; the decision is unchanged): `fillin_swl.py` is now
 > `data-products/swl/scripts/complete.py` (library: `great_lakes.swl.complete`), and
-> `data/clean/` is `data/avg/`.
+> `data/clean/` is `data/avg/`. Folders were later regrouped under `workflows/`, see
+> `docs/plans/restructure_plan.md`.
 
 ## Context
 

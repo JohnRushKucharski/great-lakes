@@ -6,7 +6,7 @@ ontario_avg.csv) into data/avg/. Each CSV has a "time" column (YYYY-MM-DD, match
 hydropattern's default pd.read_csv(parse_dates=[0]) behavior) followed by the 17
 scenario columns (_0_0 .. _20_7) unchanged. The "month" column is dropped.
 
-Run via `data-products/avg/scripts/clean.py`.
+Run via `workflows/analysis/data-products/avg/scripts/clean.py`.
 """
 
 from pathlib import Path

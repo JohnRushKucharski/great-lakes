@@ -93,14 +93,14 @@ gh release create v1 case-studies/long-tail-point/overtopping/outputs/long-tail-
 ## Methods
 
 - swl method quality (B1, LOO):
-  [`data-products/swl/methods/method_quality.md`](../../../data-products/swl/methods/method_quality.md).
+  [`workflows/analysis/data-products/swl/methods/method_quality.md`](../../../workflows/analysis/data-products/swl/methods/method_quality.md).
 - avg scenario statistics (F2, F3, T2):
-  [`analyses/avg-statistics/`](../../../analyses/avg-statistics/README.md).
+  [`workflows/analysis/data-analysis/avg-statistics/`](../../../workflows/analysis/data-analysis/avg-statistics/README.md).
 - T1 (design coverage) and F4 (swl elevation surface with the design and runup lines) are
   specific to this memo and live in `great_lakes.overtopping`.
 - Scenario completion and the swl/avg assessments:
-  [`data-products/swl`](../../../data-products/swl/README.md),
-  [`analyses/assess-swl-resources`](../../../analyses/assess-swl-resources/README.md).
+  [`workflows/analysis/data-products/swl`](../../../workflows/analysis/data-products/swl/README.md),
+  [the swl batch-resources workflow](../../../workflows/evaluation/swl/batch-resources/README.md).
 
 ## Assumptions & limitations
 

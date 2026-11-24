@@ -1,10 +1,10 @@
 # Poisson/Peaks-Over-Threshold method for average-lake-level ARIs
 
 > **Location note:** this doc lives with the `avg-statistics` workflow
-> (`analyses/avg-statistics/`). The code it documents is `great_lakes.avg_ari`
+> (`workflows/analysis/data-analysis/avg-statistics/`). The code it documents is `great_lakes.avg_ari`
 > (`src/great_lakes/avg_ari.py`), run via
-> `analyses/avg-statistics/scripts/plot_ari_surfaces.py`. Outputs are written under
-> `analyses/avg-statistics/outputs/` (gitignored), and the input is `data/avg/*_avg.csv`.
+> `workflows/analysis/data-analysis/avg-statistics/scripts/plot_ari_surfaces.py`. Outputs
+> are written under `workflows/analysis/data-analysis/avg-statistics/outputs/` (gitignored), and the input is `data/avg/*_avg.csv`.
 > The method itself is unchanged from its earlier locations.
 
 This documents the method `great_lakes.avg_ari` uses to compute

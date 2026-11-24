@@ -13,7 +13,7 @@ computes the average lake level associated with the SWL workbooks' ARI values th
    (level exceeded on average once every ARI years) and the low-water tail
    (level undershot on average once every ARI years), using the
    Poisson/peaks-over-threshold method described in
-   `analyses/avg-statistics/methods/avg_ari_poisson_method.md` --
+   `workflows/analysis/data-analysis/avg-statistics/methods/avg_ari_poisson_method.md` --
    NOT the annual-maximum-series (block maxima) method. Two variants:
    - non-declustered ("clustered"): every monthly value is treated as a Poisson-
      arrival candidate -> `ari/clustered/high/<lake>_<ari>.png`,
@@ -56,7 +56,8 @@ scenario), that ceiling is at ARI~=1.000006 years -- so close to 1 that it barel
 matters. For the declustered population (roughly one peak/trough per year from
 the lakes' seasonal cycle), that ceiling is much further out, more like
 ARI~=1.7-1.9 years -- so declustered ARI=1 is a real, not just theoretical,
-degenerate case (see `analyses/avg-statistics/methods/avg_ari_poisson_method.md`).
+degenerate case (see
+`workflows/analysis/data-analysis/avg-statistics/methods/avg_ari_poisson_method.md`).
 
 Rather than plot a possibly-meaningless capped ARI=1 result, this instead
 computes, per (lake, tail, declustered-or-not), the single highest (i.e.
@@ -66,7 +67,7 @@ plotted set, applied uniformly to every scenario cell in that response surface
 (so the whole plot stays one consistent, single-ARI comparison instead of each
 cell secretly showing a different return period).
 
-Run it with `analyses/avg-statistics/scripts/plot_ari_surfaces.py`.
+Run it with `workflows/analysis/data-analysis/avg-statistics/scripts/plot_ari_surfaces.py`.
 """
 
 from pathlib import Path

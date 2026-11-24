@@ -1,8 +1,8 @@
-# report-resources
+# resources-report
 
 ## Purpose
 
-Planned: summarize the outputs of `assess-avg-resources` and `assess-swl-resources` into a
+Planned: summarize the outputs of the avg and swl batch-resources workflows into a
 per-resource report (see `docs/plans/reorg_plan.md`).
 
 ## Status

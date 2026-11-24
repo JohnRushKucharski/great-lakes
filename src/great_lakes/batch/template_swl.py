@@ -1,6 +1,6 @@
 """Build the blank resources+config workbook consumed by great_lakes.batch.swl.
 
-Run `analyses/assess-swl-resources/scripts/build_template.py` any time the recognized
+Run `workflows/evaluation/swl/batch-resources/scripts/build_template.py` any time the recognized
 resources-sheet columns or config-sheet options in batch/swl.py change, so the shipped
 template stays in sync.
 """

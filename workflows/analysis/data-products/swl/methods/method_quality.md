@@ -1,6 +1,6 @@
 # swl method quality: regression on avg and leave-one-out checks
 
-Run by `data-products/swl/scripts/assess_method_quality.py`
+Run by `workflows/analysis/data-products/swl/scripts/assess_method_quality.py`
 (see [`../README.md`](../README.md)). Code: `great_lakes.swl_method_quality`.
 
 These checks ask how far the 12 estimated swl scenarios can be trusted, at one save point

@@ -14,7 +14,7 @@ known scenarios' (precip_delta, temp_delta) convex hull:
   docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md for the math and
   the underlying physical assumption.
 
-Run via `data-products/swl/scripts/complete.py`.
+Run via `workflows/analysis/data-products/swl/scripts/complete.py`.
 """
 
 from dataclasses import dataclass

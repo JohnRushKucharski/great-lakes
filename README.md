@@ -3,9 +3,12 @@
 Case-study tooling built on `hydropattern` for the Great Lakes Framework Study and the
 Great Lakes Coastal Resiliency Study. It has three layers:
 
-- **Data products** (`data-products/`): cleaning, scenario completion, figures and
-  gates for the avg (average monthly lake level) and swl (storm water level) data.
-- **Analyses** (`analyses/`): workflows that run on those data. Each has its own README.
+- **Analysis** (`workflows/analysis/`): **data products** (cleaning, scenario completion,
+  figures and gates for the avg (average monthly lake level) and swl (storm water level)
+  data) and **data analysis** (statistics that describe those products).
+- **Evaluation** (`workflows/evaluation/`): workflows that apply resource rules to those
+  data, as **single-resource** (stubs) and **batch-resources** (implemented) runs. Each has
+  its own README.
 - **Case studies** (`case-studies/`): worked examples using the tooling (Long Tail Point
   overtopping and habitat).
 
@@ -16,14 +19,14 @@ sheet**, **config sheet**, **subdirectory structure**) used throughout this docu
 
 ```mermaid
 flowchart LR
-    raw["data/raw<br/>(read-only)"] --> avgp["data-products/avg"]
-    raw --> swlp["data-products/swl"]
+    raw["data/raw<br/>(read-only)"] --> avgp["workflows/analysis/data-products/avg"]
+    raw --> swlp["workflows/analysis/data-products/swl"]
     avgp --> avg[("data/avg")]
     swlp --> swl[("data/swl<br/>clean, complete")]
     avg --> swlp
-    avg --> avgstat["analyses/avg-statistics"]
-    avg --> aavg["analyses/assess-avg-resources"]
-    swl --> aswl["analyses/assess-swl-resources"]
+    avg --> avgstat["workflows/analysis/data-analysis/avg-statistics"]
+    avg --> aavg["workflows/evaluation/avg/batch-resources"]
+    swl --> aswl["workflows/evaluation/swl/batch-resources"]
     avg --> ot["case-studies/long-tail-point/overtopping"]
     swl --> ot
     aswl --> ot
@@ -33,8 +36,8 @@ flowchart LR
 ```
 
 avg and swl are separate datasets and are never mixed. Overtopping uses both; habitat uses
-avg only. The two case studies share no drafts, memos or scripts. Planned analyses
-(`report-resources`, `assess-avg-resource`, `assess-swl-resource`) are stubs. Every
+avg only. The two case studies share no drafts, memos or scripts. Planned evaluation
+workflows (`resources-report`, avg and swl `single-resource`) are stubs. Every
 `methods/` note is listed in [`docs/methods-index.md`](docs/methods-index.md); data folders
 are described in [`data/README.md`](data/README.md).
 
@@ -52,7 +55,7 @@ are described in [`data/README.md`](data/README.md).
 │   ├── batch/                       <- avg.py, swl.py (per-row processing), runner.py (shared
 │   │                                   run_batch loop), run_readme.py, assess.py,
 │   │                                   template_avg.py, template_swl.py
-│   ├── paths.py                     <- Layout: every data/, data-products/ and analyses/ location
+│   ├── paths.py                     <- Layout: every data/ and workflows/ location
 │   ├── cleaning/                    <- avg.py, swl.py (data/raw/ -> data/avg, data/swl/clean)
 │   ├── units.py                     <- m<->ft and IGLD85<->NAVD88 conversions (separate steps)
 │   ├── lakes.py                     <- lake names, avg filenames, centroid save points
@@ -76,16 +79,21 @@ are described in [`data/README.md`](data/README.md).
 │   └── swl/
 │       ├── clean/              <- 5 known scenarios per lake + figures/<lake>.png
 │       └── complete/           <- all 17 scenarios per lake + figures/<lake>.png
-├── data-products/              <- one folder per product; each has its own README
-│   ├── avg/   {inputs, scripts, methods, outputs}
-│   └── swl/   {inputs, scripts, methods, outputs}   <- outputs/ is gitignored
-├── analyses/                   <- one folder per workflow; each has its own README
-│   ├── avg-statistics/            <- avg ARI response surfaces
-│   ├── assess-avg-resources/      <- batch resource assessment against avg (hydropattern)
-│   ├── assess-swl-resources/      <- batch resource assessment against swl
-│   ├── report-resources/          <- stub
-│   ├── assess-avg-resource/       <- stub
-│   └── assess-swl-resource/       <- stub
+├── workflows/                  <- each workflow folder has its own README
+│   ├── evaluation/                <- applying resource rules to data
+│   │   ├── resources-report/         <- stub
+│   │   ├── avg/
+│   │   │   ├── single-resource/      <- stub
+│   │   │   └── batch-resources/      <- batch resource evaluation against avg (hydropattern)
+│   │   └── swl/
+│   │       ├── single-resource/      <- stub
+│   │       └── batch-resources/      <- batch resource evaluation against swl
+│   └── analysis/                  <- producing / describing data products
+│       ├── data-products/
+│       │   ├── avg/   {inputs, scripts, methods, outputs}
+│       │   └── swl/   {inputs, scripts, methods, outputs}
+│       └── data-analysis/
+│           └── avg-statistics/       <- avg ARI response surfaces
 │       (each: {scripts, methods, inputs, outputs}; outputs/ is gitignored)
 └── case-studies/
     └── long-tail-point/
@@ -93,7 +101,7 @@ are described in [`data/README.md`](data/README.md).
         └── habitat/                <- {inputs, scripts, methods, outputs, deliverables}
 ```
 
-`data-products/*/outputs/`, `analyses/*/outputs/` and `case-studies/*/*/outputs/` are
+`workflows/**/outputs/` and `case-studies/*/*/outputs/` are
 gitignored (regenerable), except the memo figures and `dashboard.html`/`manifest.js` of
 the overtopping case study and the figures and reliability tables of the habitat case study.
 Everything under `data/` is tracked, including the summary figures. Each README says how
@@ -101,11 +109,14 @@ to regenerate its outputs:
 
 | Folder | README |
 | --- | --- |
-| avg data product | [`data-products/avg`](data-products/avg/README.md) |
-| swl data product | [`data-products/swl`](data-products/swl/README.md) |
-| avg statistics | [`analyses/avg-statistics`](analyses/avg-statistics/README.md) |
-| assess avg resources | [`analyses/assess-avg-resources`](analyses/assess-avg-resources/README.md) |
-| assess swl resources | [`analyses/assess-swl-resources`](analyses/assess-swl-resources/README.md) |
+| avg data product | [`workflows/analysis/data-products/avg`](workflows/analysis/data-products/avg/README.md) |
+| swl data product | [`workflows/analysis/data-products/swl`](workflows/analysis/data-products/swl/README.md) |
+| avg statistics | [`workflows/analysis/data-analysis/avg-statistics`](workflows/analysis/data-analysis/avg-statistics/README.md) |
+| avg batch-resources | [`workflows/evaluation/avg/batch-resources`](workflows/evaluation/avg/batch-resources/README.md) |
+| swl batch-resources | [`workflows/evaluation/swl/batch-resources`](workflows/evaluation/swl/batch-resources/README.md) |
+| avg single-resource (stub) | [`workflows/evaluation/avg/single-resource`](workflows/evaluation/avg/single-resource/README.md) |
+| swl single-resource (stub) | [`workflows/evaluation/swl/single-resource`](workflows/evaluation/swl/single-resource/README.md) |
+| resources report (stub) | [`workflows/evaluation/resources-report`](workflows/evaluation/resources-report/README.md) |
 | Long Tail Point overtopping | [`case-studies/long-tail-point/overtopping`](case-studies/long-tail-point/overtopping/README.md) |
 | Long Tail Point habitat | [`case-studies/long-tail-point/habitat`](case-studies/long-tail-point/habitat/README.md) |
 
@@ -124,21 +135,21 @@ You only need to re-run the data-product scripts if the raw source workbooks in
 `data/raw/` change (see each product's README for options such as `--units`/`--datum`):
 
 ```powershell
-uv run python data-products/avg/scripts/clean.py --overwrite
-uv run python data-products/avg/scripts/plot_figures.py
-uv run python data-products/swl/scripts/clean.py --overwrite
-uv run python data-products/swl/scripts/complete.py --overwrite
-uv run python data-products/swl/scripts/plot_figures.py
+uv run python workflows/analysis/data-products/avg/scripts/clean.py --overwrite
+uv run python workflows/analysis/data-products/avg/scripts/plot_figures.py
+uv run python workflows/analysis/data-products/swl/scripts/clean.py --overwrite
+uv run python workflows/analysis/data-products/swl/scripts/complete.py --overwrite
+uv run python workflows/analysis/data-products/swl/scripts/plot_figures.py
 ```
 
-## Analyses
+## Data analysis and evaluation
 
 After the data products are built (see each workflow README for options):
 
 ```powershell
-uv run python analyses/avg-statistics/scripts/plot_ari_surfaces.py
-uv run python analyses/assess-avg-resources/scripts/assess.py --resources my_run.xlsx
-uv run python analyses/assess-swl-resources/scripts/assess.py --resources my_swl_run.xlsx
+uv run python workflows/analysis/data-analysis/avg-statistics/scripts/plot_ari_surfaces.py
+uv run python workflows/evaluation/avg/batch-resources/scripts/assess.py --resources my_run.xlsx
+uv run python workflows/evaluation/swl/batch-resources/scripts/assess.py --resources my_swl_run.xlsx
 ```
 
 Without `--resources`, the assess scripts run the blank template in the workflow's

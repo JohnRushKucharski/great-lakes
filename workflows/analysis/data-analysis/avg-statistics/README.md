@@ -9,7 +9,7 @@ It also summarizes the 17 scenarios' avg directly: mean change from baseline, pe
 of high-water years, and Poisson worked examples.
 
 avg only: no storm surge or wave set-up (that is swl). See
-[`GLOSSARY.md`](../../GLOSSARY.md) for "ARI".
+[`GLOSSARY.md`](../../../../GLOSSARY.md) for "ARI".
 
 ## Status
 
@@ -25,9 +25,9 @@ Implemented.
 No argument is required. From the repository root:
 
 ```powershell
-uv run python analyses/avg-statistics/scripts/plot_ari_surfaces.py
-uv run python analyses/avg-statistics/scripts/plot_ari_surfaces.py --lake superior --ari 100
-uv run python analyses/avg-statistics/scripts/scenario_statistics.py [--lake michiganhuron]
+uv run python workflows/analysis/data-analysis/avg-statistics/scripts/plot_ari_surfaces.py
+uv run python workflows/analysis/data-analysis/avg-statistics/scripts/plot_ari_surfaces.py --lake superior --ari 100
+uv run python workflows/analysis/data-analysis/avg-statistics/scripts/scenario_statistics.py [--lake michiganhuron]
 ```
 
 | Option | Default |
