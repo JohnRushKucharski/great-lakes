@@ -1,6 +1,7 @@
 # Repository reorganization plan
 
-Status: **approved, not started** (decided with the owner in a design interview, 2026-11-20).
+Status: **implemented** (phases 1-6 merged to `main` in PR #2; phase 7 release `v1` of the
+dashboard zip, 2026-11-24).
 Owner: John Kucharski (JK). Read `GLOSSARY.md` first and use its terms exactly.
 Later folder regrouping under `workflows/`: see `docs/plans/restructure_plan.md`.
 
@@ -251,14 +252,15 @@ the end of each phase. Ask the owner before every commit and push.
 - Rely on `hydropattern`; generally useful fixes belong upstream, not here.
 - Update docs in the same change as the code they describe.
 
-## 10. Unresolved (ask the owner when reached)
+## 10. Resolved questions (2026-11-24)
 
-- Historical-level analyses (decided 2026-11): historical data lives in `data/historical/`;
-  analyses live in `data-products/historical/` using the same inputs/outputs/methods/scripts
-  pattern. Not yet created (future work).
-- Whether to keep the older habitat summary docx and the `michiganhuron_avg.*` files.
-- ARI curve gate: resolved. `data-products/swl/scripts/check_ari_curves.py` already fails on a
-  missing or decreasing water level; no extra checks wanted (2026-11-23).
-- The "Green Bay, WI" location in the GLOSSARY came from the plan PDF file name.
-- Local-only untracked tests (`tests/test_f*_*.py`, `test_musky_runs.py`,
-  `test_pondweed_runs.py`) depend on the untracked habitat code; track them together with it.
+- Historical-level analyses: future work, to be created by the owner later (data in
+  `data/historical/`, analyses under `workflows/analysis/`; the original plan said
+  `data-products/historical/`).
+- Habitat folder: fine as is; leave the older summary docx and `michiganhuron_avg.*` files
+  alone if they exist.
+- ARI curve gate: resolved. `check_ari_curves.py` already fails on a missing or decreasing
+  water level; no extra checks wanted (2026-11-23).
+- "Green Bay, WI" in the GLOSSARY is correct (near the Long Tail Point site).
+- The habitat tests (`tests/test_f*`, `test_musky_runs.py`, `test_pondweed_runs.py`) are
+  tracked in `tests/` with the habitat code.
