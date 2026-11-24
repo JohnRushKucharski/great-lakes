@@ -2,8 +2,9 @@
 
 Tooling (dependent on `hydropattern` via a pinned git dependency) for batch-generating
 and running hydropattern `.toml` configs against Great Lakes lake-level timeseries, one
-`.toml`/run per row of a spreadsheet (`analyses/assess-avg-resources`) — plus a second,
-standalone workflow (`analyses/assess-swl-resources`) that evaluates storm water level
+`.toml`/run per row of a spreadsheet (`workflows/evaluation/avg/batch-resources`) — plus a
+second, standalone workflow (`workflows/evaluation/swl/batch-resources`) that evaluates storm
+water level
 (SWL) frequency curves instead.
 
 ## Language
@@ -32,9 +33,18 @@ A cleaned or completed dataset, tracked in `data/`, that other workflows consume
 swl clean, swl complete).
 _Avoid_: Output (alone; ambiguous with any workflow output).
 
+**Evaluation**:
+Workflows that apply resource rules (hydropattern components, ARI thresholds) to data.
+They live under `workflows/evaluation/`.
+
 **Analysis**:
-A workflow that reads data products and produces results. It does not produce a data
-product.
+Workflows that produce or describe the data products themselves (cleaning, completing,
+gates, statistics). They live under `workflows/analysis/` (`data-products/` and
+`data-analysis/`). The word is still fine in prose for any examination of data.
+
+**Single-resource** / **batch-resources**:
+Evaluating one resource (a stub, not built) vs many rows of a resources workbook
+(implemented; formerly `assess-avg-resources` and `assess-swl-resources`).
 
 **Case study**:
 A project-specific set of workflows and deliverables (Long Tail Point overtopping, Long
@@ -63,7 +73,7 @@ produces its own independent `.toml` and hydropattern run.
 _Avoid_: Project (too generic — a resource is the Great-Lakes-specific unit of grouping).
 
 **Resources sheet**:
-The `template_avg.xlsx` sheet (in `analyses/assess-avg-resources/inputs/templates/`) where each row fully specifies one hydropattern
+The `template_avg.xlsx` sheet (in `workflows/evaluation/avg/batch-resources/inputs/templates/`) where each row fully specifies one hydropattern
 component (name, lake, characteristics, plot threshold) to generate into its own `.toml`
 file and run independently.
 
@@ -85,7 +95,7 @@ per scenario, in [0, 1]. An **occurrence** is a run of consecutive success times
 (hydropattern calls these events). It is **not a return period**: monthly lake levels are
 persistent, so occurrences are not independent. Replaces the avg `return_period` mode; the
 swl `return_period` is a true ARI-based return period and is unchanged. See
-`analyses/assess-avg-resources/methods/annual_probability_method.md`.
+`workflows/evaluation/avg/batch-resources/methods/annual_probability_method.md`.
 
 **Save point**:
 A single row in a swl lake workbook sheet (`great_lakes.batch.swl`) — a fixed lat/lon location with an
@@ -213,7 +223,7 @@ _Avoid_: Base scenario, reference scenario (reference scenario collides with the
 `reference_timeseries` vocabulary used elsewhere in hydropattern core).
 
 **Run readme**:
-The `README.txt` an assess run (`assess-avg-resources` or `assess-swl-resources`) writes at the
+The `README.txt` an assess run (a batch-resources workflow, avg or swl) writes at the
 root of the config's `output_directory` after every invocation of `run_batch`, whether
 or not any row succeeded. Documents: the resources/config workbook and data directory
 used as inputs, the run's timestamp, a per-row succeeded/failed summary (with failure

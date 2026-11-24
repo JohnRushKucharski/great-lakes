@@ -1,4 +1,4 @@
-# assess-avg-resources
+# batch-resources (avg)
 
 ## Purpose
 
@@ -8,9 +8,9 @@ level above 183 m"). The workflow generates one `.toml` config per row, runs
 `hydropattern` on it, and writes the result grids and plots.
 
 It reads the avg data product only. It does **not** include storm surge or wave set-up
-(that is swl, see [`assess-swl-resources`](../assess-swl-resources/README.md)) and never
+(that is swl, see [the swl batch-resources workflow](../../swl/batch-resources/README.md)) and never
 changes the data it reads. Terms (**resource**, **resources sheet**, **config sheet**,
-**subdirectory structure**) are defined in [`GLOSSARY.md`](../../GLOSSARY.md).
+**subdirectory structure**) are defined in [`GLOSSARY.md`](../../../../GLOSSARY.md).
 
 ## Status
 
@@ -24,7 +24,7 @@ a draft of the next worksheet version; `assess.py` does not read it yet.
   template (one example row). Copy it, never edit it in place:
 
   ```powershell
-  Copy-Item analyses\assess-avg-resources\inputs\templates\template_avg.xlsx my_run.xlsx
+  Copy-Item workflows\evaluation\avg\batch-resources\inputs\templates\template_avg.xlsx my_run.xlsx
   ```
 
 Worksheets are hand-edited inputs; scripts never overwrite them. Case-study worksheets
@@ -70,9 +70,9 @@ Leave a cell blank to use its default.
 No argument is required. From the repository root:
 
 ```powershell
-uv run python analyses/assess-avg-resources/scripts/assess.py
-uv run python analyses/assess-avg-resources/scripts/assess.py --resources my_run.xlsx
-uv run python analyses/assess-avg-resources/scripts/build_template.py
+uv run python workflows/evaluation/avg/batch-resources/scripts/assess.py
+uv run python workflows/evaluation/avg/batch-resources/scripts/assess.py --resources my_run.xlsx
+uv run python workflows/evaluation/avg/batch-resources/scripts/build_template.py
 ```
 
 | Option | Default |

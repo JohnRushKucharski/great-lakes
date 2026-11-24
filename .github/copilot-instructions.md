@@ -16,10 +16,12 @@ reorganization decisions).
 ```
 README.md, GLOSSARY.md
 data/                    raw/ (read-only), avg/, swl/{clean,complete}/ (+ figures/), README.md
-data-products/{avg,swl}/ workflow: README, inputs/, scripts/, methods/, outputs/
-analyses/                avg-statistics, assess-avg-resources, assess-swl-resources
-                         (implemented); report-resources, assess-avg-resource,
-                         assess-swl-resource (stub README only)
+workflows/evaluation/    applying resource rules to data:
+                         {avg,swl}/batch-resources (implemented),
+                         {avg,swl}/single-resource, resources-report (stub README only)
+workflows/analysis/      producing/describing data products:
+                         data-products/{avg,swl}, data-analysis/avg-statistics (implemented)
+                         (each workflow: README, inputs/, scripts/, methods/, outputs/)
 case-studies/long-tail-point/{overtopping,habitat}/
                          README, inputs/, scripts/, methods/, outputs/, deliverables/
 docs/                    adr/, plans/, methods-index.md, data_pipelines.md (repo-wide only)
@@ -27,7 +29,8 @@ src/great_lakes/         shared library, import-only (no `__main__`, no `python 
 tests/                   all pytest
 ```
 
-Folder names are verb-noun, kebab-case, with no numeric or letter prefixes. Write "Long Tail
+Folder names are kebab-case, with no numeric or letter prefixes, named for what they work on
+or produce. Write "Long Tail
 Point (LTP)" in prose; no `ltp_` prefix inside `case-studies/long-tail-point/`, only on files
 that leave it (`docs/plans/ltp_*.md`).
 
@@ -81,8 +84,8 @@ Sandbox note: if `uv run` fails ("Failed to canonicalize script path"), use
 options, for example:
 
 ```powershell
-uv run python data-products/swl/scripts/complete.py
-uv run python analyses/assess-swl-resources/scripts/assess.py --resources my_run.xlsx
+uv run python workflows/analysis/data-products/swl/scripts/complete.py
+uv run python workflows/evaluation/swl/batch-resources/scripts/assess.py --resources my_run.xlsx
 uv run python case-studies/long-tail-point/overtopping/scripts/make_figures.py
 ```
 

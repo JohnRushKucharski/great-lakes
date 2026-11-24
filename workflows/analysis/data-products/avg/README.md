@@ -10,7 +10,7 @@ surge or wave set-up (see the swl product for that, and `GLOSSARY.md`).
 ## Status
 
 Implemented: cleaning and figures. The ARI figures and the other avg statistics live in
-[`analyses/avg-statistics`](../../analyses/avg-statistics/README.md).
+[`avg-statistics`](../../data-analysis/avg-statistics/README.md).
 
 ## Inputs
 
@@ -20,8 +20,8 @@ Implemented: cleaning and figures. The ARI figures and the other avg statistics 
 ## Run
 
 ```powershell
-uv run python data-products/avg/scripts/clean.py [--overwrite]
-uv run python data-products/avg/scripts/plot_figures.py [--units ft] [--datum NAVD88]
+uv run python workflows/analysis/data-products/avg/scripts/clean.py [--overwrite]
+uv run python workflows/analysis/data-products/avg/scripts/plot_figures.py [--units ft] [--datum NAVD88]
 ```
 
 `--units` (m or ft) and `--datum` (IGLD85 or NAVD88) are separate options; each is applied

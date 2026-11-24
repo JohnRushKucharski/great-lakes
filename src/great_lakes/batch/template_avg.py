@@ -1,6 +1,6 @@
 """Build the blank resources+config workbook consumed by great_lakes.batch.avg.
 
-Run `analyses/assess-avg-resources/scripts/build_template.py` any time the recognized
+Run `workflows/evaluation/avg/batch-resources/scripts/build_template.py` any time the recognized
 resources-sheet columns or config-sheet options in batch/avg.py change, so the shipped
 template stays in sync.
 """

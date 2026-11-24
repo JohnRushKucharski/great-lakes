@@ -21,16 +21,16 @@ See `inputs/README.md`.
 ## Run
 
 ```powershell
-uv run python data-products/swl/scripts/clean.py [--overwrite]
-uv run python data-products/swl/scripts/complete.py [--overwrite]
-uv run python data-products/swl/scripts/plot_figures.py [--units ft] [--datum NAVD88] [--summary-only]
-uv run python data-products/swl/scripts/compare_fill_to_climate_canvas.py
-uv run python data-products/swl/scripts/check_ari_curves.py
-uv run python data-products/swl/methods/summarize_precip_temp_effects.py
-uv run python data-products/swl/scripts/assess_method_quality.py [--save-point-id 4999] [--ari 15]
+uv run python workflows/analysis/data-products/swl/scripts/clean.py [--overwrite]
+uv run python workflows/analysis/data-products/swl/scripts/complete.py [--overwrite]
+uv run python workflows/analysis/data-products/swl/scripts/plot_figures.py [--units ft] [--datum NAVD88] [--summary-only]
+uv run python workflows/analysis/data-products/swl/scripts/compare_fill_to_climate_canvas.py
+uv run python workflows/analysis/data-products/swl/scripts/check_ari_curves.py
+uv run python workflows/analysis/data-products/swl/methods/summarize_precip_temp_effects.py
+uv run python workflows/analysis/data-products/swl/scripts/assess_method_quality.py [--save-point-id 4999] [--ari 15]
 ```
 
-Run `data-products/avg/scripts/clean.py` first (completion needs `data/avg`). Both gates
+Run `workflows/analysis/data-products/avg/scripts/clean.py` first (completion needs `data/avg`). Both gates
 exit with code 1 on failure. `--units` and `--datum` are separate; defaults are ft and
 NAVD88. Pass `--root` to run against another repository root.
 

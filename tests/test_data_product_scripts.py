@@ -13,7 +13,7 @@ from great_lakes.cleaning import swl as clean_swl
 from great_lakes.paths import REPO_ROOT, Layout
 from great_lakes.swl.complete import ALL_SCENARIO_SUFFIXES
 
-PRODUCTS = REPO_ROOT / "data-products"
+PRODUCTS = REPO_ROOT / "workflows" / "analysis" / "data-products"
 TAG_TO_LAKE = {"sup": "superior", "mich": "michigan", "hur": "huron", "ont": "ontario"}
 KNOWN_DELTAS = {"baseline": (0, 0), "modnear": (5, 1.5), "modfuture_low": (10, 5),
                 "lowLL": (0, 7), "highLL": (20, 5)}

@@ -17,21 +17,22 @@ def test_layout_places_data_and_data_product_folders_under_root():
     assert layout.avg_figures == Path("r/data/avg/figures")
     assert layout.swl_clean_figures == Path("r/data/swl/clean/figures")
     assert layout.swl_complete_figures == Path("r/data/swl/complete/figures")
-    assert layout.swl_filled == Path("r/data-products/swl/outputs/filled")
-    assert layout.avg_bulk_figures == Path("r/data-products/avg/outputs/figures")
-    assert layout.swl_bulk_figures == Path("r/data-products/swl/outputs/figures")
-    base = Path("r/data-products/swl/outputs/gates")
+    products = Path("r/workflows/analysis/data-products")
+    assert layout.swl_filled == products / "swl/outputs/filled"
+    assert layout.avg_bulk_figures == products / "avg/outputs/figures"
+    assert layout.swl_bulk_figures == products / "swl/outputs/figures"
+    base = products / "swl/outputs/gates"
     assert layout.swl_fill_gate_outputs == base / "fill_vs_climate_canvas"
     assert layout.swl_ari_gate_outputs == base / "ari_curves"
-    assert layout.swl_methods_outputs == Path("r/data-products/swl/outputs/methods")
+    assert layout.swl_methods_outputs == products / "swl/outputs/methods"
 
 
 def test_layout_places_analysis_workflows_under_root():
     layout = Layout(Path("r"))
-    stats = Path("r/analyses/avg-statistics")
+    stats = Path("r/workflows/analysis/data-analysis/avg-statistics")
     assert layout.avg_statistics_outputs == stats / "outputs"
-    for kind, folder in (("avg", "assess-avg-resources"), ("swl", "assess-swl-resources")):
-        base = Path("r/analyses") / folder
+    for kind in ("avg", "swl"):
+        base = Path("r/workflows/evaluation") / kind / "batch-resources"
         assert layout.assess_product(kind) == base
         template = base / "inputs" / "templates" / f"template_{kind}.xlsx"
         assert layout.assess_template(kind) == template

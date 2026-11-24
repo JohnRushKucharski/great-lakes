@@ -15,7 +15,7 @@
    For each lake's centroid save point (`lakes.lake_centroid_save_point_id`) and every ARI
    in ARIS, the gate fails if any |difference| exceeds `TOLERANCE_FT`. The comparison csv
    and README.txt are written first, so a failure can be inspected.
-   See data-products/swl/methods/compare_fill_to_climate_canvas.md.
+   See workflows/analysis/data-products/swl/methods/compare_fill_to_climate_canvas.md.
 
 2. **ARI curves** (`run_ari_gate`): every save point's water level must be present and
    non-decreasing as the ARI grows, in every sheet of every lake's workbook.
@@ -121,7 +121,8 @@ _NAMING_SCHEME_TEXT = (
     "canvas's own interpolate+fillin over the same known points), and diff_ft "
     "(fillin_swl_ft - climate_canvas_ft). ARI values: "
     f"{', '.join(ari.format_ari(a) for a in ARIS)}. See "
-    "data-products/swl/methods/compare_fill_to_climate_canvas.md for the write-up."
+    "workflows/analysis/data-products/swl/methods/compare_fill_to_climate_canvas.md "
+    "for the write-up."
 )
 
 

@@ -2,7 +2,8 @@
 
 > Path note (added in the reorganization; the decision is unchanged): `longtailpoint/dashboard.html`
 > is now `case-studies/long-tail-point/overtopping/outputs/dashboard.html`, and
-> `batch_run_swl.py` is `analyses/assess-swl-resources/scripts/assess.py`.
+> `batch_run_swl.py` is `analyses/assess-swl-resources/scripts/assess.py`. Folders were later
+> regrouped under `workflows/`, see `docs/plans/restructure_plan.md`.
 
 The longtailpoint results dashboard (`longtailpoint/dashboard.html`) must let a user
 filter/compare `batch_run_swl.py` outputs with zero install and zero local server —

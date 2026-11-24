@@ -14,9 +14,11 @@ htmlcov/
 data/analysis/
 # bulk/intermediate outputs of the data products (regenerate via each product's scripts);
 # the docs-embedded figures and data/ products are tracked instead
-data-products/*/outputs/
-# analysis workflow outputs (regenerate via each workflow's scripts)
-analyses/*/outputs/
+workflows/analysis/data-products/*/outputs/
+# evaluation and data-analysis workflow outputs (regenerate via each workflow's scripts)
+workflows/analysis/data-analysis/*/outputs/
+workflows/evaluation/*/outputs/
+workflows/evaluation/*/*/outputs/
 
 # case studies: outputs are regenerable. Tracked: figures embedded in the memo, and the
 # dashboard viewer files (small; browse results without re-running anything).

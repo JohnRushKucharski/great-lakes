@@ -1,12 +1,13 @@
 # Scenario completion: `swl/complete.py`
 
-Run by `data-products/swl/scripts/complete.py` (see [`../README.md`](../README.md)).
+Run by `workflows/analysis/data-products/swl/scripts/complete.py` (see [`../README.md`](../README.md)).
 
 Each `data/swl/clean/<lake>_swl.xlsx` workbook only has **5 of 17** possible climate
 scenarios (the **known scenarios**). `great_lakes.swl.complete` estimates the other 12 (**target
 scenarios**), per save point and per ARI column, and writes
 `data/swl/complete/<lake>_swl.xlsx` with all 17 scenario sheets (the 12-sheet
-intermediate goes to `data-products/swl/outputs/filled/`). `assess-swl-resources` can read
+intermediate goes to `workflows/analysis/data-products/swl/outputs/filled/`). The swl
+batch-resources workflow can read
 either directory.
 
 Every one of the 17 scenarios is a point on a fixed (`precip_delta`, `temp_delta`) grid.
@@ -58,7 +59,7 @@ Its one hard limitation is exactly the reason this tool needs a Stage 2 at all: 
 ## Stage 2 — Row-shift extrapolation (5 out-of-hull scenarios)
 
 **Theory.** See
-[`docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md`](../../../docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md)
+[`docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md`](../../../../../docs/adr/0001-row-shift-extrapolation-for-out-of-hull-scenarios.md)
 for the full rationale. In short: a save point's SWL is treated as `AVG(l, s)` (the mean
 lake level under scenario `s`, from `data/avg/<avg-lake>_avg.csv`) plus a "waves" term
 that captures storm-driven water level above/below the mean. The assumption is that the
@@ -106,11 +107,11 @@ prefix, instead of Stage 1's `filled-` prefix.
 ## CLI usage
 
 ```powershell
-uv run python data-products/swl/scripts/complete.py [--overwrite]
+uv run python workflows/analysis/data-products/swl/scripts/complete.py [--overwrite]
 ```
 
 Reads `data/swl/clean/<lake>_swl.xlsx` and `data/avg/<avg-lake>_avg.csv`. Writes the
-12-sheet filled workbooks to `data-products/swl/outputs/filled/` (gitignored) and the
+12-sheet filled workbooks to `workflows/analysis/data-products/swl/outputs/filled/` (gitignored) and the
 17-sheet workbooks (5 known + 7 filled + 5 extrapolated) to `data/swl/complete/`. Without
 `--overwrite` the script refuses to replace existing files. Pass `--root` to run against
 another repository root.

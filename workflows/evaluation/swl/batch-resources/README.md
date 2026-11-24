@@ -1,4 +1,4 @@
-# assess-swl-resources
+# batch-resources (swl)
 
 ## Purpose
 
@@ -9,11 +9,11 @@ metric for each scenario, and writes a grid CSV and a response-surface plot.
 
 swl includes storm surge and wave set-up. It excludes near-shore processes (run-up,
 overtopping). USACE sources often call it "still water level" (also "SWL"); this repo says
-*storm* water level to avoid confusion with avg (see [`GLOSSARY.md`](../../GLOSSARY.md)).
+*storm* water level to avoid confusion with avg (see [`GLOSSARY.md`](../../../../GLOSSARY.md)).
 
 swl has no timeseries, so this workflow is standalone: it builds no `hydropattern` `.toml`
 and a component has only a `magnitude` characteristic. For avg, see
-[`assess-avg-resources`](../assess-avg-resources/README.md).
+[the avg batch-resources workflow](../../avg/batch-resources/README.md).
 
 ## Status
 
@@ -28,7 +28,7 @@ a draft of the next worksheet version; `assess.py` does not read it yet.
   template. Copy it, never edit it in place:
 
   ```powershell
-  Copy-Item analyses\assess-swl-resources\inputs\templates\template_swl.xlsx my_swl_run.xlsx
+  Copy-Item workflows\evaluation\swl\batch-resources\inputs\templates\template_swl.xlsx my_swl_run.xlsx
   ```
 
 Worksheets are hand-edited inputs; scripts never overwrite them. Column details of the
@@ -54,7 +54,7 @@ template are in [`methods/template_swl_reference.md`](methods/template_swl_refer
 | Option | Default | Notes |
 | --- | --- | --- |
 | `output_directory` | *(required)* | Base directory for grid CSVs and plots. |
-| `subdirectory_structure` | `flat` | `flat`, `resource`, or `row`, as in assess-avg-resources. |
+| `subdirectory_structure` | `flat` | `flat`, `resource`, or `row`, as in the avg batch-resources workflow. |
 | `metric_mode` | `return_period` | `portion`, `percentage`, or `return_period`. |
 | `overwrite` | `false` | If `false`, a row whose output already exists is skipped and reported as failed. |
 | `plot_interpolate` | `true` | Bilinearly interpolate the plotted surface. |
@@ -69,9 +69,9 @@ Leave a cell blank to use its default.
 No argument is required. From the repository root:
 
 ```powershell
-uv run python analyses/assess-swl-resources/scripts/assess.py
-uv run python analyses/assess-swl-resources/scripts/assess.py --resources my_swl_run.xlsx
-uv run python analyses/assess-swl-resources/scripts/build_template.py
+uv run python workflows/evaluation/swl/batch-resources/scripts/assess.py
+uv run python workflows/evaluation/swl/batch-resources/scripts/assess.py --resources my_swl_run.xlsx
+uv run python workflows/evaluation/swl/batch-resources/scripts/build_template.py
 ```
 
 | Option | Default |

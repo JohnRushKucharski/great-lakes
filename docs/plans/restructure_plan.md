@@ -1,6 +1,7 @@
 # Workflow restructure plan (`workflows/`)
 
-Status: **approved, not started** (decided with the owner in a design interview, 2026-11-23).
+Status: **implemented** on branch `restructure` (2026-11-24); see the commit history for the
+move and the docs update.
 Owner: John Kucharski (JK). Branch: `restructure`, created from `reorg` (already pushed).
 Read first: `.github/copilot-instructions.md`, `GLOSSARY.md`, `README.md`,
 `docs/data_pipelines.md`, `docs/methods-index.md`, `docs/plans/reorg_plan.md` (the previous
@@ -171,11 +172,9 @@ links, so it will catch misses.
 Decided with the owner: `workflows/` wrapper (case-studies and data excluded); evaluation
 vs analysis split as in 2; stubs become `single-resource/`; Python names unchanged; old ADRs
 and plans keep old paths with a pointer note; new naming rule in 3; push `reorg` first and
-implement in a new session on `restructure`.
+implement in a new session on `restructure`. `docs/plans/` stays under `docs/` (repo-wide).
+Future historical-level analyses will be created by the owner later under
+`workflows/analysis/`.
 
-Open (ask the owner if they come up): whether `docs/plans/` should itself move under
-`workflows/` (current assumption: no, `docs/` is repo-wide); future historical-level
-analyses (`reorg_plan.md` section 10) would belong under `workflows/analysis/`, not yet
-created; optional follow-up unrelated to this move: switch generated hydropattern `.toml`
-to the ordered `[[components.X.characteristics]]` form to remove the 0.3.x compact-form
-warning.
+Optional follow-up unrelated to this move: switch generated hydropattern `.toml` to the
+ordered `[[components.X.characteristics]]` form to remove the 0.3.x compact-form warning.

@@ -7,7 +7,7 @@ lat, lon, then the ARI values (0.1 .. 1000). Values are meters, IGLD85, as in th
 Save points with no water level at any ARI (3 in michigan, with implausible coordinates)
 are dropped, so they never reach the complete data or figures.
 
-Run via `data-products/swl/scripts/clean.py`.
+Run via `workflows/analysis/data-products/swl/scripts/clean.py`.
 """
 
 from pathlib import Path
