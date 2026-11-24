@@ -57,7 +57,7 @@ uv run python case-studies/long-tail-point/overtopping/scripts/sync_draft_from_d
 | Script | Does |
 | --- | --- |
 | `make_figures.py` | memo figures and tables (F2, F3, F4, B1, T1, T2, LOO) to `outputs/figures/` |
-| `run_assessments.py` | runs both worksheets (assess-avg/swl-resources engine); exit 1 if any row fails |
+| `run_assessments.py` | runs both worksheets (batch-resources engine); exit 1 if any row fails |
 | `build_dashboard.py` | `outputs/dashboard.html` + `manifest.js` from the swl worksheet's outputs (`--include-avg` adds avg) |
 | `package_dashboard.py` | `outputs/long-tail-point-dashboard.zip` (fails if a linked file is missing) |
 | `build_memo_docx.py` | `outputs/longtailpoint_memo_draft.docx` from `inputs/memo_draft.md` |
