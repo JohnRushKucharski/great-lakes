@@ -45,11 +45,11 @@ class Layout:
 
     @property
     def avg_product(self) -> Path:
-        return self.root / "data-products" / "avg"
+        return self.root / "workflows" / "analysis" / "data-products" / "avg"
 
     @property
     def swl_product(self) -> Path:
-        return self.root / "data-products" / "swl"
+        return self.root / "workflows" / "analysis" / "data-products" / "swl"
 
     @property
     def avg_bulk_figures(self) -> Path:
@@ -77,7 +77,7 @@ class Layout:
 
     @property
     def avg_statistics_outputs(self) -> Path:
-        return self.root / "analyses" / "avg-statistics" / "outputs"
+        return self.root / "workflows" / "analysis" / "data-analysis" / "avg-statistics" / "outputs"
 
     @property
     def overtopping(self) -> Path:
@@ -88,8 +88,8 @@ class Layout:
         return self.root / "case-studies" / "long-tail-point" / "habitat"
 
     def assess_product(self, kind: str) -> Path:
-        """Folder of the assess-<kind>-resources workflow (kind is "avg" or "swl")."""
-        return self.root / "analyses" / f"assess-{kind}-resources"
+        """Folder of the batch-resources evaluation workflow (kind is "avg" or "swl")."""
+        return self.root / "workflows" / "evaluation" / kind / "batch-resources"
 
     def assess_template(self, kind: str) -> Path:
         return self.assess_product(kind) / "inputs" / "templates" / f"template_{kind}.xlsx"

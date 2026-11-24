@@ -13,8 +13,14 @@ from great_lakes.memo.to_docx import build_memo
 from great_lakes.paths import REPO_ROOT, Layout
 
 SCRIPTS = REPO_ROOT / "case-studies" / "long-tail-point" / "overtopping" / "scripts"
-AVG_SCRIPT = REPO_ROOT / "analyses" / "avg-statistics" / "scripts" / "scenario_statistics.py"
-SWL_METHODS_SCRIPT = REPO_ROOT / "data-products" / "swl" / "scripts" / "assess_method_quality.py"
+WORKFLOWS = REPO_ROOT / "workflows"
+AVG_SCRIPT = (
+    WORKFLOWS / "analysis" / "data-analysis" / "avg-statistics" / "scripts"
+    / "scenario_statistics.py"
+)
+SWL_METHODS_SCRIPT = (
+    WORKFLOWS / "analysis" / "data-products" / "swl" / "scripts" / "assess_method_quality.py"
+)
 
 OUT = "case-studies/long-tail-point/overtopping/outputs"
 AVG_ROW = {"resource_name": "r", "component_name": "high", "lake": "michiganhuron",

@@ -7,7 +7,7 @@ from great_lakes.paths import REPO_ROOT
 
 INDEX = REPO_ROOT / "docs" / "methods-index.md"
 LINK = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
-ROOTS = ("data-products", "analyses", "case-studies")
+ROOTS = ("workflows", "case-studies")
 SKIP_PARTS = {"outputs", "__pycache__", ".ipynb_checkpoints"}
 STATUSES = ("final", "draft, incomplete")
 

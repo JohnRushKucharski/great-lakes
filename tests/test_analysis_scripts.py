@@ -1,4 +1,4 @@
-"""Smoke tests: each analyses/ script runs end to end on a fixture tree (--root)."""
+"""Smoke tests: each evaluation/analysis script runs end to end on a fixture tree (--root)."""
 import subprocess
 import sys
 
@@ -11,7 +11,8 @@ from great_lakes.cleaning import avg as clean_avg
 from great_lakes.cleaning import swl as clean_swl
 from great_lakes.paths import REPO_ROOT, Layout
 
-ANALYSES = REPO_ROOT / "analyses"
+EVALUATION = REPO_ROOT / "workflows" / "evaluation"
+DATA_ANALYSIS = REPO_ROOT / "workflows" / "analysis" / "data-analysis"
 
 
 @pytest.fixture(scope="module")
@@ -32,7 +33,7 @@ def test_avg_statistics_plot_ari_surfaces(tmp_path):
     layout = Layout(tmp_path)
     layout.avg.mkdir(parents=True)
     _write_tiny_avg_csv(layout.avg / "superior_avg.csv")
-    script = ANALYSES / "avg-statistics" / "scripts" / "plot_ari_surfaces.py"
+    script = DATA_ANALYSIS / "avg-statistics" / "scripts" / "plot_ari_surfaces.py"
     _run(script, tmp_path, "--lake", "superior", "--ari", "2")
     outputs = layout.avg_statistics_outputs
     assert (outputs / "README.txt").exists()
@@ -59,7 +60,7 @@ def _workbook(path, kind, out_dir, row=None):
 @pytest.mark.parametrize("kind", ["avg", "swl"])
 def test_assess_resources_runs_a_workbook(root, tmp_path, kind):
     out = tmp_path / "out"
-    script = ANALYSES / f"assess-{kind}-resources" / "scripts" / "assess.py"
+    script = EVALUATION / kind / "batch-resources" / "scripts" / "assess.py"
     _run(script, root, "--resources", str(_workbook(tmp_path / "w.xlsx", kind, out)))
     assert (out / "README.txt").exists()
     assert list(out.rglob("*.csv"))
@@ -68,7 +69,7 @@ def test_assess_resources_runs_a_workbook(root, tmp_path, kind):
 def test_assess_resources_output_dir_overrides_the_workbook(root, tmp_path):
     override = tmp_path / "override"
     workbook = _workbook(tmp_path / "w.xlsx", "swl", tmp_path / "ignored")
-    script = ANALYSES / "assess-swl-resources" / "scripts" / "assess.py"
+    script = EVALUATION / "swl" / "batch-resources" / "scripts" / "assess.py"
     _run(script, root, "--resources", str(workbook), "--output-dir", str(override))
     assert list(override.rglob("*.csv"))
     assert not (tmp_path / "ignored").exists()
@@ -77,7 +78,7 @@ def test_assess_resources_output_dir_overrides_the_workbook(root, tmp_path):
 @pytest.mark.parametrize("kind", ["avg", "swl"])
 def test_assess_resources_builds_template_and_runs_it_by_default(root, kind):
     layout = Layout(root)
-    scripts = ANALYSES / f"assess-{kind}-resources" / "scripts"
+    scripts = EVALUATION / kind / "batch-resources" / "scripts"
     _run(scripts / "build_template.py", root)
     assert layout.assess_template(kind).exists()
 
@@ -90,5 +91,5 @@ def test_assess_resources_builds_template_and_runs_it_by_default(root, kind):
 def test_assess_resources_exits_1_when_a_row_fails(root, tmp_path):
     bad = {**ROWS["swl"], "lake": "nowhere"}
     workbook = _workbook(tmp_path / "w.xlsx", "swl", tmp_path / "out", row=bad)
-    script = ANALYSES / "assess-swl-resources" / "scripts" / "assess.py"
+    script = EVALUATION / "swl" / "batch-resources" / "scripts" / "assess.py"
     _run(script, root, "--resources", str(workbook), expect=1)
